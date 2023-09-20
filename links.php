@@ -7,7 +7,7 @@ use DiDom\Document;
 $db = mysqli_connect('localhost', 'root', '', 'parser');
 mysqli_query($db, 'SET character_set_results = "utf8"');
 
-$query = mysqli_query($db, "SELECT link, views FROM links ORDER BY views, id LIMIT 1");
+$query = mysqli_query($db, "SELECT link, views FROM links WHERE type='catalog' ORDER BY views, id LIMIT 1");
 
 if ($query->num_rows) {
     $res = mysqli_fetch_assoc($query);
