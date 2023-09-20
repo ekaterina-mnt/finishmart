@@ -13,24 +13,22 @@ if ($query->num_rows) {
     $res = mysqli_fetch_assoc($query);
     $link = $res['link'];
     $views = $res['product_views'] + 1;
-    // mysqli_query($db, "UPDATE links SET product_views=$views WHERE link='$link'");
+    mysqli_query($db, "UPDATE links SET product_views=$views WHERE link='$link'");
 }
-
-$link = "https://mosplitka.ru/product/korzina-dlya-belya-weltwasser-lety-mt-50l-10000003989-matovaya-stal/";
-
+$link = "https://mosplitka.ru/product/polka-dlya-polotenets-artwelle-harmonie-har-033-dlina-60-sm/";
 $document = new Document($link, true);
 
 //название товара
 $title = $document->find('.single-product___page-header__h1, .tile__title');
-$title = ($title) ? trim($title[0]->text()) : null;
+$title = ($title) ? trim($title[0]->text()) : "null";
 
 //цена
 $price_res = $document->find('.single-product___main-info--price span, .tile-shop__price');
 preg_match("#([0-9 ]+)([^0-9]+)#", $price_res[0]->text(), $carm);
-$price = ($carm) ? (int) str_replace(' ', '', trim($carm[1])) : null;
+$price = ($carm) ? (int) str_replace(' ', '', trim($carm[1])) : "null";
 
 //единица измерения
-$edizm = ($carm) ? trim($carm[2]) : null;
+$edizm = ($carm) ? trim($carm[2]) : "null";
 
 //остатки товара
 $stock = $document->find('.single-product___main-info--tag-item.is-green.e__flex.e__aic.e__jcc, .tile-shop-plashki-item.tile-shop-plashki-item__green'); //остатки на складе
@@ -38,8 +36,8 @@ $stock = ($stock) ? str_replace('М', 'м', str_replace(" • ", ", ", trim($sto
 
 //все характеристики
 $characteristics_res = $document->find('.single-product___atts-att.e__flex.e__aic, .tile-prop-tabs__item');
-$characteristics = array();
 if ($characteristics_res) {
+    $characteristics = array();
 
     foreach ($characteristics_res as $charact) {
         $name = trim($charact->find('.q_prop__name, .tile-prop-tabs__name')[0]->text());
@@ -49,85 +47,97 @@ if ($characteristics_res) {
 
     if ($characteristics) {
         //артикул
-        $articul = $characteristics['Артикул'] ?? null;
+        $articul = $characteristics['Артикул'] ?? "null";
         //производитель
         $producer = $characteristics['Производитель'] ?? null;
         //коллекция
         $collection = $characteristics['Коллекция'] ?? null;
         //длина          
         foreach ($characteristics as $key => $value) {
-            if (str_contains($key, 'Длина') OR str_contains($key, 'длина')) {
-                $length = $characteristics[$key];
+            if (str_contains($key, 'Длина')) {
+                $length = (float) str_replace(",", ".", $characteristics[$key]);
                 break;
             }
         }
-        $length = $length ?? null;
+        $length = $length ?? "null";
         //ширина
         foreach ($characteristics as $key => $value) {
-            if (str_contains($key, 'Ширина') OR str_contains($key, 'ширина')) {
-                $width = $characteristics[$key];
+            if (str_contains($key, 'Ширина')) {
+                $width = (float) str_replace(",", ".", $characteristics[$key]);
                 break;
             }
         }
-        $width = $width ?? null;
+        $width = $width ?? "null";
         //высота
         foreach ($characteristics as $key => $value) {
-            if (str_contains($key, 'Высота') OR str_contains($key, 'высота')) {
-                $height = $characteristics[$key];
+            if (str_contains($key, 'Высота')) {
+                $height = (float) str_replace(",", ".", $characteristics[$key]);
                 break;
             }
         }
-        $height = $height ?? null;
+        $height = $height ?? "null";
         //глубина
         foreach ($characteristics as $key => $value) {
-            if (str_contains($key, 'Глубина') OR str_contains($key, 'глубина')) {
-                $depth = $characteristics[$key];
+            if (str_contains($key, 'Глубина')) {
+                $depth = (float) str_replace(",", ".", $characteristics[$key]);
                 break;
             }
         }
-        $depth = $depth ?? null;
+        $depth = $depth ?? "null";
         //толщина
         foreach ($characteristics as $key => $value) {
-            if (str_contains($key, 'Толщина') OR str_contains($key, 'толщина')) {
-                $thickness = $characteristics[$key];
+            if (str_contains($key, 'Толщина')) {
+                $thickness = (float) str_replace(",", ".", $characteristics[$key]);
                 break;
             }
         }
-        $thickness = $thickness ?? null;
+        $thickness = $thickness ?? "null";
         //формат
         foreach ($characteristics as $key => $value) {
-            if (str_contains($key, 'Формат') OR str_contains($key, 'формат')) {
+            if (str_contains($key, 'Формат')) {
                 $format = $characteristics[$key];
                 break;
             }
         }
-        $format = $format ?? null;
+        $format = $format ?? "null";
+        //материал
+        foreach ($characteristics as $key => $value) {
+            if (str_contains($key, 'Материал') or str_contains($key, 'Тип материала')) {
+                $material = $characteristics[$key];
+                break;
+            }
+        }
+        $material = $material ?? "null";
     }
 
     $characteristics = json_encode($characteristics, JSON_UNESCAPED_UNICODE);
+} else {
+    $characteristics = 0;
 }
 
 //картинки
-$imgs_res = $document->find('.single-product___main-info--thumbnail__img img, .tile-picture-prev__item img, .single-product___main-info--thumbnail.e__flex.e__aic.e__jcc.e__pointer.is-active img, .single-product___main-info--main-image.e__w100.e__pointer img');
-$imgs = array();
-var_dump($imgs_res);
-if ($imgs_res) {
+$images_res = $document->find('.single-product___main-info--thumbnail__img img, .tile-picture-prev__item img, .single-product___main-info--thumbnail.e__flex.e__aic.e__jcc.e__pointer.is-active img, .single-product___main-info--main-image.e__w100.e__pointer img');
+if ($images_res) {
+    $images = array();
     $i = 1;
 
-    foreach ($imgs_res as $img) {
+    foreach ($images_res as $img) {
         $src = 'https://mosplitka.ru' . $img->attr('src');
         $src = str_replace("60_999", "700_370", $src); //больше размер
         $src = str_replace("50_999", "500_999", $src); //больше размер
-        $imgs["img$i"] = $src;
+        $images["img$i"] = $src;
         $i += 1;
     }
-    $imgs = json_encode($imgs, JSON_UNESCAPED_SLASHES);
+    $images = json_encode($images, JSON_UNESCAPED_SLASHES);
+} else {
+    $images = 0;
 }
 
 //варианты исполнения
 $var_res = $document->find('.product-sku__section a');
-$variants = array();
+
 if ($var_res) {
+    $variants = array();
     $i = 1;
 
     foreach ($var_res as $var) {
@@ -136,8 +146,9 @@ if ($var_res) {
         $i += 1;
     }
     $variants = json_encode($variants, JSON_UNESCAPED_SLASHES);
+} else {
+    $variants = 0;
 }
-$variants = (!empty($variants)) ? $variants : "";
 
 //путь
 $path_res = $document->find('.product-breadcrumb a, .breadcrumb_cont a');
@@ -154,22 +165,18 @@ if ($path_res) {
         $a = $a->text();
         if (!isset($producer) && isset($collection)) {
             if ($a != 'На главную' && $a != 'Каталог' && !str_contains($a, $collection)) {
-                echo "$a<br><br>";
                 $categories[] = $a;
             }
         } elseif (isset($producer) && !isset($collection)) {
             if ($a != 'На главную' && $a != 'Каталог' && !str_contains($a, $producer)) {
-                echo "$a<br><br>";
                 $categories[] = $a;
             }
         } elseif (!isset($producer) && !isset($collection)) {
             if ($a != 'На главную' && $a != 'Каталог') {
-                echo "$a<br><br>";
                 $categories[] = $a;
             }
         } else {
             if ($a != 'На главную' && $a != 'Каталог' && !str_contains($a, $producer) && !str_contains($a, $collection)) {
-                echo "$a<br><br>";
                 $categories[] = $a;
             }
         }
@@ -183,10 +190,10 @@ if ($path_res) {
 // Итоговый массив для проверки
 $arr = [
     "ссылка" => $link, "остатки" => $stock, "цена" => $price, "ед.изм" => $edizm, "артикул" => $articul,
-    "название" => $title, "картинки" => $imgs, "варианты" => $variants, "характеристики" => $characteristics,
+    "название" => $title, "картинки" => $images, "варианты" => $variants, "характеристики" => $characteristics,
     "путь" => $path, "категория1" => $category1, "категория2" => $category2, "категория3" => $category3,
     "длина" => $length, "ширина" => $width, "высота" => $height, "глубина" => $depth, "толщина" => $thickness,
-    "формат" => $format,
+    "формат" => $format, "материал" => $material, "производитель" => $producer, "коллекция" => $collection,
 ];
 foreach ($arr as $key => $i) {
     echo "$key: ";
@@ -194,9 +201,38 @@ foreach ($arr as $key => $i) {
     echo "<br><br>";
 }
 
-// try {
-//     mysqli_query($db, "INSERT INTO products
-//     (`link`, `stock`, `price`, `articul`, `title`, `images`, `variants`, `characteristics`, `path`, `category1`, `category2`, `category3`) 
-//     VALUES ('$link', '$stock', '$price', '$articul', '$title', '$imgs', '$variants', '$characteristics', '$path', '$category1', '$category2', '$category3')");
-// } catch (Exception $e) {
-// }
+
+//добавление/обновление записи в БД
+
+$product = mysqli_query($db, "SELECT id FROM products WHERE link='$link'");
+
+$types = 'ssissssssssssdddddssss';
+$values = [
+    $link, $stock, $price, $edizm, $articul, $title, $images, $variants, $characteristics, $path, $category1, $category2, $category3,
+    $length, $width, $height, $depth, $thickness, $format, $material, $producer, $collection
+];
+
+if ($product->num_rows) {
+    $id = mysqli_fetch_assoc($product)['id'];
+    $query = "UPDATE products 
+        SET `link`=?, `stock`=?, `price`=?,
+        `edizm`=?, `articul`=?, `title`=?, `images`=?, `variants`=?,
+        `characteristics`=?, `path`=?, `category1`=?, `category2`=?,
+        `category3`=?, `length`=?, `width`=?, `height`=?, `depth`=?, 
+        `thickness`=?, `format`=?, `material`=?, `producer`=?, 
+        `collection`=?
+        WHERE id=$id";
+} else {
+    $query = "INSERT INTO products
+        (`link`, `stock`, `price`, `edizm`, `articul`, `title`, `images`, `variants`, `characteristics`, `path`, `category1`, `category2`, `category3`, 
+        `length`, `width`, `height`, `depth`, `thickness`, `format`, `material`, `producer`, `collection`) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+}
+
+try {
+    $stmt = mysqli_prepare($db, $query);
+    $stmt->bind_param($types, ...$values);
+    $stmt->execute();
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
