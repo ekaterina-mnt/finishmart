@@ -1,49 +1,57 @@
 <?php
+require "functions.php";
 
-$db = mysqli_connect('localhost', 'root', '', 'parser');
-mysqli_query($db, 'SET character_set_results = "utf8"');
+$data = $_SERVER['REQUEST_URI'];
+$time = date('Y-m-d H:i:s', time());
 
-$query = mysqli_query($db, "SELECT link, export_views FROM links WHERE type='product' ORDER BY export_views, id LIMIT 1");
-
-// if ($query->num_rows) {
-//     $res = mysqli_fetch_assoc($query);
-//     $link = $res['link'];
-//     $views = $res['export_views'] + 1;
-//     mysqli_query($db, "UPDATE links SET product_views=$views WHERE link='$link'");
-// }
-
-$link = "https://mosplitka.ru/product/polka-dlya-polotenets-artwelle-harmonie-har-033-dlina-60-sm/";
-
-$result = mysqli_query($db, "SELECT * FROM products WHERE link='$link'");
-$product = mysqli_fetch_assoc($result);
-
-$date = date('Y-m-d H:m:i', time());
-
-
-if (!empty($product['category3'])) {
-    $inGroup = $product['category3'];
-} elseif (!empty($product['category2'])) {
-    $inGroup = $product['category2'];
-} elseif (!empty($product['category1'])) {
-    $inGroup = $product['category1'];
-} else {
-    $inGroup = 'Не установлено';
+try {
+sql("INSERT INTO data (data, time) VALUES ('$data', '$time')");
+} catch (Exception $e) {
 }
 
+session_start();
+setcookie("bitr", 1);
+
+if (isset($_GET['mode'])) {
+    if ($_GET['mode'] == 'checkauth') {
+        echo "success\n"; 
+        echo "bitr";
+        echo 1;
+        echo session_name() ."\n"; 
+        echo "sessid=" . session_id() ."\n";
+    } 
+    if ($_GET['mode'] == 'init') {
+        echo "zip=no"."\n";
+        echo "file_limit=204800" . "\n";
+        exit();
+    }
+    if ($_GET['mode'] == 'query') {
+        echo "success\n"; 
+        exit();
+    }
+}
+
+$products = sql("SELECT * FROM products LIMIT 5");
 
 $xmlString = '<?xml version="1.0" encoding="UTF-8"?>
-<ФайлОбмена ВерсияФормата="3.0" ДатаВыгрузки="' . $date . '" ИмяКонфигурацииИсточника="" ИмяКонфигурацииПриемника="" ИдПравилКонвертации="" Комментарий="">  </ФайлОбмена>
-<urlset xmlns:xsi
-<ПравилаОбмена>…</ПравилаОбмена>
-<ИнформацияОТипахДанных>… </ИнформацияОТипахДанных>
-<ДанныеПоОбмену ПланОбмена="" Кому="" ОтКого="" НомерИсходящегоСообщения="" НомерВходящегоСообщения="" УдалитьРегистрациюИзменений=""/>
-<ТабличнаяЧасть Имя="">
-    <Запись>
-        <Свойство Имя="Типа" Тип="Строка">
-            <Значение>Запас</Значение>
-        </Свойство>
+<ФайлОбмена ВерсияФормата="3.0">
+<ТабличнаяЧасть>';
+
+foreach ($products as $product) {
+
+    if (!empty($product['category3'])) {
+        $inGroup = $product['category3'];
+    } elseif (!empty($product['category2'])) {
+        $inGroup = $product['category2'];
+    } elseif (!empty($product['category1'])) {
+        $inGroup = $product['category1'];
+    } else {
+        $inGroup = 'Не установлено';
+    }
+
+    $xmlString .= '<Запись>
         <Свойство Имя="Наименование" Тип="Строка">
-            <Значение>' . $product['title'] . '</Значение>
+            <Значение><![CDATA[' . $product['title'] . ']]></Значение>
         </Свойство>
         <Свойство Имя="Остатки" Тип="Строка">
             <Значение>' . $product['stock'] . '</Значение>
@@ -55,19 +63,19 @@ $xmlString = '<?xml version="1.0" encoding="UTF-8"?>
             <Значение>' . $product['price'] . '</Значение>
         </Свойство>
         <Свойство Имя="Артикул" Тип="Строка">
-        <Значение>' . $product['articul'] . '</Значение>
+        <Значение><![CDATA[' . $product['articul'] . ']]></Значение>
         </Свойство>
         <Свойство Имя="Ссылка" Тип="Строка">
-            <Значение>' . $product['link'] . '</Значение>
+            <Значение><![CDATA[' . $product['link'] . ']]></Значение>
         </Свойство>
         <Свойство Имя="Изображения" Тип="Строка">
-            <Значение>' . $product['images'] . '</Значение>
+            <Значение><![CDATA[' . $product['images'] . ']]></Значение>
         </Свойство>
         <Свойство Имя="Варианты" Тип="Строка">
-            <Значение>' . $product['variants'] . '</Значение>
+            <Значение><![CDATA[' . $product['variants'] . ']]></Значение>
         </Свойство>
         <Свойство Имя="Характеристики" Тип="Строка">
-        <Значение>' . $product['characteristics'] . '</Значение>
+        <Значение><![CDATA[' . $product['characteristics'] . ']]></Значение>
         </Свойство>
         <Свойство Имя="В группе" Тип="Строка">
             <Значение>' . $inGroup . '</Значение>
@@ -85,22 +93,50 @@ $xmlString = '<?xml version="1.0" encoding="UTF-8"?>
             <Значение>' . $product['thickness'] . '</Значение>
         </Свойство>
         <Свойство Имя="Формат" Тип="Строка">
-            <Значение>' . $product['format'] . '</Значение>
+            <Значение><![CDATA[' . $product['format'] . ']]></Значение>
         </Свойство>
         <Свойство Имя="Материал" Тип="Строка">
-        <Значение>' . $product['material'] . '</Значение>
+        <Значение><![CDATA[' . $product['material'] . ']]></Значение>
         </Свойство>
         <Свойство Имя="Производитель" Тип="Строка">
-            <Значение>' . $product['producer'] . '</Значение>
+            <Значение><![CDATA[' . $product['producer'] . ']]></Значение>
         </Свойство>
         <Свойство Имя="Коллекция" Тип="Строка">
-            <Значение>' . $product['collection'] . '</Значение>
+            <Значение><![CDATA[' . $product['collection'] . ']]></Значение>
         </Свойство>
-    </Запись>
-</ТабличнаяЧасть>';
+    </Запись>';
+}
 
+$xmlString .= '</ТабличнаяЧасть></ФайлОбмена>';
 
 $dom = new DOMDocument();
-$dom->loadXML($xmlString);
 $dom->formatOutput = true;
-echo $dom->saveXML();
+
+header("Content-type: text/xml");
+echo $xmlString;
+
+$dom->loadXML($xmlString);
+$dom->save("1c_catalog.xml");
+
+
+
+
+// Старое
+// $dom = new DOMDocument();
+// $dom->formatOutput = true;
+// $dom->loadXML($xmlString);
+// echo $dom->saveXML();
+// header("Content-type: text/xml");
+// $xmlString .= '</ТабличнаяЧасть></ФайлОбмена>';
+
+// 1 вариант 
+// $dom = new DOMDocument();
+// $dom->formatOutput = true;
+// echo $xmlString;
+
+// 2 вариант (можно сохранить файл xml) - не до конца разобрано
+// $dom = new DOMDocument();
+// $dom->loadXML($xmlString);
+// $dom->formatOutput = true;
+// echo $dom->saveXML();
+// $dom->save("result.xml");
