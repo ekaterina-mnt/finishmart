@@ -4,7 +4,7 @@ function sql(string $sql)
 {
     static $db;
     if (!$db) {
-        $db = mysqli_connect('localhost', 'andreydb_2109', 'Q7&ziPyd', 'andreydb_2109');
+        $db = mysqli_connect('localhost', 'root', '', 'parser');
     }
     mysqli_query($db, 'SET character_set_results = "utf8"');
     $query = mysqli_query($db, $sql);
