@@ -6,4 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Phpro\\SoapClient\\' => array($vendorDir . '/phpro/soap-client/src'),
 );
