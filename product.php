@@ -8,7 +8,15 @@ echo "<b>скрипт начал работу " . date("d-m-Y H:i:s", time()) . 
 
 try {
     //Получаем ссылку, с которой будем парсить
-    $query = sql("SELECT link, product_views FROM links WHERE type='product' ORDER BY product_views, id LIMIT 1");
+    try {
+        $query = sql("SELECT link, product_views FROM links WHERE type='product' ORDER BY product_views, id LIMIT 1");
+    } catch (Throwable $e) {
+        //Если too_many_connections
+        echo "<b>ошибка: </b>";
+        var_dump($e);
+        echo "<br><br><b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
+        exit();
+    }
 
     if (!$query->num_rows) {
         echo "<b>ошибка: не получено ссылки для парсинга</b><br><br>";
