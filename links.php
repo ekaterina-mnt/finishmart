@@ -25,11 +25,13 @@ try {
         'GET',
         $url
     );
-    echo '<b>скрипт проходил ссылку <a href="$url">' . $url . '</a></b><br><br>';
+    echo '<b>скрипт проходил ссылку <a href="' . $url . '">' . $url . '</a></b><br><br>';
 
     //Если проблема с ссылкой отправляем лог в БД и прекращаем работу скрипта
     if ($response->getStatusCode() != 200) {
         writeCustomLog("Код у GuzzleClient не 200. Ссылка, которую парсим - $url");
+        echo "<b>ошибка: код ссылки != 200</b><br><br>";
+        echo "<b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
         exit();
     };
 
@@ -43,7 +45,7 @@ try {
 
     echo "<b>скрипт нашел ссылки:</b><br>";
     $add = [];
-    foreach ($catalog_res as $href) {
+    foreach ($all_res as $href) {
         $link = "https://mosplitka.ru" . $href->attr('href');
         echo "$link<br>";
 
@@ -60,8 +62,8 @@ try {
         } elseif (preg_match("#https://mosplitka.ru/product.+#", $link)) {
             try {
                 $link = mysqli_real_escape_string(getDB(), $link);
-                $add[] = $link;
                 sql("INSERT INTO links (link, views, type, product_views) VALUES ('$link', 0, 'product', 0)");
+                $add[] = $link;
             } catch (Exception $e) {
                 continue; //для дублей
             }
@@ -77,6 +79,5 @@ try {
     echo "<b>была ошибка</b><br><br>";
     var_dump($e);
 }
-
-
 echo "<b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
+

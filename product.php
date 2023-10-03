@@ -3,29 +3,42 @@ require "functions.php";
 require __DIR__ . "/vendor/autoload.php";
 
 use DiDom\Document;
+
+echo "<b>скрипт начал работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
+
 try {
+    //Получаем ссылку, с которой будем парсить
+    $query = sql("SELECT link, product_views FROM links WHERE type='product' ORDER BY product_views, id LIMIT 1");
 
-$query = sql("SELECT link, product_views FROM links WHERE type='product' ORDER BY product_views, id LIMIT 1");
+    if (!$query->num_rows) {
+        echo "<b>ошибка: не получено ссылки для парсинга</b><br><br>";
+        echo "<b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
+        exit();
+    }
 
-if ($query->num_rows) {
     $res = mysqli_fetch_assoc($query);
     $link = $res['link'];
     $views = $res['product_views'] + 1;
     sql("UPDATE links SET product_views=$views WHERE link='$link'");
     $product = sql("SELECT id FROM products WHERE link='$link'");
-}
 
-//проверка валидности ссылки
-$ch = curl_init($link);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$result = curl_exec($ch);
+    echo '<b>скрипт проходил ссылку <a href="' . $link . '">' . $link . '</a></b><br><br>';
 
-if (!curl_errno($ch)) {
-    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    if ($http_code == 404) { 
-        //если не валидна
-        sql("UPDATE products SET stock='недействительная ссылка' WHERE link='$link'");
-    } else { 
+    //проверка валидности ссылки
+    $ch = curl_init($link);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $result = curl_exec($ch);
+
+    if (!curl_errno($ch)) {
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($http_code == 404) {
+            //если не валидна
+            sql("UPDATE products SET link_status='недействительная ссылка' WHERE link='$link'");
+            writeCustomLog("Код curl 404. Ссылка, которую парсим - $link");
+            echo "<b>ошибка: код ссылки 404</b><br><br>";
+            echo "<b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
+            exit();
+        }
         //если валидна
         $document = new Document($link, true);
 
@@ -206,6 +219,8 @@ if (!curl_errno($ch)) {
             "длина" => $length, "ширина" => $width, "высота" => $height, "глубина" => $depth, "толщина" => $thickness,
             "формат" => $format, "материал" => $material, "производитель" => $producer, "коллекция" => $collection,
         ];
+
+        echo "<b>итоговые данные, которые мы спарсили:</b><br><br>";
         foreach ($arr as $key => $i) {
             echo "$key: ";
             var_dump($i);
@@ -239,18 +254,20 @@ if (!curl_errno($ch)) {
         }
 
         try {
-            $db = mysqli_connect('localhost', 'andreydb_2109', 'Q7&ziPyd', 'andreydb_2109');
+            $db = getDB();
             $stmt = mysqli_prepare($db, $query);
             $stmt->bind_param($types, ...$values);
             $stmt->execute();
+            echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
         } catch (Exception $e) {
-            echo $e->getMessage();
+            writeLog($e);
+            echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
         }
     }
-}
-
-curl_close($ch);
-
+    curl_close($ch);
 } catch (Throwable $e) {
+    writeLog($e);
+    echo "<b>ошибка в выполнении скрипта:</b><br>";
     var_dump($e);
 }
+echo "<b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
