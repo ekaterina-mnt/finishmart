@@ -9,7 +9,15 @@ echo "<b>скрипт начал работу " . date("d-m-Y H:i:s", time()) . 
 
 try {
     //Получаем ссылку, с которой будем парсить
-    $query = sql("SELECT link, views FROM links WHERE type='catalog' ORDER BY views, id LIMIT 1");
+    try {
+        $query = sql("SELECT link, views FROM links WHERE type='catalog' ORDER BY views, id LIMIT 1");
+    } catch (Throwable $e) {
+        //Если too_many_connections
+        echo "<b>ошибка: </b>";
+        var_dump($e);
+        echo "<br><br><b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
+        exit();
+    }
     if ($query->num_rows) {
         $res = mysqli_fetch_assoc($query);
         $url = $res['link'];
@@ -49,20 +57,29 @@ try {
         $link = "https://mosplitka.ru" . $href->attr('href');
         echo "$link<br>";
 
-        //добавляем ссылки с type=catalog
-        if (preg_match("#https://mosplitka.ru/catalog.+#", $link) and !preg_match("#.php$#", $link)) {
-            try {
-                sql("INSERT INTO links (link, views, type, product_views) VALUES ('$link', 0, 'catalog', 0)");
-                $add[] = $link;
-            } catch (Exception $e) {
-                continue; //для дублей
-            }
+        //избавляемся от лишних ссылок
+        $divided_link = array_slice(explode("/", $link), 4);
+        if (!(strpos($link, "PAGEN") or in_array(count($divided_link), [1, 2]))) {
+            continue;
+        }
 
-            //добавляем ссылки с type=product
+        //избавляемся от дублей
+        if (sql("SELECT id, link FROM links WHERE link='$link'")->num_rows) {
+            continue;
+        };
+
+        //определяем это ссылка на продукт или каталог
+        if (preg_match("#https://mosplitka.ru/catalog.+#", $link) and !preg_match("#.php$#", $link)) {
+            $type = 'catalog';
         } elseif (preg_match("#https://mosplitka.ru/product.+#", $link)) {
+            $type = 'product';
+        }
+
+        //добавляем ссылку в БД
+        if (isset($type)) {
             try {
                 $link = mysqli_real_escape_string(getDB(), $link);
-                sql("INSERT INTO links (link, views, type, product_views) VALUES ('$link', 0, 'product', 0)");
+                sql("INSERT INTO links (link, views, type, product_views) VALUES ('$link', 0, '$type', 0)");
                 $add[] = $link;
             } catch (Exception $e) {
                 continue; //для дублей
@@ -80,4 +97,3 @@ try {
     var_dump($e);
 }
 echo "<b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
-
