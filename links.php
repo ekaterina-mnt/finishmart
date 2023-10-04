@@ -10,7 +10,7 @@ echo "<b>скрипт начал работу " . date("d-m-Y H:i:s", time()) . 
 try {
     //Получаем ссылку, с которой будем парсить
     try {
-        $query = sql("SELECT link, views FROM links WHERE type='catalog' ORDER BY views, id LIMIT 1");
+        $query = sql("SELECT link, views FROM test_links WHERE type='catalog' ORDER BY views, id LIMIT 1");
     } catch (Throwable $e) {
         //Если too_many_connections
         echo "<b>ошибка: </b>";
@@ -22,11 +22,13 @@ try {
         $res = mysqli_fetch_assoc($query);
         $url = $res['link'];
         $views = $res['views'] + 1;
+
         sql("UPDATE links SET views=$views WHERE link='$url'"); 
+
     } else {
         $url = "https://mosplitka.ru/catalog"; //для самого первого запуска
     }
-    
+        
     echo '<b>скрипт проходил ссылку <a href="' . $url . '">' . $url . '</a></b><br><br>';
 
     //Получаем html у себя
