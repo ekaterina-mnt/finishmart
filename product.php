@@ -1,34 +1,34 @@
 <?php
-require "functions.php";
 require __DIR__ . "/vendor/autoload.php";
 
 use DiDom\Document;
+use functions\MySQL;
+use functions\Logs;
+use functions\Modes_1c;
+use functions\TechInfo;
 
-echo "<b>скрипт начал работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
+TechInfo::start();
 
 try {
     //Получаем ссылку, с которой будем парсить
     try {
-        $query = sql("SELECT link, product_views FROM links WHERE type='product' ORDER BY product_views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, product_views FROM links WHERE type='product' ORDER BY product_views, id LIMIT 1");
     } catch (Throwable $e) {
         //Если too_many_connections
-        echo "<b>ошибка: </b>";
-        var_dump($e);
-        echo "<br><br><b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
-        exit();
+        Logs::writeLog($e);
+        TechInfo::errorExit($e);
     }
 
     if (!$query->num_rows) {
-        echo "<b>ошибка: не получено ссылки для парсинга</b><br><br>";
-        echo "<b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
-        exit();
+        Logs::writeCustomLog("не получено ссылки для парсинга");
+        TechInfo::errorExit("не получено ссылки для парсинга");
     }
 
     $res = mysqli_fetch_assoc($query);
     $link = $res['link'];
     $views = $res['product_views'] + 1;
-    sql("UPDATE links SET product_views=$views WHERE link='$link'");
-    $product = sql("SELECT id FROM products WHERE link='$link'");
+    MySQL::sql("UPDATE links SET product_views=$views WHERE link='$link'");
+    $product = MySQL::sql("SELECT id FROM products WHERE link='$link'");
 
     echo '<b>скрипт проходил ссылку <a href="' . $link . '">' . $link . '</a></b><br><br>';
 
@@ -41,11 +41,9 @@ try {
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($http_code == 404) {
             //если не валидна
-            sql("UPDATE products SET link_status='недействительная ссылка' WHERE link='$link'");
-            writeCustomLog("Код curl 404. Ссылка, которую парсим - $link");
-            echo "<b>ошибка: код ссылки 404</b><br><br>";
-            echo "<b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
-            exit();
+            MySQL::sql("UPDATE products SET link_status='недействительная ссылка' WHERE link='$link'");
+            Logs::writeCustomLog("Код curl 404. Ссылка, которую парсим - $link");
+            TechInfo::errorExit("код ссылки 404");
         }
         //если валидна
         $document = new Document($link, true);
@@ -262,20 +260,21 @@ try {
         }
 
         try {
-            $db = getDB();
+            $db = MySQL::getDB();
             $stmt = mysqli_prepare($db, $query);
             $stmt->bind_param($types, ...$values);
             $stmt->execute();
             echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
         } catch (Exception $e) {
-            writeLog($e);
+            Logs::writeLog($e);
             echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
         }
     }
     curl_close($ch);
 } catch (Throwable $e) {
-    writeLog($e);
+    Logs::writeLog($e);
     echo "<b>ошибка в выполнении скрипта:</b><br>";
     var_dump($e);
 }
 echo "<b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
+

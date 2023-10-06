@@ -3,5 +3,10 @@
         "imangazaliev/didom": "^2.0",
         "guzzlehttp/guzzle": "^7.8",
         "phpro/soap-client": "^1.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "functions\\": "functions/"
+        }
     }
 }

@@ -2,4 +2,4 @@
 <br><br>
 <a href="/product.php">product.php</a>
 <br><br>
-<a href="/export_data.php">export_data.php</a>
+<a href="/bitrix/admin/1c_exchange.php">1c_exchange.php</a>

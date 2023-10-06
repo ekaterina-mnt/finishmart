@@ -1,28 +1,28 @@
 <?php
-require "functions.php";
 require __DIR__ . "/vendor/autoload.php";
 
 use DiDom\Document;
+use functions\MySQL;
+use functions\Logs;
+use functions\Modes_1c;
+use functions\TechInfo;
 use GuzzleHttp\Client as GuzzleClient;
 
-echo "<b>скрипт начал работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
+TechInfo::start();
 
 try {
     //Получаем ссылку, с которой будем парсить
     try {
-        $query = sql("SELECT link, views FROM links WHERE type='catalog' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views FROM links WHERE type='catalog' ORDER BY views, id LIMIT 1");
     } catch (Throwable $e) {
         //Если too_many_connections
-        echo "<b>ошибка: </b>";
-        var_dump($e);
-        echo "<br><br><b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
-        exit();
+        TechInfo::errorExit($e);
     }
     if ($query->num_rows) {
         $res = mysqli_fetch_assoc($query);
         $url = $res['link'];
         $views = $res['views'] + 1;
-        sql("UPDATE links SET views=$views WHERE link='$url'"); 
+        MySQL::sql("UPDATE links SET views=$views WHERE link='$url'"); 
     } else {
         $url = "https://mosplitka.ru/catalog"; //для самого первого запуска
     }
@@ -38,15 +38,12 @@ try {
         );
     } catch (Throwable $e) {
         //Если проблема с ссылкой (чаще всего 502) отправляем лог в БД 
-        writeLog($e);
-        echo "<b>ошибка: </b><br>";
-        var_dump($e);
+        Logs::writeLog($e);
 
         //снова уменьшаем просмотры, чтобы скрипт еще раз прошел ссылку и прекращаем работу скрипта
         $views -= 1;
-        sql("UPDATE links SET views=$views WHERE link='$url'");
-        echo "<br><br><b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
-        exit();
+        MySQL::sql("UPDATE links SET views=$views WHERE link='$url'");
+        TechInfo::errorExit($e);
     }
 
     //Получаем все данные со страницы
@@ -70,7 +67,7 @@ try {
         }
 
         //избавляемся от дублей
-        if (sql("SELECT id, link FROM links WHERE link='$link'")->num_rows) { 
+        if (MySQL::sql("SELECT id, link FROM links WHERE link='$link'")->num_rows) { 
             continue;
         };
 
@@ -84,8 +81,8 @@ try {
         //добавляем ссылку в БД
         if (isset($type)) {
             try {
-                $link = mysqli_real_escape_string(getDB(), $link);
-                sql("INSERT INTO links (link, views, type, product_views) VALUES ('$link', 0, '$type', 0)"); 
+                $link = mysqli_real_escape_string(MySQL::getDB(), $link);
+                MySQL::sql("INSERT INTO links (link, views, type, product_views) VALUES ('$link', 0, '$type', 0)"); 
                 $add[] = $link;
             } catch (Exception $e) {
                 continue; //для дублей
@@ -99,8 +96,9 @@ try {
     }
     echo "<br><b>не было ошибок</b><br><br>";
 } catch (Throwable $e) {
-    writeLog($e);
+    Logs::writeLog($e);
     echo "<b>была ошибка</b><br><br>";
     var_dump($e);
 }
-echo "<b>скрипт закончил работу " . date("d-m-Y H:i:s", time()) . "</b><br><br>";
+
+TechInfo::end();
