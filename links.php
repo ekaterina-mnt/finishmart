@@ -22,11 +22,11 @@ try {
         $res = mysqli_fetch_assoc($query);
         $url = $res['link'];
         $views = $res['views'] + 1;
-        MySQL::sql("UPDATE links SET views=$views WHERE link='$url'"); 
+        MySQL::sql("UPDATE links SET views=$views WHERE link='$url'");
     } else {
         $url = "https://mosplitka.ru/catalog"; //для самого первого запуска
     }
-    
+
     echo '<b>скрипт проходил ссылку <a href="' . $url . '">' . $url . '</a></b><br><br>';
 
     //Получаем html у себя
@@ -67,7 +67,7 @@ try {
         }
 
         //избавляемся от дублей
-        if (MySQL::sql("SELECT id, link FROM links WHERE link='$link'")->num_rows) { 
+        if (MySQL::sql("SELECT id, link FROM links WHERE link='$link'")->num_rows) {
             continue;
         };
 
@@ -82,7 +82,7 @@ try {
         if (isset($type)) {
             try {
                 $link = mysqli_real_escape_string(MySQL::getDB(), $link);
-                MySQL::sql("INSERT INTO links (link, views, type, product_views) VALUES ('$link', 0, '$type', 0)"); 
+                MySQL::sql("INSERT INTO links (link, views, type, product_views) VALUES ('$link', 0, '$type', 0)");
                 $add[] = $link;
             } catch (Exception $e) {
                 continue; //для дублей
@@ -92,7 +92,7 @@ try {
     sort($add);
     echo "<br><b>из них скрипт добавил (" . count($add) . "шт):</b><br>";
     foreach ($add as $n => $i) {
-        echo $n+1 . ") $i<br>";
+        echo $n + 1 . ") $i<br>";
     }
     echo "<br><b>не было ошибок</b><br><br>";
 } catch (Throwable $e) {
