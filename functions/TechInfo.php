@@ -21,4 +21,9 @@ class TechInfo
         self::end();
         exit();
     }
+
+    static function whichLinkPass($link)
+    {
+        echo '<b>скрипт проходил ссылку <a href="' . $link . '">' . $link . '</a></b><br><br>';
+    }
 }

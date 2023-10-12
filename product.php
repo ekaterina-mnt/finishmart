@@ -175,7 +175,7 @@ try {
                 $variants["var$i"] = $src;
                 $i += 1;
             }
-            $variants = json_encode($variants, JSON_UNESCAPED_SLASHES);
+            $variants = json_encode($variants, JSON_UNESCAPED_SLASHES, JSON_UNESCAPED_UNICODE);
         } else {
             $variants = 0;
         }
@@ -235,7 +235,6 @@ try {
 
 
         //добавление/обновление записи в БД
-
         $types = 'ssissssssssssdddddssss';
         $values = [
             $link, $stock, $price, $edizm, $articul, $title, $images, $variants, $characteristics, $path, $category1, $category2, $category3,
@@ -243,6 +242,11 @@ try {
         ];
 
         if ($product->num_rows) {
+            
+            $date_edit = date("Y-m-d H:i:s", time());
+            $types .= 's';
+            $values[] = $date_edit;
+
             $id = mysqli_fetch_assoc($product)['id'];
             $query = "UPDATE products 
         SET `link`=?, `stock`=?, `price`=?,
@@ -250,7 +254,7 @@ try {
         `characteristics`=?, `path`=?, `category1`=?, `category2`=?,
         `category3`=?, `length`=?, `width`=?, `height`=?, `depth`=?, 
         `thickness`=?, `format`=?, `material`=?, `producer`=?, 
-        `collection`=?
+        `collection`=?, `date_edit`=?
         WHERE id=$id";
         } else {
             $query = "INSERT INTO products
