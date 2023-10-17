@@ -19,6 +19,17 @@ try {
     if ($_GET['mode'] == 'query') {
       Modes_1c::mode_query();
     }
+    if (isset($_GET['package'])) {
+      if ($_GET['mode'] == 'query' && $_GET['package'] == '0') {
+        Modes_1c::mode_query_package0();
+      } elseif ($_GET['package'] == '1') {
+        Modes_1c::mode_query_package1();
+      } elseif ($_GET['package'] == '2') {
+        Modes_1c::mode_query_package2();
+      } elseif ($_GET['package'] == '3') {
+        Modes_1c::mode_query_package3();
+      }
+    }
   }
 } catch (Throwable $e) {
   Logs::writeLog($e);

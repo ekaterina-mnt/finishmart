@@ -26,4 +26,18 @@ class TechInfo
     {
         echo '<b>скрипт проходил ссылку <a href="' . $link . '">' . $link . '</a></b><br><br>';
     }
+
+    static function iArray($array) {
+        foreach ($array as $i) {
+            var_dump($i);
+            echo "<br><br><br>";
+        }
+    }
+
+    static function preArray($array)
+    {
+        echo "<pre>";
+        print_r($array);
+        echo "</pre>";
+    }
 }
