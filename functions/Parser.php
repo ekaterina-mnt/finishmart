@@ -60,4 +60,50 @@ class Parser
         $api_data = $api_data[array_keys($api_data)[0]];
         return $api_data;
     }
+
+    static function insertProductData(): void
+    {
+        // exit;
+
+        //     //добавление/обновление записи в БД
+
+        //     $types = 'ssissssssssssdddddssss';
+        //     $values = [
+        //         $product_link, $stock, $price, $edizm, $articul, $title, $images, $variants, $characteristics, $path, $category1, $category2, $category3,
+        //         $length, $width, $height, $depth, $thickness, $format, $material, $producer, $collection
+        //     ];
+
+        //     //Получаем товар
+        //     $product = MySQL::sql("SELECT id FROM masterdom_products WHERE link='$product_link'");
+
+        //     if ($product->num_rows) {
+
+        //         $date_edit = MySQL::get_mysql_datetime();
+        //         $types .= 's';
+        //         $values[] = $date_edit;
+
+        //         $id = mysqli_fetch_assoc($product)['id'];
+        //         $query = "UPDATE masterdom_products 
+        //                 SET `link`=?, `stock`=?, `price`=?,
+        //                 `edizm`=?, `articul`=?, `title`=?, `images`=?, `variants`=?,
+        //                 `characteristics`=?, `path`=?, `category1`=?, `category2`=?,
+        //                 `category3`=?, `length`=?, `width`=?, `height`=?, `depth`=?, 
+        //                 `thickness`=?, `format`=?, `material`=?, `producer`=?, 
+        //                 `collection`=?, `date_edit`=?
+        //                 WHERE id=$id";
+        //     } else {
+        //         $query = "INSERT INTO masterdom_products
+        // (`link`, `stock`, `price`, `edizm`, `articul`, `title`, `images`, `variants`, `characteristics`, `path`, `category1`, `category2`, `category3`, 
+        // `length`, `width`, `height`, `depth`, `thickness`, `format`, `material`, `producer`, `collection`) 
+        // VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        //     }
+
+        //     try {
+        //         MySQL::bind_sql($query, $types, $values);
+        //         echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
+        //     } catch (Exception $e) {
+        //         Logs::writeLog($e);
+        //         echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
+        //     }
+    }
 }

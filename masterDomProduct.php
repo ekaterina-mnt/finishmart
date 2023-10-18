@@ -22,10 +22,17 @@ try {
 
     //Получаем ссылку
     $url_parser = $res['link'];
-    // $url_parser = 'https://api.masterdom.ru/api/rest/tile/search.json?sort=popularity_desc&limit=100&offset=0';
+    // $url_parser = "https://oboi.masterdom.ru/find/?sort=popular&offset=0";
+    // $url_parser = "https://api.masterdom.ru/api/rest/tile/search.json?sort=popularity_desc&limit=100&offset=0";
+    // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/sink/search.json?sort=popularity_desc&limit=100&offset=0";
+    // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/toilet_bidet/search.json?sort=popularity_desc&limit=100&offset=0";
+    // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/bathtub/search.json?sort=popularity_desc&limit=100&offset=0";
+    // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/shower/search.json?sort=popularity_desc&limit=100&offset=0";
+    // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/faucet/search.json?sort=popularity_desc&limit=100&offset=0";
+    // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/furniture/search.json?sort=popularity_desc&limit=100&offset=0";
+    // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/accessories/search.json?sort=popularity_desc&limit=100&offset=0";
     // $url_parser = "https://santehnika.masterdom.ru/polotencesushitely/catalog/";
-    // $url_parser = 'https://oboi.masterdom.ru/find/?sort=popular&offset=0';
-    $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/furniture/search.json?sort=popularity_desc&limit=100&offset=0";
+    // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/parts/search.json?sort=popularity_desc&limit=100&offset=0";
     TechInfo::whichLinkPass($url_parser);
 
     //Увеличиваем просмотры ссылки
@@ -57,32 +64,41 @@ try {
         echo "<b>Следующая ссылка: </b> нет<br><br>";
     }
 
-    //категория
-    $category = ParserMasterdom::getCategory($url_parser);
+    if (str_contains($url_parser, 'polotencesushitely/catalog')) {
+        $polo_res = ParserMasterdom::polotencesushitely();
+        $api_data = $polo_res['api_data'];
 
-    echo 'here';
-    //Нужные массивы до цикла (для плитки и сантехники)
-    switch ($category) {
-        case "Плитка и керамогранит":
-            $fabrics = ParserMasterdom::plitka('fabrics');
-            $countries = ParserMasterdom::plitka('countries');
-            $collections = ParserMasterdom::plitka('collections');
-            break;
-        case "Сантехника":
-            $fabrics = ParserMasterdom::santechnika('fabrics');
-            $countries = ParserMasterdom::santechnika('countries');
-            $collections = ParserMasterdom::santechnika('collections');
-            break;
+        $category = 'Сантехника';
+    } else {
+        //категория
+        $category = ParserMasterdom::getCategory($url_parser);
+
+        //Нужные массивы до цикла (для плитки и сантехники)
+        switch ($category) {
+            case "Плитка и керамогранит":
+                $polo_res = ParserMasterdom::plitka();
+                break;
+            case "Сантехника":
+                $polo_res = ParserMasterdom::santechnika();
+                break;
+        }
+
+        //Начинаем вытаскивать нужные данные
+        $api_data = Parser::getApiData($document);
     }
 
+    $fabrics = $polo_res['fabrics'];
+    $collections = $polo_res['collections'];
+    $countries = $polo_res['countries'];
 
-    //Начинаем вытаскивать нужные данные
-    $api_data = Parser::getApiData($document);
+    //НЕПОСРЕДСТВЕННАЯ ОБРАБОТКА ПОЛУЧЕННЫХ ДАННЫХ
+
 
     echo "<b>Всего товаров в ссылке:</b> " . count($api_data) . " шт.<br><br>";
     $product_ord_num = 1;
     foreach ($api_data as $datum) {
         echo "<br><b>Товар " . $product_ord_num++ . "</b><br><br>";
+
 
         //ОБЩИЕ ДЛЯ ВСЕХ
 
@@ -95,13 +111,13 @@ try {
         //артикул
         $articul = $datum['article'] ?? null;
 
+        //подкатегория
+        $subcategory = ParserMasterdom::getSubcategory($datum) ?? null;
+
         //ссылка на товар
         $product_id = $datum['id'] ?? null;
         $name_url = $datum['name_url'] ?? null;
-        $product_link = ParserMasterdom::getProductLink($category, $articul, $product_id, $name_url) ?? null;
-
-        //подкатегория
-        $subcategory = ParserMasterdom::getSubcategory($product_link, $datum) ?? null;
+        $product_link = ParserMasterdom::getProductLink($subcategory, $articul, $product_id, $name_url) ?? null;
 
         //единица измерения
         $edizm = ParserMasterdom::getEdizm($category) ?? null;
@@ -189,48 +205,7 @@ try {
         echo "<b>итоговые данные, которые мы спарсили:</b><br><br>";
         TechInfo::preArray($arr);
 
-        // exit;
-
-    //     //добавление/обновление записи в БД
-
-    //     $types = 'ssissssssssssdddddssss';
-    //     $values = [
-    //         $product_link, $stock, $price, $edizm, $articul, $title, $images, $variants, $characteristics, $path, $category1, $category2, $category3,
-    //         $length, $width, $height, $depth, $thickness, $format, $material, $producer, $collection
-    //     ];
-
-    //     //Получаем товар
-    //     $product = MySQL::sql("SELECT id FROM masterdom_products WHERE link='$product_link'");
-
-    //     if ($product->num_rows) {
-
-    //         $date_edit = MySQL::get_mysql_datetime();
-    //         $types .= 's';
-    //         $values[] = $date_edit;
-
-    //         $id = mysqli_fetch_assoc($product)['id'];
-    //         $query = "UPDATE masterdom_products 
-    //                 SET `link`=?, `stock`=?, `price`=?,
-    //                 `edizm`=?, `articul`=?, `title`=?, `images`=?, `variants`=?,
-    //                 `characteristics`=?, `path`=?, `category1`=?, `category2`=?,
-    //                 `category3`=?, `length`=?, `width`=?, `height`=?, `depth`=?, 
-    //                 `thickness`=?, `format`=?, `material`=?, `producer`=?, 
-    //                 `collection`=?, `date_edit`=?
-    //                 WHERE id=$id";
-    //     } else {
-    //         $query = "INSERT INTO masterdom_products
-    // (`link`, `stock`, `price`, `edizm`, `articul`, `title`, `images`, `variants`, `characteristics`, `path`, `category1`, `category2`, `category3`, 
-    // `length`, `width`, `height`, `depth`, `thickness`, `format`, `material`, `producer`, `collection`) 
-    // VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    //     }
-
-    //     try {
-    //         MySQL::bind_sql($query, $types, $values);
-    //         echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
-    //     } catch (Exception $e) {
-    //         Logs::writeLog($e);
-    //         echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
-    //     }
+        Parser::insertProductData();
     }
 } catch (\Throwable $e) {
     Logs::writeLog($e);
