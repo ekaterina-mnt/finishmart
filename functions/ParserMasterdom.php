@@ -46,11 +46,11 @@ class ParserMasterdom
         }
     }
 
-    static function getSubcategory(array $datum): string|null
+    static function getSubcategory(string $category, array $datum): string|null
     {
         $subcategory_keys = [
             0 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Раковина') : false),
-            1 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Унитаз' OR $datum['product_kind'] == 'Биде') : false),
+            1 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Унитаз' or $datum['product_kind'] == 'Биде') : false),
             2 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Ванна') : false),
             3 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Душевая кабина') : false),
             4 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Смеситель') : false),
@@ -58,9 +58,11 @@ class ParserMasterdom
             6 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Аксессуары') : false),
             7 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Составляющие') : false),
             8 => (isset($datum['product_kind']) ? boolval(html_entity_decode($datum['product_kind']) == 'Полотенцесушитель') : false),
-            // 9 => str_contains($product_link, "oboi.masterdom"),
+            9 => boolval($category == 'Обои и настенные покрытия'),
             10 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Керамогранит') : false),
             11 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Керамическая плитка') : false),
+            12 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Натуральный камень') : false),
+            13 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Мозаика') : false),
         ];
 
         $subcategories = self::$subcategories;
@@ -88,17 +90,20 @@ class ParserMasterdom
         9 => 'Декоративные обои',
         10 => 'Керамогранит',
         11 => 'Керамическая плитка',
+        12 => 'Натуральный камень',
+        13 => 'Мозаика',
+        14 => 'Керамический паркет',
     ];
 
     static function getEdizm(string $category): string
     {
         $edizm_key = array_search(1, [
-            in_array($category, ['Обои и настельные покрытия']),
+            in_array($category, ['Обои и настенные покрытия']),
             in_array($category, ['Плитка и керамогранит']),
             in_array($category, ['Сантехника']),
         ]);
 
-        $edizm = ["рулон", "м^2", "шт"][$edizm_key];
+        $edizm = ["рулон", "м2", "шт"][$edizm_key];
 
         return $edizm;
     }
@@ -106,6 +111,7 @@ class ParserMasterdom
     static function getProductLink($subcategory, $articul, $product_id, $name_url)
     {
         $product_link_keys = self::$subcategories;
+        $product_link = null;
 
         $product_links = [
             0 => "https://santehnika.masterdom.ru/rakoviny/$name_url",
@@ -117,9 +123,12 @@ class ParserMasterdom
             6 => "https://santehnika.masterdom.ru/aksessuary/$name_url",
             7 => "https://santehnika.masterdom.ru/parts/$name_url",
             8 => "https://santehnika.masterdom.ru/polotencesushitely/$name_url",
-            
+
             9 => "https://oboi.masterdom.ru/#!srt=popular&v=single&la=$articul&id=$product_id",
             10 => "https://plitka.masterdom.ru/article/$name_url/",
+            11 => "https://plitka.masterdom.ru/article/$name_url/",
+            12 => "https://plitka.masterdom.ru/article/$name_url/",
+            13 => "https://plitka.masterdom.ru/article/$name_url/",
         ];
 
         foreach ($product_link_keys as $subcategory_link_key => $subcategory_link) {
@@ -129,7 +138,7 @@ class ParserMasterdom
             }
         }
 
-        return $product_link ?? null;
+        return $product_link;
     }
 
     static function getImages(array $datum, string $url_parser): string|null
@@ -153,22 +162,27 @@ class ParserMasterdom
     /*
     Возвращает на выбор: countries, collections, fabrics(производитель)
     */
-    static function plitka()
+    static function getDataPlitka()
     {
         $countries = []; //keys: name, id
         $fabrics = []; //keys: name, id, country_id
         $collctions = []; //keys: name, id, fabric_id
+        $product_usages = []; //keys: name, id, name_url
 
         $document_1 = Parser::guzzleConnect("https://plitka.masterdom.ru/");
 
         $api_data_1 = $document_1->find('script')[9]->text();
         $api_data_1 = rtrim(str_replace("window.__initialData=", "", $api_data_1), ";");
         $api_data_1 = json_decode($api_data_1, 1);
+
+        $product_usages = $api_data_1['store']['references']['data']['product_usages'];
+
         $api_data_1 = $api_data_1['store']['references']['data']['countries'];
+
 
         foreach ($api_data_1 as $circle_country) {
             //COUNTRIES
-            $countries[] = [
+            $countries[$circle_country['id']] = [
                 'name' => $circle_country['name'],
                 'id' => $circle_country['id'],
             ];
@@ -187,7 +201,7 @@ class ParserMasterdom
                 $circle_collections = $fabric_name['nested']['items'];
                 foreach ($circle_collections as $circle_collection) {
                     //COLLECTIONS
-                    $collections[] = [
+                    $collections[$circle_collection['id']] = [
                         'id' => $circle_collection['id'],
                         'name' => $circle_collection['name'],
                         'fabric_id' => $circle_collection['fabric_id'],
@@ -196,13 +210,35 @@ class ParserMasterdom
             }
         }
 
+        return ['fabrics' => $fabrics, 'collections' => $collections, 'countries' => $countries, 'product_usages' => $product_usages];
+    }
+
+    static function getDataOboi()
+    {
+        $countries = []; //keys: name, id
+        $fabrics = null; //даны в общем массиве товара
+        $collections = null; //даны в общем массиве товара
+
+        $document_1 = Parser::guzzleConnect("https://oboi.masterdom.ru/ajax/reference/?type=wallpaper");
+
+        $api_data_1 = $document_1->text();
+        $api_data_1 = json_decode($api_data_1, 1)['country'];
+
+        foreach ($api_data_1 as $id => $circle_country) {
+            //COUNTRIES
+            $countries[$id] = [
+                'name' => $circle_country['name'],
+                'id' => $circle_country['id'],
+            ];
+        }
+
         return ['fabrics' => $fabrics, 'collections' => $collections, 'countries' => $countries];
     }
 
     /*
     Возвращает на выбор: countries, collections, fabrics(производитель)
     */
-    static function santechnika(): array
+    static function getDataSantechnika(): array
     {
         $document_1 = Parser::guzzleConnect("https://santehnika.masterdom.ru/rakoviny/catalog/");
 
@@ -216,7 +252,7 @@ class ParserMasterdom
         return ['fabrics' => $fabrics, 'collections' => $collections, 'countries' => $countries];
     }
 
-    static function polotencesushitely(): array
+    static function getDataPolotencesushitely(): array
     {
         $document_1 = Parser::guzzleConnect("https://santehnika.masterdom.ru/polotencesushitely/catalog/");
         $api_data_1 = $document_1->find('script')[10]->text();

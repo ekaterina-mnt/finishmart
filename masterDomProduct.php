@@ -23,7 +23,7 @@ try {
     //Получаем ссылку
     $url_parser = $res['link'];
     // $url_parser = "https://oboi.masterdom.ru/find/?sort=popular&offset=0";
-    // $url_parser = "https://api.masterdom.ru/api/rest/tile/search.json?sort=popularity_desc&limit=100&offset=0";
+    $url_parser = "https://api.masterdom.ru/api/rest/tile/search.json?sort=popularity_desc&limit=100&offset=2000";
     // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/sink/search.json?sort=popularity_desc&limit=100&offset=0";
     // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/toilet_bidet/search.json?sort=popularity_desc&limit=100&offset=0";
     // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/bathtub/search.json?sort=popularity_desc&limit=100&offset=0";
@@ -33,6 +33,10 @@ try {
     // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/accessories/search.json?sort=popularity_desc&limit=100&offset=0";
     // $url_parser = "https://santehnika.masterdom.ru/polotencesushitely/catalog/";
     // $url_parser = "https://api.masterdom.ru/api/rest/bathrooms/parts/search.json?sort=popularity_desc&limit=100&offset=0";
+
+
+    $provider = Parser::getProvider($url_parser);
+
     TechInfo::whichLinkPass($url_parser);
 
     //Увеличиваем просмотры ссылки
@@ -65,8 +69,8 @@ try {
     }
 
     if (str_contains($url_parser, 'polotencesushitely/catalog')) {
-        $polo_res = ParserMasterdom::polotencesushitely();
-        $api_data = $polo_res['api_data'];
+        $country_coll_producer_res = ParserMasterdom::getDataPolotencesushitely();
+        $api_data = $country_coll_producer_res['api_data'];
 
         $category = 'Сантехника';
     } else {
@@ -76,10 +80,13 @@ try {
         //Нужные массивы до цикла (для плитки и сантехники)
         switch ($category) {
             case "Плитка и керамогранит":
-                $polo_res = ParserMasterdom::plitka();
+                $country_coll_producer_res = ParserMasterdom::getDataPlitka();
                 break;
             case "Сантехника":
-                $polo_res = ParserMasterdom::santechnika();
+                $country_coll_producer_res = ParserMasterdom::getDataSantechnika();
+                break;
+            case "Обои и настенные покрытия":
+                $country_coll_producer_res = ParserMasterdom::getDataOboi();
                 break;
         }
 
@@ -87,9 +94,15 @@ try {
         $api_data = Parser::getApiData($document);
     }
 
-    $fabrics = $polo_res['fabrics'];
-    $collections = $polo_res['collections'];
-    $countries = $polo_res['countries'];
+    $fabrics = isset($country_coll_producer_res['fabrics']) ? $country_coll_producer_res['fabrics'] : null;
+    $collections = isset($country_coll_producer_res['collections']) ? $country_coll_producer_res['collections'] : null;
+    $countries = isset($country_coll_producer_res['countries']) ? $country_coll_producer_res['countries'] : null;
+    $product_usages_array = isset($country_coll_producer_res['product_usages']) ? $country_coll_producer_res['product_usages'] : null;
+
+
+
+
+
 
     //НЕПОСРЕДСТВЕННАЯ ОБРАБОТКА ПОЛУЧЕННЫХ ДАННЫХ
 
@@ -98,119 +111,171 @@ try {
     $product_ord_num = 1;
     foreach ($api_data as $datum) {
         echo "<br><b>Товар " . $product_ord_num++ . "</b><br><br>";
-
+        $all_product_data = [];
 
         //ОБЩИЕ ДЛЯ ВСЕХ
 
         //название товара (сантехника - full_name)
         $title = (isset($datum['fullname']) ? $datum['fullname'] : $datum['full_name']) ?? null;
-
-        //цена
-        $price = (isset($datum['price_site']) ? $datum['price_site'] : $datum['price']) ?? null;
+        $all_product_data['название'] = [$title, 's'];
 
         //артикул
         $articul = $datum['article'] ?? null;
+        $all_product_data['артикул'] = [$articul, 's'];
+
+        //категория
+        $all_product_data['категория'] = [$category, 's'];
 
         //подкатегория
-        $subcategory = ParserMasterdom::getSubcategory($datum) ?? null;
+        $subcategory = ParserMasterdom::getSubcategory($category, $datum) ?? null;
+        $all_product_data['подкатегория'] = [$subcategory, 's'];
 
         //ссылка на товар
         $product_id = $datum['id'] ?? null;
         $name_url = $datum['name_url'] ?? null;
-        $product_link = ParserMasterdom::getProductLink($subcategory, $articul, $product_id, $name_url) ?? null;
+        $product_link = ParserMasterdom::getProductLink($subcategory, $articul, $product_id, $name_url);
+        $all_product_data['ссылка на товар'] = [$product_link, 's'];
+
+        //цена
+        $price = (isset($datum['price_site']) ? $datum['price_site'] : $datum['price']) ?? null;
+        $all_product_data['цена'] = [$price, 'i'];
+
 
         //единица измерения
         $edizm = ParserMasterdom::getEdizm($category) ?? null;
+        $all_product_data['единица измерения'] = [$edizm, 's'];
 
         //остатки товара
         $stock = isset($datum['balance']) ? $datum['balance'] : null;
+        $all_product_data['остатки товара'] = [$stock, 'i'];
 
         //страна
-        switch ($category) {
-            case "Обои и настельные покрытия":
-                $country = $datum['country'];
-                break;
-            case "Сантехника" or "Плитка и керамогранит":
-                $country_key = $datum['country'] ?? null;
-                $country = $countries[$country_key]['name'] ?? null;
-                break;
-        }
+        $country_key = (isset($datum['country']) ? $datum['country'] : $datum['data']['country']) ?? null;
+        $country = $countries[$country_key]['name'] ?? null;
+        $all_product_data['страна'] = [$country, 's'];
 
         //производитель
         switch ($category) {
-            case "Обои и настельные покрытия":
-                $producer = $datum['fabric_name'];
-                break;
-            case "Сантехника" or "Плитка и керамогранит":
+            case "Сантехника":
+            case "Плитка и керамогранит":
                 $producer_key = $datum['fabric'] ?? null;
                 $producer = $fabrics[$producer_key]['name'] ?? null;
                 break;
+            default:
+                $producer = (isset($datum['fabric_name']) ? $datum['fabric_name'] : $datum['fabric']) ?? null;
+                break;
         }
+        $all_product_data['производитель'] = [$producer, 's'];
 
         //коллекция
         switch ($category) {
-            case "Обои и настельные покрытия":
-                $collection = $datum['collection_name'];
-                break;
-            case "Сантехника" or "Плитка и керамогранит":
+            case "Сантехника":
+            case "Плитка и керамогранит":
                 $collection_key = $datum['collection'] ?? null;
                 $collection = $collections[$collection_key]['name'] ?? null;
                 break;
+            default:
+                $collection = $datum['collection_name'];
+                break;
         }
+        $all_product_data['коллекция'] = [$collection, 's'];
+
+        //провайдер
+        $providerID = $provider['id'] ?? null;
+        $all_product_data['провайдер_ID'] = [$providerID, 'i'];
 
         //длина
         $length = $datum['length'] ?? null;
+        $all_product_data['длина'] = [$length, 'd'];
 
         //ширина
         $width = $datum['width'] ?? null;
+        $all_product_data['ширина'] = [$width, 'd'];
 
         //высота
         $height = $datum['height'] ?? null;
+        $all_product_data['высота'] = [$height, 'd'];
 
         //глубина
         $depth = null;
+        $all_product_data['глубина'] = [$depth, 'd'];
 
         //толщина
         $thickness = null;
+        $all_product_data['толщина'] = [$thickness, 'd'];
 
         //формат
         $format = null;
+        $all_product_data['формат'] = [$format, 's'];
 
         //материал
         $material = $datum['type'] ?? null;
+        $all_product_data['материал'] = [$material, 's'];
 
         //картинки
         $images = ParserMasterdom::getImages($datum, $url_parser);
-
-        //все характеристики
-        $characteristics = json_encode($datum, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $all_product_data['картинки'] = [$images, 's'];
 
         //варианты исполнения
         $variants = null;
+        $all_product_data['варианты исполнения'] = [$variants, 's'];
 
         //СПЕЦИФИЧЕСКИЕ АТРИБУТЫ
+        $product_usages_keys = $datum['product_usages'] ?? null;
+        if ($product_usages_keys) {
+            $product_usages = [];
+            foreach ($product_usages_keys as $usage_i) {
+                $product_usages[$usage_i] = $product_usages_array[$usage_i]['name'];
+            }
+            $product_usages = json_encode($product_usages, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+        $product_usages = $product_usages ?? null;
+
+
+        //все характеристики
+        $characteristics = json_encode($datum, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $all_product_data['все характеристики'] = [$characteristics, 's'];
 
 
 
-        // Итоговый массив для проверки
-        $arr = [
-            "ссылка" => $product_link, "остатки" => $stock, "цена" => $price, "ед.изм" => $edizm, "артикул" => $articul,
-            "название" => $title, "картинки" => $images, "варианты" => $variants, "характеристики" => $characteristics,
-            "категория" => $category, "подкатегория" => $subcategory,
-            "длина" => $length, "ширина" => $width, "высота" => $height, "глубина" => $depth, "толщина" => $thickness,
-            "формат" => $format, "материал" => $material, "производитель" => $producer, "коллекция" => $collection,
-            "страна" => $country,
-        ];
+
+
+
 
         echo "<b>итоговые данные, которые мы спарсили:</b><br><br>";
-        TechInfo::preArray($arr);
+        // TechInfo::preArray($all_product_data);
 
-        Parser::insertProductData();
+
+
+
+        try {
+            if (!$product_link) {
+                throw new \Exception();
+            }
+        } catch (\Throwable $e) {
+            Logs::writeLinkLog("Не удалось найти ссылку для товара с артикулом $articul", $articul, $provider['name'], $parser_link);
+            TechInfo::errorExit($e);
+        }
+
+
+        //Для передачи в MySQL
+
+        $types = '';
+        $values = array();
+        foreach ($all_product_data as $n) {
+            $types .= $n[1];
+            $values[] = $n[0];
+        }
+
+
+        Parser::insertProductData($types, $values, $product_link);
     }
 } catch (\Throwable $e) {
-    Logs::writeLog($e);
-    TechInfo::errorExit($e);
     var_dump($e);
+    echo "выше <br><br>";
+    // Logs::writeLog($e);
+    // TechInfo::errorExit($e);
+    // var_dump($e);
 }
 
 TechInfo::end();

@@ -36,6 +36,27 @@ class Parser
         return $document;
     }
 
+    static function getProvider(string $parser_link): array
+    {
+        $keys = [
+            0 => str_contains($parser_link, 'masterdom'),
+            1 => str_contains($parser_link, 'mosplitka'),
+        ];
+
+        $values = [
+            ["name" => 'https://masterdom.ru/',
+            "id" => 0], 
+            ["name" => 'https://mosplitka.ru',
+            "id" => 0],
+        ];
+
+        foreach ($keys as $i => $key) {
+            if ($key) {
+                return $values[$i];
+            }
+        }
+    }
+
     static function nextLink(string $link, int $limit): string|null
     {
         preg_match("#(.+offset=)(\d+)(.*)#", $link, $matches);
@@ -61,49 +82,95 @@ class Parser
         return $api_data;
     }
 
-    static function insertProductData(): void
+    static function insertProductData(string $types, array $values, string $product_link): void
     {
-        // exit;
+        //добавление/обновление записи в БД
 
-        //     //добавление/обновление записи в БД
+        //Получаем товар
+        $product = MySQL::sql("SELECT id FROM masterdom_products WHERE link='$product_link'");
 
-        //     $types = 'ssissssssssssdddddssss';
-        //     $values = [
-        //         $product_link, $stock, $price, $edizm, $articul, $title, $images, $variants, $characteristics, $path, $category1, $category2, $category3,
-        //         $length, $width, $height, $depth, $thickness, $format, $material, $producer, $collection
-        //     ];
+        // if ($product->num_rows) {
 
-        //     //Получаем товар
-        //     $product = MySQL::sql("SELECT id FROM masterdom_products WHERE link='$product_link'");
+        //     $date_edit = MySQL::get_mysql_datetime();
+        //     $types .= 's';
+        //     $values[] = $date_edit;
 
-        //     if ($product->num_rows) {
-
-        //         $date_edit = MySQL::get_mysql_datetime();
-        //         $types .= 's';
-        //         $values[] = $date_edit;
-
-        //         $id = mysqli_fetch_assoc($product)['id'];
-        //         $query = "UPDATE masterdom_products 
-        //                 SET `link`=?, `stock`=?, `price`=?,
-        //                 `edizm`=?, `articul`=?, `title`=?, `images`=?, `variants`=?,
-        //                 `characteristics`=?, `path`=?, `category1`=?, `category2`=?,
-        //                 `category3`=?, `length`=?, `width`=?, `height`=?, `depth`=?, 
-        //                 `thickness`=?, `format`=?, `material`=?, `producer`=?, 
-        //                 `collection`=?, `date_edit`=?
-        //                 WHERE id=$id";
-        //     } else {
-        //         $query = "INSERT INTO masterdom_products
-        // (`link`, `stock`, `price`, `edizm`, `articul`, `title`, `images`, `variants`, `characteristics`, `path`, `category1`, `category2`, `category3`, 
-        // `length`, `width`, `height`, `depth`, `thickness`, `format`, `material`, `producer`, `collection`) 
-        // VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        //     $id = mysqli_fetch_assoc($product)['id'];
+        //     $query = "UPDATE masterdom_products SET ";
+        //     foreach ($values as $i => $value) {
+        //         $query .= "`" . $value . "`=?, ";
         //     }
-
-        //     try {
-        //         MySQL::bind_sql($query, $types, $values);
-        //         echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
-        //     } catch (Exception $e) {
-        //         Logs::writeLog($e);
-        //         echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
+        //     $query = substr($query, 0, -4);
+        //     $query .= " WHERE id=$id";
+        // } else {
+        //     $quest = '';
+        //     $query = "INSERT INTO masterdom_products (";
+        //     foreach ($values as $i => $value) {
+        //         $query .= "`" . $value . "`, ";
+        //         $quest .= "?, ";
         //     }
+        //     $query = substr($query, 0, -2);
+        //     $quest = substr($quest, 0, -2);
+        //     $query .= ") VALUES (";
+        //     $query .= $quest . ")";
+        // }
+
+        // $quest = '';
+        // $query = "INSERT INTO masterdom_products (";
+        // foreach ($values as $i => $value) {
+        //     $query .= "'" . $value . "', ";
+        //     $quest .= "?, ";
+        // }
+        // $query = substr($query, 0, -2);
+        // $quest = substr($quest, 0, -2);
+        // $query .= ") VALUES (";
+
+        $columns = [
+            0 => "title",
+            1 => "articul",
+            2 => "category",
+            3 => "subcategory",
+            4 => "link",
+            5 => "price",
+            6 => "edizm",
+            7 => "stock",
+            8 => "country",
+            9 => "producer",
+            10 => "collection",
+            11 => "provider_id",
+            12 => "length",
+            13 => "width",
+            14 => "height",
+            15 => "depth",
+            16 => "thickness",
+            17 => "format",
+            18 => "material",
+            19 => "images",
+            20 => "variants",
+            21 => "characteristics",
+        ];
+
+        $quest = '';
+        $colms = "";
+        $query = "INSERT INTO masterdom_products (";
+        foreach ($values as $i => $value) {
+            $colms .= $columns[$i]. ", ";
+            $quest .= "?, ";
+        }
+        $colms = substr($colms, 0, -2) . ")";
+        $quest = substr($quest, 0, -2);
+        $query .= $colms . " VALUES (" . $quest . ")";
+        echo $query;
+
+        try {
+            MySQL::bind_sql($query, $types, $values);
+            echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
+        } catch (\Exception $e) {
+            echo '<br><br>';
+            var_dump($e);
+            echo '<br><br>';
+            Logs::writeLog($e);
+            echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
+        }
     }
 }
