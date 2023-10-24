@@ -44,10 +44,14 @@ class Parser
         ];
 
         $values = [
-            ["name" => 'https://masterdom.ru/',
-            "id" => 0], 
-            ["name" => 'https://mosplitka.ru',
-            "id" => 0],
+            [
+                "name" => 'https://masterdom.ru/',
+                "id" => 0
+            ],
+            [
+                "name" => 'https://mosplitka.ru',
+                "id" => 0
+            ],
         ];
 
         foreach ($keys as $i => $key) {
@@ -89,42 +93,6 @@ class Parser
         //Получаем товар
         $product = MySQL::sql("SELECT id FROM masterdom_products WHERE link='$product_link'");
 
-        // if ($product->num_rows) {
-
-        //     $date_edit = MySQL::get_mysql_datetime();
-        //     $types .= 's';
-        //     $values[] = $date_edit;
-
-        //     $id = mysqli_fetch_assoc($product)['id'];
-        //     $query = "UPDATE masterdom_products SET ";
-        //     foreach ($values as $i => $value) {
-        //         $query .= "`" . $value . "`=?, ";
-        //     }
-        //     $query = substr($query, 0, -4);
-        //     $query .= " WHERE id=$id";
-        // } else {
-        //     $quest = '';
-        //     $query = "INSERT INTO masterdom_products (";
-        //     foreach ($values as $i => $value) {
-        //         $query .= "`" . $value . "`, ";
-        //         $quest .= "?, ";
-        //     }
-        //     $query = substr($query, 0, -2);
-        //     $quest = substr($quest, 0, -2);
-        //     $query .= ") VALUES (";
-        //     $query .= $quest . ")";
-        // }
-
-        // $quest = '';
-        // $query = "INSERT INTO masterdom_products (";
-        // foreach ($values as $i => $value) {
-        //     $query .= "'" . $value . "', ";
-        //     $quest .= "?, ";
-        // }
-        // $query = substr($query, 0, -2);
-        // $quest = substr($quest, 0, -2);
-        // $query .= ") VALUES (";
-
         $columns = [
             0 => "title",
             1 => "articul",
@@ -147,28 +115,50 @@ class Parser
             18 => "material",
             19 => "images",
             20 => "variants",
-            21 => "characteristics",
+            21 => "product_usages",
+            22 => "characteristics",
         ];
 
         $quest = '';
         $colms = "";
-        $query = "INSERT INTO masterdom_products (";
-        foreach ($values as $i => $value) {
-            $colms .= $columns[$i]. ", ";
-            $quest .= "?, ";
+
+        foreach ($values as $key => $value) {
+            $values[$key] = isset($value) ? html_entity_decode($value) : null;
         }
-        $colms = substr($colms, 0, -2) . ")";
-        $quest = substr($quest, 0, -2);
-        $query .= $colms . " VALUES (" . $quest . ")";
-        echo $query;
+
+        // echo count($values) . ' ' . count($columns) . '<br>';
+
+        if ($product->num_rows) {
+            $date_edit = MySQL::get_mysql_datetime();
+            $types .= 's';
+            $columns[count($columns)] = "date_edit";
+            $values[] = $date_edit;
+            $id = mysqli_fetch_assoc($product)['id'];
+
+            $query = "UPDATE masterdom_products SET ";
+            foreach ($values as $i => $value) {
+                $query .= "`" . $columns[$i] . "`=?, ";
+            }
+            $query = substr($query, 0, -2);
+            $query .= " WHERE id=$id";
+
+            // echo $query . "<br>";
+        } else {
+            $query = "INSERT INTO masterdom_products (";
+            foreach ($values as $i => $value) {
+                $colms .= $columns[$i] . ", ";
+                $quest .= "?, ";
+            }
+            $colms = substr($colms, 0, -2) . ")";
+            $quest = substr($quest, 0, -2);
+            $query .= $colms . " VALUES (" . $quest . ")";
+            // echo $query . "<br>";
+        }
 
         try {
             MySQL::bind_sql($query, $types, $values);
             echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
         } catch (\Exception $e) {
-            echo '<br><br>';
-            var_dump($e);
-            echo '<br><br>';
             Logs::writeLog($e);
             echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
         }

@@ -17,9 +17,12 @@ class MySQL
     static function bind_sql(string $query, string $types, array $values)
     {
         $db = self::getDB();
+        $db->set_charset('utf8');
         $stmt = mysqli_prepare($db, $query);
+        
         $stmt->bind_param($types, ...$values);
         $stmt->execute();
+        $stmt->close();
     }
 
     static function getDB()
@@ -61,7 +64,6 @@ class MySQL
             "https://api.masterdom.ru/api/rest/bathrooms/accessories/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
             "https://santehnika.masterdom.ru/polotencesushitely/catalog/" => "product",
             "https://api.masterdom.ru/api/rest/bathrooms/parts/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-            "https://svet.masterdom.ru/find/" => "product",
         ];
 
         foreach ($add_links as $link => $type) {

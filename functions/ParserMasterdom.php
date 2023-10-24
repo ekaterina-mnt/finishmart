@@ -92,23 +92,30 @@ class ParserMasterdom
         11 => 'Керамическая плитка',
         12 => 'Натуральный камень',
         13 => 'Мозаика',
-        14 => 'Керамический паркет',
     ];
 
-    static function getEdizm(string $category): string
+    static function getEdizm(string $category): string|null
     {
-        $edizm_key = array_search(1, [
-            in_array($category, ['Обои и настенные покрытия']),
-            in_array($category, ['Плитка и керамогранит']),
-            in_array($category, ['Сантехника']),
-        ]);
+        $edizm_keys = [
+            boolval($category == 'Обои и настенные покрытия'),
+            boolval($category == 'Плитка и керамогранит'),
+            boolval($category == 'Сантехника'),
+        ];
 
-        $edizm = ["рулон", "м2", "шт"][$edizm_key];
+        $edizm_values = ["рулон", "м2", "шт"];
 
-        return $edizm;
+        foreach ($edizm_keys as $i => $edizm_key) {
+            if ($edizm_key) {
+
+                $edizm = $edizm_values[$i];
+                break;
+            }
+        }
+
+        return $edizm ?? null;
     }
 
-    static function getProductLink($subcategory, $articul, $product_id, $name_url)
+    static function getProductLink(string $subcategory, string $articul, int|null $product_id, string|null $name_url): string|null
     {
         $product_link_keys = self::$subcategories;
         $product_link = null;
@@ -138,6 +145,13 @@ class ParserMasterdom
             }
         }
 
+        if (str_contains($product_link, "https://santehnika.masterdom.ru")) {
+            $query = "INSERT INTO masterdom_links (`link`, `type`) VALUES (?,?)";
+            $types = "ss";
+            $values = [$product_link, 'additional'];
+            MySQL::bind_sql($query, $types, $values);
+        }
+
         return $product_link;
     }
 
@@ -159,10 +173,8 @@ class ParserMasterdom
     }
 
 
-    /*
-    Возвращает на выбор: countries, collections, fabrics(производитель)
-    */
-    static function getDataPlitka()
+
+    static function getDataPlitka(): array
     {
         $countries = []; //keys: name, id
         $fabrics = []; //keys: name, id, country_id
@@ -213,7 +225,7 @@ class ParserMasterdom
         return ['fabrics' => $fabrics, 'collections' => $collections, 'countries' => $countries, 'product_usages' => $product_usages];
     }
 
-    static function getDataOboi()
+    static function getDataOboi(): array
     {
         $countries = []; //keys: name, id
         $fabrics = null; //даны в общем массиве товара
