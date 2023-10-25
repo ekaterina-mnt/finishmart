@@ -9,13 +9,19 @@ class Logs
         $location = "файл: " . $e->getFile() . ", строка: " . $e->getLine();
         $description = $e->getMessage();
         $date = date('Y-m-d H:i:s', time());
-        MySQL::sql("INSERT INTO logs (description, location, date) VALUES ('$description', '$location', '$date')");
+        $query = "INSERT INTO logs (description, location, date) VALUES (?, ?, ?)";
+        $types = "sss";
+        $values = [$description, $location, $date];
+        MySQL::bind_sql($query, $types, $values);
     }
 
     static function writeCustomLog(string $description): void
     {
+        $query = "INSERT INTO logs (description, date) VALUES (?, ?)";
         $date = date('Y-m-d H:i:s', time());
-        MySQL::sql("INSERT INTO logs (description, date) VALUES ('$description', '$date')");
+        $types = "ss";
+        $values = [$description, $date];
+        MySQL::bind_sql($query, $types, $values);
     }
 
     static function writeLinkLog(string $description, string $articul, string $provider, string $url_parser): void

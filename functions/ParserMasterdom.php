@@ -179,7 +179,7 @@ class ParserMasterdom
         $countries = []; //keys: name, id
         $fabrics = []; //keys: name, id, country_id
         $collctions = []; //keys: name, id, fabric_id
-        $product_usages = []; //keys: name, id, name_url
+        $usage = []; //keys: name, id, name_url
 
         $document_1 = Parser::guzzleConnect("https://plitka.masterdom.ru/");
 
@@ -187,7 +187,7 @@ class ParserMasterdom
         $api_data_1 = rtrim(str_replace("window.__initialData=", "", $api_data_1), ";");
         $api_data_1 = json_decode($api_data_1, 1);
 
-        $product_usages = $api_data_1['store']['references']['data']['product_usages'];
+        $usage = $api_data_1['store']['references']['data']['product_usages'];
 
         $api_data_1 = $api_data_1['store']['references']['data']['countries'];
 
@@ -222,7 +222,7 @@ class ParserMasterdom
             }
         }
 
-        return ['fabrics' => $fabrics, 'collections' => $collections, 'countries' => $countries, 'product_usages' => $product_usages];
+        return ['fabrics' => $fabrics, 'collections' => $collections, 'countries' => $countries, 'usage' => $usage];
     }
 
     static function getDataOboi(): array
