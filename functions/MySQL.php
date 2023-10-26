@@ -19,7 +19,7 @@ class MySQL
         $db = self::getDB();
         $db->set_charset('utf8');
         $stmt = mysqli_prepare($db, $query);
-        
+
         $stmt->bind_param($types, ...$values);
         $stmt->execute();
         $stmt->close();
@@ -47,30 +47,61 @@ class MySQL
         return $date;
     }
 
-    static function firstLinksInsert()
+    static function firstLinksInsert(string $provider = null)
     {
-        $add_links = [
-            // Мосплитка
-            // "https://mosplitka.ru/catalog" => "catalog",
-            // МастерДом
-            "https://oboi.masterdom.ru/find/?sort=popular&offset=0" => "product",
-            "https://api.masterdom.ru/api/rest/tile/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-            "https://api.masterdom.ru/api/rest/bathrooms/sink/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-            "https://api.masterdom.ru/api/rest/bathrooms/toilet_bidet/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-            "https://api.masterdom.ru/api/rest/bathrooms/bathtub/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-            "https://api.masterdom.ru/api/rest/bathrooms/shower/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-            "https://api.masterdom.ru/api/rest/bathrooms/faucet/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-            "https://api.masterdom.ru/api/rest/bathrooms/furniture/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-            "https://api.masterdom.ru/api/rest/bathrooms/accessories/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-            "https://santehnika.masterdom.ru/polotencesushitely/catalog/" => "product",
-            "https://api.masterdom.ru/api/rest/bathrooms/parts/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-        ];
+        $add_links = [];
 
-        foreach ($add_links as $link => $type) {
-            $query = "INSERT INTO masterdom_links (`link`, `type`) VALUES (?, ?) ON DUPLICATE KEY UPDATE type='$type'";
-            $types = "ss";
-            $values = array($link, $type);
-            self::bind_sql($query, $types, $values);
+        switch ($provider) {
+            case "masterdom":
+                $add_links = [
+                    "https://oboi.masterdom.ru/find/?sort=popular&offset=0" => "product",
+                    "https://api.masterdom.ru/api/rest/tile/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
+                    "https://api.masterdom.ru/api/rest/bathrooms/sink/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
+                    "https://api.masterdom.ru/api/rest/bathrooms/toilet_bidet/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
+                    "https://api.masterdom.ru/api/rest/bathrooms/bathtub/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
+                    "https://api.masterdom.ru/api/rest/bathrooms/shower/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
+                    "https://api.masterdom.ru/api/rest/bathrooms/faucet/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
+                    "https://api.masterdom.ru/api/rest/bathrooms/furniture/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
+                    "https://api.masterdom.ru/api/rest/bathrooms/accessories/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
+                    "https://santehnika.masterdom.ru/polotencesushitely/catalog/" => "product",
+                    "https://api.masterdom.ru/api/rest/bathrooms/parts/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
+                ];
+                break;
+            case "mosplitka":
+                $add_links = [
+                    "https://mosplitka.ru/catalog/plitka/view_product/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/vanny/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/rakoviny/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/smesiteli/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/unitazy/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/dushevye-garnitury/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/installyatsii/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/dushevye-boksy/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/kukhonnye-moyki/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/poddony-trapy-lotki/dushevie_poddony/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/polotentsesushiteli/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/mebel-dlya-vannoy/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/aksessuary/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/svet/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/inzhenernaya_santekhnika/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/otoplenie/?PAGEN_1=1" => "catalog",
+                ];
+                break;
         }
+
+        if ($provider) {
+            foreach ($add_links as $link => $type) {
+                $query = "INSERT INTO " . $provider . "_links (`link`, `type`) VALUES (?, ?) ON DUPLICATE KEY UPDATE type='$type'";
+                $types = "ss";
+                $values = array($link, $type);
+                self::bind_sql($query, $types, $values);
+            }
+        }
+    }
+
+    static function decreaseViews(int $views, string $url_parser): void
+    {
+        $views -= 1;
+        MySQL::sql("UPDATE links SET views=$views WHERE link='$url_parser'");
     }
 }

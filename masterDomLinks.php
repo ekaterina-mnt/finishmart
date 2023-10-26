@@ -37,10 +37,7 @@ try {
     try {
         $document = Parser::guzzleConnect($url_parser);
     } catch (Throwable $e) {
-        //Снова уменьшаем просмотры, чтобы скрипт потом еще раз прошел ссылку и прекращаем работу скрипта
-        $views -= 1;
-        $date_edit = MySQL::get_mysql_datetime();
-        MySQL::sql("UPDATE links SET views=$views date_edit='$date_edit' WHERE link='$url_parser'");
+        MySQL::decreaseViews($views, $url_parser);
         Logs::writeLog($e);
         TechInfo::errorExit($e);
     }

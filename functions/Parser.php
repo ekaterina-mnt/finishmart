@@ -50,7 +50,7 @@ class Parser
             ],
             [
                 "name" => 'https://mosplitka.ru',
-                "id" => 0
+                "id" => 1
             ],
         ];
 
@@ -86,12 +86,25 @@ class Parser
         return $api_data;
     }
 
-    static function insertProductData(string $types, array $values, string $product_link): void
+    static function insertLink(string $link, string $link_type, string $provider): string
     {
-        //добавление/обновление записи в БД
+        try {
+            $query = "INSERT INTO " . $provider . "_links (link, type) VALUES (?, ?)";
+            $types = "ss";
+            $values = [$link, $link_type];
+            MySQL::bind_sql($query, $types, $values);
+            return "success";
+        } catch (\Exception $e) {
+            Logs::writeLog($e, $link);
+            var_dump($e);
+            return "fail";
+        }
+    }
 
+    static function insertProductData(string $types, array $values, string $product_link, string $provider): void
+    {
         //Получаем товар
-        $product = MySQL::sql("SELECT id FROM masterdom_products WHERE link='$product_link'");
+        $product = MySQL::sql("SELECT id FROM " . $provider . "_products WHERE link='$product_link'");
 
         $quest = '';
         $colms = "";
@@ -108,7 +121,7 @@ class Parser
             $values["date_edit"] = $date_edit;
             $id = mysqli_fetch_assoc($product)['id'];
 
-            $query = "UPDATE masterdom_products SET ";
+            $query = "UPDATE " . $provider . "_products SET ";
             foreach ($values as $key => $value) {
                 $query .= "`" . $key . "`=?, ";
             }
@@ -117,7 +130,7 @@ class Parser
 
             // echo $query . "<br>";
         } else {
-            $query = "INSERT INTO masterdom_products (";
+            $query = "INSERT INTO " . $provider . "_products (";
             foreach ($values as $key => $value) {
                 $colms .= $key . ", ";
                 $quest .= "?, ";

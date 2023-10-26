@@ -10,8 +10,11 @@ use functions\ParserMasterdom;
 TechInfo::start();
 
 try {
+    $provider = 'masterdom';
+    // $provider = Parser::getProvider($url_parser)['name'];
+
     //Получаем ссылку, с которой будем парсить
-    $query = MySQL::sql("SELECT link, product_views FROM masterdom_links WHERE type='product' ORDER BY product_views, id LIMIT 1"); //поменять имя таблицы
+    $query = MySQL::sql("SELECT link, product_views FROM " . $provider . "_links WHERE type='product' ORDER BY product_views, id LIMIT 1"); 
 
     if (!$query->num_rows) {
         Logs::writeCustomLog("не получено ссылки для парсинга");
@@ -22,15 +25,13 @@ try {
 
     //Получаем ссылку
     $url_parser = $res['link'];
-    
-    $provider = Parser::getProvider($url_parser);
 
     TechInfo::whichLinkPass($url_parser);
 
     //Увеличиваем просмотры ссылки
     $views = $res['product_views'] + 1;
     $date_edit = MySQL::get_mysql_datetime();
-    MySQL::sql("UPDATE masterdom_links SET product_views=$views, date_edit='$date_edit' WHERE link='$url_parser'"); //поменять имя таблицы
+    MySQL::sql("UPDATE " . $provider . "_links SET product_views=$views, date_edit='$date_edit' WHERE link='$url_parser'"); //поменять имя таблицы
 
     //Получаем html страницы
     try {
@@ -40,7 +41,7 @@ try {
         $limit = str_contains($url_parser, "oboi.masterdom") ? 30 : 100;
         $next_link = Parser::nextLink($url_parser, $limit);
         if ($next_link) {
-            $query = "INSERT INTO masterdom_links (link, type) VALUES (?, ?) ON DUPLICATE KEY UPDATE type='product'";
+            $query = "INSERT INTO " . $provider . "_links (link, type) VALUES (?, ?) ON DUPLICATE KEY UPDATE type='product'";
             $types = "ss";
             $values = [$next_link, 'product'];
             MySQL::bind_sql($query, $types, $values);
@@ -75,6 +76,20 @@ try {
             $api_data = Parser::getApiData($document);
         }
 
+        $category = $category ?? null;
+        if (!$category) {
+            MySQL::decreaseViews($views, $url_parser);
+            Logs::writeCustomLog("не определена категория товаров, не добавлены в БД", $url_parser);
+            TechInfo::errorExit("не определена категория товаров, не добавлены в БД");
+        }
+
+        $api_data = $api_data ?? null;
+        if (!$api_data) {
+            MySQL::decreaseViews($views, $url_parser);
+            Logs::writeCustomLog("нет данных о товарах, не добавлены в БД", $url_parser);
+            TechInfo::errorExit("нет данных о товарах, не добавлены в БД");
+        }
+
         $fabrics = isset($country_coll_producer_res['fabrics']) ? $country_coll_producer_res['fabrics'] : null;
         $collections = isset($country_coll_producer_res['collections']) ? $country_coll_producer_res['collections'] : null;
         $countries = isset($country_coll_producer_res['countries']) ? $country_coll_producer_res['countries'] : null;
@@ -99,10 +114,22 @@ try {
             //название товара (сантехника - full_name)
             $title = (isset($datum['fullname']) ? $datum['fullname'] : $datum['full_name']) ?? null;
             $all_product_data['title'] = [$title, 's'];
+            
+            if (!$title) {
+                MySQL::decreaseViews($views, $url_parser);
+                Logs::writeCustomLog("не определено название товара, не добавлен в БД", $url_parser);
+                TechInfo::errorExit("не определено название товара, не добавлен в БД");
+            }
 
             //артикул
             $articul = $datum['article'] ?? null;
             $all_product_data['articul'] = [$articul, 's'];
+
+            if (!$articul) {
+                MySQL::decreaseViews($views, $url_parser);
+                Logs::writeCustomLog("не определен артикул товара, не добавлен в БД", $url_parser);
+                TechInfo::errorExit("не определен артикул товара, не добавлен в БД");
+            }
 
             //категория
             $all_product_data['category'] = [$category, 's'];
@@ -111,11 +138,23 @@ try {
             $subcategory = ParserMasterdom::getSubcategory($category, $datum) ?? null;
             $all_product_data['subcategory'] = [$subcategory, 's'];
 
+            if (!$subcategory) {
+                MySQL::decreaseViews($views, $url_parser);
+                Logs::writeCustomLog("не определена подкатегория товара, не добавлен в БД", $url_parser);
+                TechInfo::errorExit("не определена подкатегория товара, не добавлен в БД");
+            }
+
             //ссылка на товар
             $product_id = $datum['id'] ?? null;
             $name_url = $datum['name_url'] ?? null;
             $product_link = ParserMasterdom::getProductLink($subcategory, $articul, $product_id, $name_url);
             $all_product_data['link'] = [$product_link, 's'];
+
+            if (!$product_link) {
+                MySQL::decreaseViews($views, $url_parser);
+                Logs::writeCustomLog("не определена ссылка на товар, не добавлен в БД", $url_parser);
+                TechInfo::errorExit("не определена ссылка на товар, не добавлен в БД");
+            }
 
             //цена
             $price = (isset($datum['price_site']) ? $datum['price_site'] : $datum['price']) ?? null;
@@ -235,15 +274,6 @@ try {
             }
             TechInfo::preArray($print_result);
 
-            try {
-                if (!$product_link) {
-                    throw new \Exception();
-                }
-            } catch (\Throwable) {
-                Logs::writeLinkLog("Не удалось найти ссылку для товара с артикулом $articul", $articul, $provider['name'], $url_parser);
-                TechInfo::errorExit("Не удалось найти ссылку для товара с артикулом $articul");
-            }
-
             //Для передачи в MySQL
 
             $types = '';
@@ -253,13 +283,11 @@ try {
                 $values[$key] = $n[0];
             }
 
-            Parser::insertProductData($types, $values, $product_link);
+            Parser::insertProductData($types, $values, $product_link, $provider);
         }
     } catch (Throwable $e) {
-        //Снова уменьшаем просмотры, чтобы скрипт потом еще раз прошел ссылку и прекращаем работу скрипта
-        $views -= 1;
-        MySQL::sql("UPDATE links SET views=$views WHERE link='$url_parser'");
-        Logs::writeLog($e);
+        MySQL::decreaseViews($views, $url_parser);
+        Logs::writeLog($e, $url_parser);
         TechInfo::errorExit($e);
     }
 } catch (\Throwable $e) {
