@@ -13,7 +13,7 @@ class Parser
 {
     static function guzzleConnect(string $link): Document
     {
-        $client = new GuzzleClient();
+        $client = new GuzzleClient(['verify' => false]);
         $response = $client->request(
             'GET',
             $link,
@@ -113,6 +113,10 @@ class Parser
             14 => 'Кухонные мойки',
             15 => 'Ступени и клинкер',
             16 => 'SPC-плитка',
+            17 => 'Фотообои',
+            18 => 'Обои под покраску',
+            19 => 'Штукатурка',
+            20 => 'Розетки',
         ];
 
         return $subcategories;
@@ -189,6 +193,41 @@ class Parser
         }
     }
 
+    static function getEdizmList(): array
+    {
+        $edizm = [
+            0 => "рулон",
+            1 => "м2",
+            2 => "шт",
+            3 => "пог.м",
+            4 => "л",
+        ];
+        return $edizm;
+    }
+
+    static function getEdizmByUnit(string $edizm): string|null
+    {
+        $edizm_values = self::getEdizmList();
+        switch ($edizm) {
+            case "рулон":
+                return $edizm_values[0];
+                break;
+            case "м2":
+                return $edizm_values[1];
+                break;
+            case "шт.":
+                return $edizm_values[2];
+                break;
+            case "пог. м":
+                return $edizm_values[3];
+                break;
+            case "краски":
+                return $edizm_values[4];
+                break;
+        }
+        return null;
+    }
+
     static function getEdizm(string $category): string|null
     {
         $edizm_keys = [
@@ -197,7 +236,7 @@ class Parser
             boolval($category == 'Сантехника'),
         ];
 
-        $edizm_values = ["рулон", "м2", "шт"];
+        $edizm_values = self::getEdizmList();
 
         foreach ($edizm_keys as $i => $edizm_key) {
             if ($edizm_key) {

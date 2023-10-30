@@ -18,6 +18,13 @@ class ParserMosplitka
         return boolval(count($goods) > 1);
     }
 
+    static function check_if_archive(Document $document): bool
+    {
+        $data = $document->find('.product-arhive-label');
+        if (empty($goods)) return false;
+        return count($data);
+    }
+
     static function getComplectData(Document $document, string $url_parser): array
     {
         $all_product_data = [];
@@ -138,11 +145,53 @@ class ParserMosplitka
             $type = 'catalog';
         } elseif (preg_match("#https://mosplitka.ru/product.+#", $link)) {
             $type = 'product';
+        } elseif (preg_match("#https://www.ampir.ru/catalog/.+/page(\d+).*#", $link)) {
+            $type = 'catalog';
+        } elseif (preg_match("#https://www.ampir.ru/catalog/.+/\d+/#", $link)) {
+            $type = 'product';
         }
 
         $type = $type ?? null;
 
         return $type;
+    }
+
+    static function getCategoryAmpir($url_parser): string|null
+    {
+        $all_categories = Parser::getCategoriesList();
+
+        if (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser)) {
+            $category = $all_categories[0];
+        } elseif (preg_match("#https://www.ampir.ru/catalog/lepnina/.*#", $url_parser)) {
+            $category = $all_categories[5];
+        } elseif (preg_match("#https://www.ampir.ru/catalog/kraski/.*#", $url_parser)) {
+            $category = $all_categories[4];
+        } elseif (preg_match("#https://www.ampir.ru/catalog/shtukaturka/.*#", $url_parser)) {
+            $category = $all_categories[4];
+        } elseif (preg_match("#https://www.ampir.ru/catalog/rozetki/.*#", $url_parser)) {
+            $category = $all_categories[5];
+        }
+
+        return $category ?? null;
+    }
+
+    static function getSubcategoryAmpir(string $url_parser, string $title = null): string|null
+    {
+        $all_subcategories = Parser::getSubcategoriesList();
+
+        if (preg_match("#https://www.ampir.ru/catalog/shtukaturka/.*#", $url_parser)) {
+            $subcategory = $all_subcategories[19];
+        } elseif (preg_match("#https://www.ampir.ru/catalog/rozetki/.*#", $url_parser)) {
+            $subcategory = $all_subcategories[20];
+        } elseif (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser) and str_contains(mb_strtolower($title), 'обои под покраску')) {
+            $subcategory = $all_subcategories[18];
+        } elseif (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser) and str_contains(mb_strtolower($title), 'фотообои')) {
+            $subcategory = $all_subcategories[17];
+        } elseif (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser)) {
+            $subcategory = $all_subcategories[9];
+        }
+
+        return $subcategory ?? null;
     }
 
     static function getCategorySubcategory(Document $document, string $title, string $producer = null, string $collection = null): array|null

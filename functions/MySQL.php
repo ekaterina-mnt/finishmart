@@ -87,15 +87,14 @@ class MySQL
                     "https://mosplitka.ru/catalog/plitka/view_product/?PAGEN_1=1" => "catalog",
                 ];
                 break;
-                case "ampir":
-                    $add_links = [
-                        "https://www.ampir.ru/catalog/oboi/" => "catalog",
-                        "https://www.ampir.ru/catalog/lepnina/" => "catalog",
-                        "https://www.ampir.ru/catalog/kraski/" => "catalog",
-                        "https://www.ampir.ru/catalog/shtukaturka/" => "catalog",
-                        "https://www.ampir.ru/catalog/rozetki/" => "catalog",
-                        "https://www.ampir.ru/catalog/oboi-pod-pokrasku/" => "catalog",
-                    ];
+            case "ampir":
+                $add_links = [
+                    "https://www.ampir.ru/catalog/oboi/page1/" => "catalog",
+                    "https://www.ampir.ru/catalog/lepnina/page1/" => "catalog",
+                    "https://www.ampir.ru/catalog/kraski/page1/" => "catalog", //категория Краски, подкатегории: Обои под покраску, Фотообои, Декоративные
+                    "https://www.ampir.ru/catalog/shtukaturka/page1/" => "catalog", //категория Краски, подкатегория Штукатурка
+                    "https://www.ampir.ru/catalog/rozetki/page1/" => "catalog", //категория Лепнина, подкатегория Розетки
+                ];
         }
 
         if ($provider) {
@@ -111,6 +110,7 @@ class MySQL
     static function decreaseViews(int $views, string $url_parser, string $provider): void
     {
         $views -= 1;
+        $views = $views === 0 ? null : $views;
         MySQL::sql("UPDATE " . $provider . "_links SET views=$views WHERE link='$url_parser'");
     }
 }

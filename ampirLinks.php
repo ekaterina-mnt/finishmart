@@ -28,6 +28,7 @@ try {
 
     //Получаем ссылку
     $url_parser = $res['link'];
+    // $url_parser = "https://www.ampir.ru/catalog/rozetki/page1/";
 
     TechInfo::whichLinkPass($url_parser);
 
@@ -41,17 +42,15 @@ try {
         $document = Parser::guzzleConnect($url_parser);
 
         //Получаем все данные со страницы
-        $catalog_res = $document->find('.brand__row a[href*=catalog]');
-        $product_res = $document->find('.pagination-list a[href*=page');
+        $catalog_res = $document->find('.product-list-block a[href*=product], .catSection a[href*=product], .brand__row a[href*=catalog]');
+        $product_res = $document->find('.pagination-catalog a[href*=catalog], .pagination-list a[href*=catalog]');
         $all_res = array_merge($catalog_res, $product_res);
 
         echo "<b>скрипт нашел ссылки (" . count($all_res) . "шт):</b><br>";
 
-        exit;
-
         $add = [];
         foreach ($all_res as $href) {
-            $link = "https://mosplitka.ru" . $href->attr('href');
+            $link = $href->attr('href'); //отличается от мосплитки
             echo "$link<br>";
 
             //избавляемся от дублей
@@ -59,9 +58,7 @@ try {
 
             //определяем это ссылка на продукт или каталог
             $link_type = ParserMosplitka::getLinkType($link);
-            if (!$link_type) continue;
-
-            //ВОТ ГДЕ-ТО ЗДЕСЬ
+            if (!$link_type) continue;           
 
             $res = Parser::insertLink($link, $link_type, $provider);
             if ($res == "success") $add[] = $link;
@@ -75,12 +72,13 @@ try {
         echo "<br><b>не было ошибок</b><br><br>";
     } catch (Throwable $e) {
         MySQL::decreaseViews($views, $url_parser, $provider);
-        Logs::writeLog($e, $provider);
-        TechInfo::errorExit($e);
+        // Logs::writeLog($e, $provider);
+     TechInfo::errorExit($e);
     }
+    
 } catch (\Throwable $e) {
-    Logs::writeLog($e, $provider);
-    TechInfo::errorExit($e);
+    // Logs::writeLog($e, $provider);
+    // TechInfo::errorExit($e);
     var_dump($e);
 }
 
