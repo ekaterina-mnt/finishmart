@@ -17,7 +17,7 @@ try {
     $query = MySQL::sql("SELECT link, product_views FROM " . $provider . "_links WHERE type='product' ORDER BY product_views, id LIMIT 1"); 
 
     if (!$query->num_rows) {
-        Logs::writeCustomLog("не получено ссылки для парсинга");
+        Logs::writeCustomLog("не получено ссылки для парсинга", $provider);
         TechInfo::errorExit("не получено ссылки для парсинга");
     }
 
@@ -78,15 +78,15 @@ try {
 
         $category = $category ?? null;
         if (!$category) {
-            MySQL::decreaseViews($views, $url_parser);
-            Logs::writeCustomLog("не определена категория товаров, не добавлены в БД", $url_parser);
+            MySQL::decreaseViews($views, $url_parser, $provider);
+            Logs::writeCustomLog("не определена категория товаров, не добавлены в БД", $provider, $url_parser);
             TechInfo::errorExit("не определена категория товаров, не добавлены в БД");
         }
 
         $api_data = $api_data ?? null;
         if (!$api_data) {
-            MySQL::decreaseViews($views, $url_parser);
-            Logs::writeCustomLog("нет данных о товарах, не добавлены в БД", $url_parser);
+            MySQL::decreaseViews($views, $url_parser, $provider);
+            Logs::writeCustomLog("нет данных о товарах, не добавлены в БД", $provider, $url_parser);
             TechInfo::errorExit("нет данных о товарах, не добавлены в БД");
         }
 
@@ -116,8 +116,8 @@ try {
             $all_product_data['title'] = [$title, 's'];
             
             if (!$title) {
-                MySQL::decreaseViews($views, $url_parser);
-                Logs::writeCustomLog("не определено название товара, не добавлен в БД", $url_parser);
+                MySQL::decreaseViews($views, $url_parser, $provider);
+                Logs::writeCustomLog("не определено название товара, не добавлен в БД", $provider, $url_parser);
                 TechInfo::errorExit("не определено название товара, не добавлен в БД");
             }
 
@@ -126,8 +126,8 @@ try {
             $all_product_data['articul'] = [$articul, 's'];
 
             if (!$articul) {
-                MySQL::decreaseViews($views, $url_parser);
-                Logs::writeCustomLog("не определен артикул товара, не добавлен в БД", $url_parser);
+                MySQL::decreaseViews($views, $url_parser, $provider);
+                Logs::writeCustomLog("не определен артикул товара, не добавлен в БД", $provider, $url_parser);
                 TechInfo::errorExit("не определен артикул товара, не добавлен в БД");
             }
 
@@ -139,8 +139,8 @@ try {
             $all_product_data['subcategory'] = [$subcategory, 's'];
 
             if (!$subcategory) {
-                MySQL::decreaseViews($views, $url_parser);
-                Logs::writeCustomLog("не определена подкатегория товара, не добавлен в БД", $url_parser);
+                MySQL::decreaseViews($views, $url_parser, $provider);
+                Logs::writeCustomLog("не определена подкатегория товара, не добавлен в БД", $provider, $url_parser);
                 TechInfo::errorExit("не определена подкатегория товара, не добавлен в БД");
             }
 
@@ -151,8 +151,8 @@ try {
             $all_product_data['link'] = [$product_link, 's'];
 
             if (!$product_link) {
-                MySQL::decreaseViews($views, $url_parser);
-                Logs::writeCustomLog("не определена ссылка на товар, не добавлен в БД", $url_parser);
+                MySQL::decreaseViews($views, $url_parser, $provider);
+                Logs::writeCustomLog("не определена ссылка на товар, не добавлен в БД", $provider, $url_parser);
                 TechInfo::errorExit("не определена ссылка на товар, не добавлен в БД");
             }
 
@@ -162,7 +162,7 @@ try {
 
 
             //единица измерения
-            $edizm = ParserMasterdom::getEdizm($category) ?? null;
+            $edizm = Parser::getEdizm($category) ?? null;
             $all_product_data['edizm'] = [$edizm, 's'];
 
             //остатки товара
@@ -286,12 +286,12 @@ try {
             Parser::insertProductData($types, $values, $product_link, $provider);
         }
     } catch (Throwable $e) {
-        MySQL::decreaseViews($views, $url_parser);
-        Logs::writeLog($e, $url_parser);
+        MySQL::decreaseViews($views, $url_parser, $provider);
+        Logs::writeLog($e, $provider, $url_parser);
         TechInfo::errorExit($e);
     }
 } catch (\Throwable $e) {
-    Logs::writeLog($e);
+    Logs::writeLog($e, $provider);
     TechInfo::errorExit($e);
     var_dump($e);
 }

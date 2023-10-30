@@ -79,6 +79,45 @@ class Parser
         return null;
     }
 
+    static function getCategoriesList(): array
+    {
+        $categories = [
+            0 => 'Обои и настенные покрытия',
+            1 => 'Напольные покрытия',
+            2 => 'Плитка и керамогранит',
+            3 => 'Сантехника',
+            4 => 'Краски',
+            5 => 'Лепнина',
+        ];
+
+        return $categories;
+    }
+
+    static function getSubcategoriesList(): array
+    {
+        $subcategories = [
+            0 => 'Раковины',
+            1 => 'Унитазы, писсуары и биде',
+            2 => 'Ванны',
+            3 => 'Душевые',
+            4 => 'Смесители',
+            5 => 'Мебель для ванной',
+            6 => 'Аксессуары для ванной комнаты',
+            7 => 'Комплектующие',
+            8 => 'Полотенцесушители',
+            9 => 'Декоративные обои',
+            10 => 'Керамогранит',
+            11 => 'Керамическая плитка',
+            12 => 'Натуральный камень',
+            13 => 'Мозаика',
+            14 => 'Кухонные мойки',
+            15 => 'Ступени и клинкер',
+            16 => 'SPC-плитка',
+        ];
+
+        return $subcategories;
+    }
+
     static function getApiData(Document $document): array
     {
         $api_data = json_decode($document->text(), 1);
@@ -95,7 +134,7 @@ class Parser
             MySQL::bind_sql($query, $types, $values);
             return "success";
         } catch (\Exception $e) {
-            Logs::writeLog($e, $link);
+            Logs::writeLog($e, $provider, $link);
             var_dump($e);
             return "fail";
         }
@@ -145,8 +184,29 @@ class Parser
             MySQL::bind_sql($query, $types, array_values($values));
             echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
         } catch (\Exception $e) {
-            Logs::writeLog($e);
+            Logs::writeLog($e, $provider);
             echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
         }
+    }
+
+    static function getEdizm(string $category): string|null
+    {
+        $edizm_keys = [
+            boolval($category == 'Обои и настенные покрытия'),
+            boolval($category == 'Плитка и керамогранит'),
+            boolval($category == 'Сантехника'),
+        ];
+
+        $edizm_values = ["рулон", "м2", "шт"];
+
+        foreach ($edizm_keys as $i => $edizm_key) {
+            if ($edizm_key) {
+
+                $edizm = $edizm_values[$i];
+                break;
+            }
+        }
+
+        return $edizm ?? null;
     }
 }

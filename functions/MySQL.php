@@ -69,24 +69,33 @@ class MySQL
                 break;
             case "mosplitka":
                 $add_links = [
-                    "https://mosplitka.ru/catalog/plitka/view_product/?PAGEN_1=1" => "catalog",
-                    "https://mosplitka.ru/catalog/vanny/?PAGEN_1=1" => "catalog",
                     "https://mosplitka.ru/catalog/rakoviny/?PAGEN_1=1" => "catalog",
-                    "https://mosplitka.ru/catalog/smesiteli/?PAGEN_1=1" => "catalog",
                     "https://mosplitka.ru/catalog/unitazy/?PAGEN_1=1" => "catalog",
-                    "https://mosplitka.ru/catalog/dushevye-garnitury/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/pissuary/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/bide/?PAGEN_1=1" => "catalog",
                     "https://mosplitka.ru/catalog/installyatsii/?PAGEN_1=1" => "catalog",
-                    "https://mosplitka.ru/catalog/dushevye-boksy/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/klavishi-smyva/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/vanny/?PAGEN_1=1" => "catalog",
                     "https://mosplitka.ru/catalog/kukhonnye-moyki/?PAGEN_1=1" => "catalog",
-                    "https://mosplitka.ru/catalog/poddony-trapy-lotki/dushevie_poddony/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/smesiteli/?PAGEN_1=1" => "catalog",
                     "https://mosplitka.ru/catalog/polotentsesushiteli/?PAGEN_1=1" => "catalog",
                     "https://mosplitka.ru/catalog/mebel-dlya-vannoy/?PAGEN_1=1" => "catalog",
                     "https://mosplitka.ru/catalog/aksessuary/?PAGEN_1=1" => "catalog",
-                    "https://mosplitka.ru/catalog/svet/?PAGEN_1=1" => "catalog",
-                    "https://mosplitka.ru/catalog/inzhenernaya_santekhnika/?PAGEN_1=1" => "catalog",
-                    "https://mosplitka.ru/catalog/otoplenie/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/dushevye-garnitury/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/poddony-trapy-lotki/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/dushevye-boksy/?PAGEN_1=1" => "catalog",
+                    "https://mosplitka.ru/catalog/plitka/view_product/?PAGEN_1=1" => "catalog",
                 ];
                 break;
+                case "ampir":
+                    $add_links = [
+                        "https://www.ampir.ru/catalog/oboi/" => "catalog",
+                        "https://www.ampir.ru/catalog/lepnina/" => "catalog",
+                        "https://www.ampir.ru/catalog/kraski/" => "catalog",
+                        "https://www.ampir.ru/catalog/shtukaturka/" => "catalog",
+                        "https://www.ampir.ru/catalog/rozetki/" => "catalog",
+                        "https://www.ampir.ru/catalog/oboi-pod-pokrasku/" => "catalog",
+                    ];
         }
 
         if ($provider) {
@@ -99,9 +108,9 @@ class MySQL
         }
     }
 
-    static function decreaseViews(int $views, string $url_parser): void
+    static function decreaseViews(int $views, string $url_parser, string $provider): void
     {
         $views -= 1;
-        MySQL::sql("UPDATE links SET views=$views WHERE link='$url_parser'");
+        MySQL::sql("UPDATE " . $provider . "_links SET views=$views WHERE link='$url_parser'");
     }
 }

@@ -14,7 +14,7 @@ use GuzzleHttp\Client as GuzzleClient;
 TechInfo::start();
 
 try {
-    $provider = 'mosplitka';
+    $provider = 'ampir';
 
     //Получаем ссылку, с которой будем парсить
     $query = MySQL::sql("SELECT link, views FROM " . $provider . "_links WHERE type='catalog' ORDER BY views, id LIMIT 1");
@@ -41,11 +41,13 @@ try {
         $document = Parser::guzzleConnect($url_parser);
 
         //Получаем все данные со страницы
-        $catalog_res = $document->find('.product-list-block a[href*=product], .catSection a[href*=product]');
-        $product_res = $document->find('.pagination-catalog a[href*=catalog]');
+        $catalog_res = $document->find('.brand__row a[href*=catalog]');
+        $product_res = $document->find('.pagination-list a[href*=page');
         $all_res = array_merge($catalog_res, $product_res);
 
         echo "<b>скрипт нашел ссылки (" . count($all_res) . "шт):</b><br>";
+
+        exit;
 
         $add = [];
         foreach ($all_res as $href) {

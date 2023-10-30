@@ -18,7 +18,7 @@ try {
         $query = MySQL::sql("SELECT link, product_views FROM masterdom_links WHERE type='additional' ORDER BY product_views, id LIMIT 1"); //поменять имя таблицы
 
         if (!$query->num_rows) {
-            Logs::writeCustomLog("не получено ссылки для парсинга");
+            Logs::writeCustomLog("не получено ссылки для парсинга", $provider);
             TechInfo::errorExit("не получено ссылки для парсинга");
         }
 
@@ -95,18 +95,18 @@ try {
                     $values[$key] = $value[0];
                 }
 
-                Parser::insertProductData($types, $values, $url_parser);
+                Parser::insertProductData($types, $values, $url_parser, $provider['name']);
             }
         } catch (Throwable $e) {
             //Снова уменьшаем просмотры, чтобы скрипт потом еще раз прошел ссылку и прекращаем работу скрипта
             $views -= 1;
             MySQL::sql("UPDATE links SET views=$views WHERE link='$url_parser'");
-            Logs::writeLog($e);
+            Logs::writeLog($e, $provider['name']);
             TechInfo::errorExit($e);
         }
     }
 } catch (\Throwable $e) {
-    Logs::writeLog($e);
+    Logs::writeLog($e, $provider);
     TechInfo::errorExit($e);
     var_dump($e);
 }

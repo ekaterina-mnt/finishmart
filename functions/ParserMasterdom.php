@@ -13,14 +13,7 @@ class ParserMasterdom
 {
     static function getCategory(string $url_parser): string
     {
-        $all_categories = [
-            0 => 'Обои и настенные покрытия',
-            1 => 'Напольные покрытия',
-            2 => 'Плитка и керамогранит',
-            3 => 'Сантехника',
-            4 => 'Краски',
-            5 => 'Лепнина',
-        ];
+        $all_categories = Parser::getCategoriesList();
 
         $category_links = [
             0 => 'oboi.masterdom.ru/find',
@@ -65,7 +58,7 @@ class ParserMasterdom
             13 => (isset($datum['product_kind']) ? boolval($datum['product_kind'] == 'Мозаика') : false),
         ];
 
-        $subcategories = self::$subcategories;
+        $subcategories = Parser::getSubcategoriesList();
 
         foreach ($subcategory_keys as $subcategory_key => $stmnt) {
             if ($stmnt) {
@@ -77,47 +70,9 @@ class ParserMasterdom
         return $subcategory ?? null;
     }
 
-    private static $subcategories = [
-        0 => 'Раковины',
-        1 => 'Унитазы, писсуары и биде',
-        2 => 'Ванны',
-        3 => 'Душевые',
-        4 => 'Смесители',
-        5 => 'Мебель для ванной',
-        6 => 'Аксессуары для ванной комнаты',
-        7 => 'Комплектующие',
-        8 => 'Полотенцесушители',
-        9 => 'Декоративные обои',
-        10 => 'Керамогранит',
-        11 => 'Керамическая плитка',
-        12 => 'Натуральный камень',
-        13 => 'Мозаика',
-    ];
-
-    static function getEdizm(string $category): string|null
-    {
-        $edizm_keys = [
-            boolval($category == 'Обои и настенные покрытия'),
-            boolval($category == 'Плитка и керамогранит'),
-            boolval($category == 'Сантехника'),
-        ];
-
-        $edizm_values = ["рулон", "м2", "шт"];
-
-        foreach ($edizm_keys as $i => $edizm_key) {
-            if ($edizm_key) {
-
-                $edizm = $edizm_values[$i];
-                break;
-            }
-        }
-
-        return $edizm ?? null;
-    }
-
     static function getProductLink(string $subcategory, string $articul, int|null $product_id, string|null $name_url): string|null
     {
-        $product_link_keys = self::$subcategories;
+        $product_link_keys = Parser::getSubcategoriesList();
         $product_link = null;
 
         $product_links = [
