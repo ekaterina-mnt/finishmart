@@ -36,22 +36,18 @@ class Parser
         return $document;
     }
 
-    static function getProvider(string $parser_link): array
+    static function getProvider(string $parser_link): string
     {
         $keys = [
             0 => str_contains($parser_link, 'masterdom'),
             1 => str_contains($parser_link, 'mosplitka'),
+            2 => str_contains($parser_link, 'ampir'),
         ];
 
         $values = [
-            [
-                "name" => 'https://masterdom.ru/',
-                "id" => 0
-            ],
-            [
-                "name" => 'https://mosplitka.ru',
-                "id" => 1
-            ],
+            0 => 'https://masterdom.ru/',
+            1 => 'https://mosplitka.ru',
+            2 => 'https://www.ampir.ru',
         ];
 
         foreach ($keys as $i => $key) {
@@ -215,8 +211,10 @@ class Parser
     static function getEdizmByUnit(string $edizm): string|null
     {
         $edizm_values = self::getEdizmList();
+        echo "here";
         switch ($edizm) {
             case "рулон":
+            case "рул.":
                 return $edizm_values[0];
                 break;
             case "м2":
@@ -231,6 +229,9 @@ class Parser
                 break;
             case "краски":
                 return $edizm_values[4];
+                break;
+            default:
+                return $edizm_values[2];
                 break;
         }
         return null;

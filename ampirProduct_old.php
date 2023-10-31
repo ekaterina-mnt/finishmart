@@ -12,8 +12,9 @@ TechInfo::start();
 
 try {
     $provider = 'ampir';
+    // $provider = Parser::getProvider($url_parser); 
 
-    for ($i = 1; $i < 16; $i++) {
+    for ($i = 1; $i < 2; $i++) {
 
         echo "<br><b>Товар $i</b><br><br>";
 
@@ -29,6 +30,7 @@ try {
 
         //Получаем ссылку
         $url_parser = $res['link'];
+        $url_parser = "https://www.ampir.ru/catalog/rozetki/356948/";
         TechInfo::whichLinkPass($url_parser);
 
         //Увеличиваем просмотры ссылки
@@ -245,10 +247,76 @@ try {
                     }
                 }
             }
-                        //подкатегория
+            
+            $all_product_data['edizm'][0] = $all_product_data['edizm'][0] ? $all_product_data['edizm'][0] : 'шт';
+
+
+            //НЕОБХОДИМЫЕ ПРОВЕРКИ + ГЕНЕРАЦИЯ ДАННЫХ ЕСЛИ НУЖНО
+
+            // if (!($all_product_data['articul'][0])) {
+            //     preg_match("#https://www.ampir.ru/catalog/.+/(\d+)/.*#", $url_parser, $matches);
+            //     $all_product_data['articul'][0] = $matches[1];
+            // }
+            // $check_if_articul_exists = ParserMosplitka::check_if_ampir_articul_exists($all_product_data['articul'][0], $provider, $url_parser);
+
+            // if ($check_if_articul_exists) {
+            //     if (isset($all_product_data['volume'][0])) {
+            //         preg_match("#https://www.ampir.ru/catalog/.+/(\d+)/.*#", $url_parser, $matches);
+            //         $all_product_data['articul'][0] .= ' ' . $matches[1];
+            //     } else {
+            //         $all_product_data['articul'][0] .= ParserMosplitka::getArticulIfExists($url_parser, $provider);
+            //         if (!isset($all_product_data['articul'][0])) {
+            //             Logs::writeCustomLog("не определен артикул товара, не добавлен в БД (+ не удалось его сгенерировать)", $provider, $url_parser);
+            //             echo "<b>ошибка:</b> не определен артикул товара, не добавлен в БД (+ не удалось его сгенерировать)";
+            //             continue;
+            //         }
+            //     }
+            //     echo "арктикул был сгенерирован";
+            //     Logs::writeCustomLog("не определено название товара, было сгенерировано название: '" . $all_product_data['title'][0] . "'", $provider, $url_parser);
+            // }
+
+
+            //подкатегория
             $all_product_data['subcategory'] = [ParserMosplitka::getSubcategoryAmpir($url_parser, $all_product_data['title'][0], $all_product_data['product_usages'][0] ?? null), 's'];
 
-            
+            if (!isset($all_product_data['subcategory'][0]) and !preg_match("#https://www.ampir.ru/catalog/kraski/.*#", $url_parser)) { //только у красок нет подкатегории
+                Logs::writeCustomLog("не определена единица измерения товара, не добавлен в БД", $provider, $url_parser);
+                echo "<b>ошибка:</b> не определен единица измерения товара, не добавлен в БД";
+                continue;
+            }
+
+            if (str_contains($category, 'Краски')) {
+                $all_product_data['edizm'] = [Parser::getEdizmByUnit('краски'), 's'] ?? null;
+            }
+
+            if (!isset($all_product_data['edizm'][0])) {
+                Logs::writeCustomLog("не определена единица измерения товара, не добавлен в БД", $provider, $url_parser);
+                echo "<b>ошибка:</b> не определен единица измерения товара, не добавлен в БД";
+                continue;
+            }
+
+
+            if (!($all_product_data['title'][0])) {
+                $all_product_data['title'][0] = $all_product_data['subcategory'][0] ? $all_product_data['subcategory'][0] . ' ' . $all_product_data['articul'][0] : $all_product_data['category'][0] . ' ' . $all_product_data['articul'][0];
+                if (!$all_product_data['title'][0]) {
+                    Logs::writeCustomLog("не определено название товара, не добавлен в БД", $provider, $url_parser);
+                    echo "<b>ошибка:</b> не определено название товара, не добавлен в БД";
+                    continue;
+                }
+                echo "название было сгенерировано";
+                Logs::writeCustomLog("не определено название товара, было сгенерировано название: '" . $all_product_data['title'][0] . "'", $provider, $url_parser);
+            }
+
+            if (!$all_product_data['title'][0]) {
+                Logs::writeCustomLog("не определено название товара, не добавлен в БД", $provider, $url_parser);
+                echo "<b>ошибка:</b> не определено название товара, не добавлен в БД";
+                continue;
+            }
+
+            //итоговое сравнение всех аттрибутов
+            // $all_product_data = TechInfo::allAtrr($all_product_data);
+            //
+
             $print_result = [];
             foreach ($all_product_data as $key => $val) {
                 $print_result[$key] = $val[0];
