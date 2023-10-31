@@ -71,14 +71,14 @@ try {
         }
         echo "<br><b>не было ошибок</b><br><br>";
     } catch (Throwable $e) {
-        MySQL::decreaseViews($views, $url_parser, $provider);
-        // Logs::writeLog($e, $provider);
+        MySQL::decreaseLinkViews($views, $url_parser, $provider);
+        Logs::writeLog($e, $provider);
      TechInfo::errorExit($e);
     }
     
 } catch (\Throwable $e) {
-    // Logs::writeLog($e, $provider);
-    // TechInfo::errorExit($e);
+    Logs::writeLog($e, $provider);
+    TechInfo::errorExit($e);
     var_dump($e);
 }
 

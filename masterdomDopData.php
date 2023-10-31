@@ -99,8 +99,7 @@ try {
             }
         } catch (Throwable $e) {
             //Снова уменьшаем просмотры, чтобы скрипт потом еще раз прошел ссылку и прекращаем работу скрипта
-            $views -= 1;
-            MySQL::sql("UPDATE links SET views=$views WHERE link='$url_parser'");
+            MySQL::decreaseProductViews($views, $url_parser, $provider['name']);
             Logs::writeLog($e, $provider['name']);
             TechInfo::errorExit($e);
         }

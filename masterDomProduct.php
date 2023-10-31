@@ -78,14 +78,12 @@ try {
 
         $category = $category ?? null;
         if (!$category) {
-            MySQL::decreaseViews($views, $url_parser, $provider);
             Logs::writeCustomLog("не определена категория товаров, не добавлены в БД", $provider, $url_parser);
             TechInfo::errorExit("не определена категория товаров, не добавлены в БД");
         }
 
         $api_data = $api_data ?? null;
         if (!$api_data) {
-            MySQL::decreaseViews($views, $url_parser, $provider);
             Logs::writeCustomLog("нет данных о товарах, не добавлены в БД", $provider, $url_parser);
             TechInfo::errorExit("нет данных о товарах, не добавлены в БД");
         }
@@ -116,7 +114,6 @@ try {
             $all_product_data['title'] = [$title, 's'];
             
             if (!$title) {
-                MySQL::decreaseViews($views, $url_parser, $provider);
                 Logs::writeCustomLog("не определено название товара, не добавлен в БД", $provider, $url_parser);
                 TechInfo::errorExit("не определено название товара, не добавлен в БД");
             }
@@ -126,7 +123,6 @@ try {
             $all_product_data['articul'] = [$articul, 's'];
 
             if (!$articul) {
-                MySQL::decreaseViews($views, $url_parser, $provider);
                 Logs::writeCustomLog("не определен артикул товара, не добавлен в БД", $provider, $url_parser);
                 TechInfo::errorExit("не определен артикул товара, не добавлен в БД");
             }
@@ -139,7 +135,6 @@ try {
             $all_product_data['subcategory'] = [$subcategory, 's'];
 
             if (!$subcategory) {
-                MySQL::decreaseViews($views, $url_parser, $provider);
                 Logs::writeCustomLog("не определена подкатегория товара, не добавлен в БД", $provider, $url_parser);
                 TechInfo::errorExit("не определена подкатегория товара, не добавлен в БД");
             }
@@ -151,7 +146,6 @@ try {
             $all_product_data['link'] = [$product_link, 's'];
 
             if (!$product_link) {
-                MySQL::decreaseViews($views, $url_parser, $provider);
                 Logs::writeCustomLog("не определена ссылка на товар, не добавлен в БД", $provider, $url_parser);
                 TechInfo::errorExit("не определена ссылка на товар, не добавлен в БД");
             }
@@ -286,7 +280,6 @@ try {
             Parser::insertProductData($types, $values, $product_link, $provider);
         }
     } catch (Throwable $e) {
-        MySQL::decreaseViews($views, $url_parser, $provider);
         Logs::writeLog($e, $provider, $url_parser);
         TechInfo::errorExit($e);
     }

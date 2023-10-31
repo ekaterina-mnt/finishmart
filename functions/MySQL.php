@@ -89,9 +89,9 @@ class MySQL
                 break;
             case "ampir":
                 $add_links = [
-                    "https://www.ampir.ru/catalog/oboi/page1/" => "catalog",
-                    "https://www.ampir.ru/catalog/lepnina/page1/" => "catalog",
-                    "https://www.ampir.ru/catalog/kraski/page1/" => "catalog", //категория Краски, подкатегории: Обои под покраску, Фотообои, Декоративные
+                    "https://www.ampir.ru/catalog/oboi/page1/" => "catalog", //категория Обои, подкатегории: Обои под покраску, Фотообои, Декоративные
+                    "https://www.ampir.ru/catalog/lepnina/page1/" => "catalog", //категория Лепнина, подкатегории: Карнизы, Молдинги, Плинтусы, Дверное обрамление, Потолочный декор, Другое
+                    "https://www.ampir.ru/catalog/kraski/page1/" => "catalog", //категория Краски, подкатегорий нет
                     "https://www.ampir.ru/catalog/shtukaturka/page1/" => "catalog", //категория Краски, подкатегория Штукатурка
                     "https://www.ampir.ru/catalog/rozetki/page1/" => "catalog", //категория Лепнина, подкатегория Розетки
                 ];
@@ -107,10 +107,21 @@ class MySQL
         }
     }
 
-    static function decreaseViews(int $views, string $url_parser, string $provider): void
+    static function decreaseProductViews(int $views, string $url_parser, string $provider): void
     {
-        $views -= 1;
-        $views = $views === 0 ? null : $views;
-        MySQL::sql("UPDATE " . $provider . "_links SET views=$views WHERE link='$url_parser'");
+        $query = "UPDATE " . $provider . "_links SET product_views=? WHERE link='$url_parser'";
+        $types = "i";
+        $views = --$views === 0 ? NULL : $views;
+        $values = array($views);
+        self::bind_sql($query, $types, $values);
+    }
+
+    static function decreaseLinkViews(int $views, string $url_parser, string $provider): void
+    {
+        $query = "UPDATE " . $provider . "_links SET views=? WHERE link='$url_parser'";
+        $types = "i";
+        $views = --$views === 0 ? NULL : $views;
+        $values = array($views);
+        self::bind_sql($query, $types, $values);
     }
 }

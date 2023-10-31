@@ -95,6 +95,7 @@ class Parser
 
     static function getSubcategoriesList(): array
     {
+        //не менять порядок
         $subcategories = [
             0 => 'Раковины',
             1 => 'Унитазы, писсуары и биде',
@@ -117,6 +118,12 @@ class Parser
             18 => 'Обои под покраску',
             19 => 'Штукатурка',
             20 => 'Розетки',
+            21 => 'Карнизы',
+            22 => 'Молдинги',
+            23 => 'Плинтусы',
+            24 => 'Дверное обрамление',
+            25 => 'Потолочный декор',
+            26 => 'Другое',
         ];
 
         return $subcategories;
@@ -213,6 +220,7 @@ class Parser
                 return $edizm_values[0];
                 break;
             case "м2":
+            case "кв. м":
                 return $edizm_values[1];
                 break;
             case "шт.":

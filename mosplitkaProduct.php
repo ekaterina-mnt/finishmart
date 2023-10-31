@@ -55,7 +55,6 @@ try {
                 $all_product_data['title'] = ($title_res and !isset($all_product_data['title'])) ? [trim($title_res[0]->text()), 's'] : [null, 's'];
                 
                 if (!$all_product_data['title'][0]) {
-                    MySQL::decreaseViews($views, $url_parser, $provider);
                     Logs::writeCustomLog("не определено название товара, не добавлен в БД", $provider, $url_parser);
                     echo "<b>ошибка:</b> не определено название товара, не добавлен в БД";
                     continue;
@@ -71,7 +70,6 @@ try {
                 $all_product_data['category'] = $categories['category'] ? [$categories['category'], 's'] :[null, 's'];
 
                 if (!isset($all_product_data['category'][0])) {
-                    MySQL::decreaseViews($views, $url_parser, $provider);
                     Logs::writeCustomLog("не определена категория товара, не добавлен в БД", $provider, $url_parser);
                     echo "<b>ошибка:</b> не определена категория товара, не добавлен в БД";
                     continue;
@@ -225,14 +223,12 @@ try {
                     }
 
                     if (!$all_product_data['subcategory']){
-                        MySQL::decreaseViews($views, $url_parser, $provider);
                         Logs::writeCustomLog("не определена подкатегория товара, не добавлен в БД", $provider, $url_parser);
                         echo "<b>ошибка:</b> не определена подкатегория товара, не добавлен в БД";
                         continue;
                     }
 
                     if (!$all_product_data['articul']) {
-                        MySQL::decreaseViews($views, $url_parser, $provider);
                         Logs::writeCustomLog("не определен артикул товара, не добавлен в БД", $provider, $url_parser);
                         echo "<b>ошибка:</b> не определен артикул товара, не добавлен в БД";
                         continue;
@@ -271,7 +267,7 @@ try {
 
             Parser::insertProductData($types, $values, $url_parser, $provider);
         } catch (Throwable $e) {
-            MySQL::decreaseViews($views, $url_parser, $provider);
+            MySQL::decreaseProductViews($views, $url_parser, $provider);
             Logs::writeLog($e, $provider, $url_parser);
             echo "<b>ошибка:</b> $e";
             continue;

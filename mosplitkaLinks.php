@@ -72,7 +72,7 @@ try {
         }
         echo "<br><b>не было ошибок</b><br><br>";
     } catch (Throwable $e) {
-        MySQL::decreaseViews($views, $url_parser, $provider);
+        MySQL::decreaseLinkViews($views, $url_parser, $provider);
         Logs::writeLog($e, $provider);
         TechInfo::errorExit($e);
     }

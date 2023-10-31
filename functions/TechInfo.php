@@ -80,7 +80,7 @@ class TechInfo
         $all_product_data['blending'] = $all_product_data['blending'] ?? [null, 's'];
         $all_product_data['volume'] = $all_product_data['volume'] ?? [null, 's'];
         $all_product_data['stock'] = $all_product_data['stock'] ?? [null, 's'];
-        $all_product_data['status'] = $all_product_data['archived'] ?? ['active', 's'];
+        $all_product_data['status'] = $all_product_data['archived'] ?? [null, 's'];
 
         return $all_product_data;
     }

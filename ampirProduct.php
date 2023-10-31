@@ -14,7 +14,7 @@ try {
     $provider = 'ampir';
     // $provider = Parser::getProvider($url_parser); 
 
-    for ($i = 1; $i < 2; $i++) {
+    for ($i = 1; $i < 11; $i++) {
 
         echo "<br><b>Товар $i</b><br><br>";
 
@@ -30,7 +30,6 @@ try {
 
         //Получаем ссылку
         $url_parser = $res['link'];
-        $url_parser = "https://www.ampir.ru/catalog/lepnina/331404/";
         TechInfo::whichLinkPass($url_parser);
 
         //Увеличиваем просмотры ссылки
@@ -45,12 +44,11 @@ try {
             echo "<b>итоговые данные, которые мы спарсили:</b><br><br>";
             $print_result = [];
 
-            //начало
             $all_product_data['link'] = [$url_parser, 's'];
 
             $check_if_complect = ParserMosplitka::check_if_complect($document);
             $check_if_archieve = ParserMosplitka::check_if_archive($document);
-            
+
             if ($check_if_archieve) {
                 $all_product_data['status'] = ['archived', 's'];
             }
@@ -60,21 +58,13 @@ try {
             } else {
 
                 //название товара
-                $title_res = $document->find('.single-product___page-header__h1, .tile__title, .dititle');
+                $title_res = $document->find('.dititle');
                 $all_product_data['title'] = ($title_res and !isset($all_product_data['title'])) ? [trim($title_res[0]->text()), 's'] : [null, 's'];
 
-                if (!$all_product_data['title'][0]) {
-                    MySQL::decreaseViews($views, $url_parser, $provider);
-                    Logs::writeCustomLog("не определено название товара, не добавлен в БД", $provider, $url_parser);
-                    echo "<b>ошибка:</b> не определено название товара, не добавлен в БД";
-                    continue;
-                }
-
                 //цена
-                $price_res = $document->find('.single-product___main-info--price span, .tile-shop__price, .newprice');
+                $price_res = $document->find('.newprice');
                 if ($price_res) {
-                    preg_match("#([0-9 ]+)([^0-9]+)#", $price_res[0]->text(), $carm);
-                    $all_product_data['price'] = ($carm and !isset($all_product_data['price'])) ? [(int) str_replace(' ', '', trim($carm[1])), 'i'] : [null, 'i'];
+                    $all_product_data['price'] = (!isset($all_product_data['price'])) ? [(int) str_replace(' ', '', trim($price_res[0]->text())), 'i'] : [null, 'i'];
                 }
                 $all_product_data['price'] = isset($all_product_data['price']) ? $all_product_data['price'] : [null, 'i'];
 
@@ -83,27 +73,22 @@ try {
                 $all_product_data['category'] = $category ? [$category, 's'] : [null, 's'];
 
                 if (!isset($all_product_data['category'][0])) {
-                    MySQL::decreaseViews($views, $url_parser, $provider);
                     Logs::writeCustomLog("не определена категория товара, не добавлен в БД", $provider, $url_parser);
                     echo "<b>ошибка:</b> не определена категория товара, не добавлен в БД";
                     continue;
                 }
 
-                // //остатки товара
-                // $stock_res = $document->find('.single-product___main-info--tag-item.is-green.e__flex.e__aic.e__jcc, .tile-shop-plashki-item.tile-shop-plashki-item__green'); //остатки на складе
-                // $all_product_data['stock'] = ($stock_res) ? [str_replace('М', 'м', str_replace(" • ", ", ", trim($stock_res[0]->text()))), 's'] : [null, 's'];
-
                 //все характеристики
-                $characteristics_res = $document->find('.single-product___atts-att.e__flex.e__aic, .tile-prop-tabs__item, .dfparams tr');
+                $characteristics_res = $document->find('.dfparams tr');
 
                 if ($characteristics_res) {
                     $characteristics = array();
 
                     foreach ($characteristics_res as $charact) {
 
-                        $name = trim(str_replace(':', '', $charact->find('.q_prop__name, .tile-prop-tabs__name, .dfplabel')[0]->text()));
-                        $value = trim($charact->find('.q_prop__value, .tile-prop-tabs__value-name, .dfpval')[0]->text());
-                        
+                        $name = trim(str_replace(':', '', $charact->find('.dfplabel')[0]->text()));
+                        $value = trim($charact->find('.dfpval')[0]->text());
+
                         $value = implode(', ', explode('/', $value));
 
                         $characteristics[$name] = $value;
@@ -213,13 +198,6 @@ try {
                             $all_product_data['facture'] = [$value, 's'];
                         }
 
-
-                        //подкатегория(для плитки)
-                        if (str_contains($name, 'Категория') and !isset($all_product_data['subcategory'])) {
-                            $subcategory = ParserMosplitka::validateSubcategory($category, $value);
-                            $all_product_data['subcategory'] = $subcategory ? [$subcategory, 's'] : null;
-                        }
-
                         //тип
                         if ($name == 'Тип' or $name == 'Тип краски' and !isset($all_product_data['type'])) {
                             $all_product_data['type'] = [$value, 's'];
@@ -269,15 +247,75 @@ try {
                 }
             }
 
+            $all_product_data['articul'] = isset($all_product_data['articul']) ? $all_product_data['articul'] : [null, 's'];
+
+
+
+
+            //НЕОБХОДИМЫЕ ПРОВЕРКИ + ГЕНЕРАЦИЯ ДАННЫХ ЕСЛИ НУЖНО
+
+            if (!($all_product_data['articul'][0])) {
+                preg_match("#https://www.ampir.ru/catalog/.+/(\d+)/.*#", $url_parser, $matches);
+                $all_product_data['articul'][0] = $matches[1];
+            }
+            $check_if_articul_exists = ParserMosplitka::check_if_ampir_articul_exists($all_product_data['articul'][0], $provider, $url_parser);
+
+            if ($check_if_articul_exists) {
+                if (isset($all_product_data['volume'][0])) {
+                    preg_match("#https://www.ampir.ru/catalog/.+/(\d+)/.*#", $url_parser, $matches);
+                    $all_product_data['articul'][0] .= ' ' . $matches[1];
+                } else {
+                    $all_product_data['articul'][0] .= ParserMosplitka::getArticulIfExists($url_parser, $provider);
+                    if (!isset($all_product_data['articul'][0])) {
+                        Logs::writeCustomLog("не определен артикул товара, не добавлен в БД (+ не удалось его сгенерировать)", $provider, $url_parser);
+                        echo "<b>ошибка:</b> не определен артикул товара, не добавлен в БД (+ не удалось его сгенерировать)";
+                        continue;
+                    }
+                }
+                echo "арктикул был сгенерирован";
+                Logs::writeCustomLog("не определено название товара, было сгенерировано название: '" . $all_product_data['title'][0] . "'", $provider, $url_parser);
+            }
+
+
             //подкатегория
-            $all_product_data['subcategory'] = [ParserMosplitka::getSubcategoryAmpir($url_parser, $all_product_data['title'][0]), 's'];
+            $all_product_data['subcategory'] = [ParserMosplitka::getSubcategoryAmpir($url_parser, $all_product_data['title'][0], $all_product_data['product_usages'][0] ?? null), 's'];
+
+            if (!isset($all_product_data['subcategory'][0]) and !preg_match("#https://www.ampir.ru/catalog/kraski/.*#", $url_parser)) { //только у красок нет подкатегории
+                Logs::writeCustomLog("не определена единица измерения товара, не добавлен в БД", $provider, $url_parser);
+                echo "<b>ошибка:</b> не определен единица измерения товара, не добавлен в БД";
+                continue;
+            }
 
             if (str_contains($category, 'Краски')) {
                 $all_product_data['edizm'] = [Parser::getEdizmByUnit('краски'), 's'] ?? null;
             }
 
+            if (!isset($all_product_data['edizm'][0])) {
+                Logs::writeCustomLog("не определена единица измерения товара, не добавлен в БД", $provider, $url_parser);
+                echo "<b>ошибка:</b> не определен единица измерения товара, не добавлен в БД";
+                continue;
+            }
+
+
+            if (!($all_product_data['title'][0])) {
+                $all_product_data['title'][0] = $all_product_data['subcategory'][0] ? $all_product_data['subcategory'][0] . ' ' . $all_product_data['articul'][0] : $all_product_data['category'][0] . ' ' . $all_product_data['articul'][0];
+                if (!$all_product_data['title'][0]) {
+                    Logs::writeCustomLog("не определено название товара, не добавлен в БД", $provider, $url_parser);
+                    echo "<b>ошибка:</b> не определено название товара, не добавлен в БД";
+                    continue;
+                }
+                echo "название было сгенерировано";
+                Logs::writeCustomLog("не определено название товара, было сгенерировано название: '" . $all_product_data['title'][0] . "'", $provider, $url_parser);
+            }
+
+            if (!$all_product_data['title'][0]) {
+                Logs::writeCustomLog("не определено название товара, не добавлен в БД", $provider, $url_parser);
+                echo "<b>ошибка:</b> не определено название товара, не добавлен в БД";
+                continue;
+            }
+
             //итоговое сравнение всех аттрибутов
-            $all_product_data = TechInfo::allAtrr($all_product_data);
+            // $all_product_data = TechInfo::allAtrr($all_product_data);
             //
 
             $print_result = [];
@@ -285,15 +323,27 @@ try {
                 $print_result[$key] = $val[0];
             }
             TechInfo::preArray($print_result);
+
+
+            //Для передачи в MySQL
+
+            $types = '';
+            $values = array();
+            foreach ($all_product_data as $key => $n) {
+                $types .= $n[1];
+                $values[$key] = $n[0];
+            }
+
+            Parser::insertProductData($types, $values, $url_parser, $provider);
         } catch (Throwable $e) {
-            // MySQL::decreaseViews($views, $url_parser, $provider);
-            // Logs::writeLog($e, $provider, $url_parser);
+            MySQL::decreaseProductViews($views, $url_parser, $provider);
+            Logs::writeLog($e, $provider, $url_parser);
             echo "<b>ошибка:</b> $e";
             continue;
         }
     }
 } catch (\Throwable $e) {
-    // Logs::writeLog($e, $provider);
+    Logs::writeLog($e, $provider);
     TechInfo::errorExit($e);
     var_dump($e);
 }
