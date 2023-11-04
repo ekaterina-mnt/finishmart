@@ -13,3 +13,7 @@
 <a href="/ampirLinks.php">ampirLinks.php</a>
 <br><br>
 <a href="/ampirProduct.php">ampirProduct.php</a>
+<br><br>
+<a href="/all_links.php">all_links.php</a>
+<br><br>
+<a href="/all_products.php">all_products.php</a>

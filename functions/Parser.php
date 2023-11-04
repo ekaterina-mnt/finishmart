@@ -20,8 +20,8 @@ class Parser
             [
                 'headers' => [
                     'X-Requested-With' => 'XMLHttpRequest',
-                ]
-            ]
+                ],
+            ],
         );
 
         $document = self::getHTML($response);
@@ -42,12 +42,18 @@ class Parser
             0 => str_contains($parser_link, 'masterdom'),
             1 => str_contains($parser_link, 'mosplitka'),
             2 => str_contains($parser_link, 'ampir'),
+            3 => str_contains($parser_link, 'laparet'),
+            4 => str_contains($parser_link, 'ntceramic'),
+            5 => str_contains($parser_link, 'olimpparket')
         ];
 
         $values = [
-            0 => 'https://masterdom.ru/',
-            1 => 'https://mosplitka.ru',
-            2 => 'https://www.ampir.ru',
+            0 => 'masterdom',
+            1 => 'mosplitka',
+            2 => 'ampir',
+            3 => 'laparet',
+            4 => 'ntceramic',
+            5 => 'olimpparket',
         ];
 
         foreach ($keys as $i => $key) {
@@ -120,6 +126,16 @@ class Parser
             24 => 'Дверное обрамление',
             25 => 'Потолочный декор',
             26 => 'Другое',
+            27 => 'Ламинат',
+            28 => 'Инженерная доска',
+            29 => 'Паркетная доска',
+            30 => 'Штучный паркет',
+            31 => 'Виниловые полы',
+            32 => 'Подложка под напольные покрытия',
+            33 => 'Плинтус напольный',
+            34 => 'Массивная доска',
+            35 => 'Пробковое покрытие',
+            36 => 'Линолиум',
         ];
 
         return $subcategories;
@@ -132,12 +148,29 @@ class Parser
         return $api_data;
     }
 
-    static function insertLink(string $link, string $link_type, string $provider): string
+    static function insertLink(string $link, string $link_type, string $provider = null): string
+    {
+        if ($provider) {
+            try {
+                $query = "INSERT INTO " . $provider . "_links (link, type) VALUES (?, ?)";
+                $types = "ss";
+                $values = [$link, $link_type];
+                MySQL::bind_sql($query, $types, $values);
+                return "success";
+            } catch (\Exception $e) {
+                Logs::writeLog($e, $provider, $link);
+                var_dump($e);
+                return "fail";
+            }
+        }
+    }
+
+    static function insertLink1(string $link, string $link_type, string $provider): string
     {
         try {
-            $query = "INSERT INTO " . $provider . "_links (link, type) VALUES (?, ?)";
-            $types = "ss";
-            $values = [$link, $link_type];
+            $query = "INSERT INTO all_links (link, type, provider) VALUES (?, ?, ?)";
+            $types = "sss";
+            $values = [$link, $link_type, $provider];
             MySQL::bind_sql($query, $types, $values);
             return "success";
         } catch (\Exception $e) {
@@ -145,6 +178,22 @@ class Parser
             var_dump($e);
             return "fail";
         }
+    }
+
+    static function generateLink($href, $provider, $url_parser = null)
+    {
+        $starts = [
+            'laparet' => 'https://laparet.ru',
+            'ntceramic' => 'https://ntceramic.ru',
+            'olimpparket' => 'https://olimpparket.ru',
+            'domix' => 'https://moscow.domix-club.ru',
+        ];
+
+        if ($url_parser == 'https://olimpparket.ru/catalog/plintusa_i_porogi/' and !str_contains($href, "/catalog")) {
+            return $url_parser . $href;
+        }
+
+        return $starts[$provider] . $href;
     }
 
     static function insertProductData(string $types, array $values, string $product_link, string $provider): void
@@ -196,6 +245,54 @@ class Parser
         }
     }
 
+    static function insertProductData1(string $types, array $values, string $product_link): void
+    {
+        //Получаем товар
+        $product = MySQL::sql("SELECT id FROM all_products WHERE link='$product_link'");
+
+        $quest = '';
+        $colms = "";
+
+        foreach ($values as $key => $value) {
+            $values[$key] = isset($value) ? html_entity_decode($value) : null;
+        }
+
+        // echo count($values) . ' ' . count($columns) . '<br>';
+
+        if ($product->num_rows) {
+            $date_edit = MySQL::get_mysql_datetime();
+            $types .= 's';
+            $values["date_edit"] = $date_edit;
+            $id = mysqli_fetch_assoc($product)['id'];
+
+            $query = "UPDATE all_products SET ";
+            foreach ($values as $key => $value) {
+                $query .= "`" . $key . "`=?, ";
+            }
+            $query = substr($query, 0, -2);
+            $query .= " WHERE id=$id";
+
+            // echo $query . "<br>";
+        } else {
+            $query = "INSERT INTO all_products (";
+            foreach ($values as $key => $value) {
+                $colms .= $key . ", ";
+                $quest .= "?, ";
+            }
+            $colms = substr($colms, 0, -2) . ")";
+            $quest = substr($quest, 0, -2);
+            $query .= $colms . " VALUES (" . $quest . ")";
+            // echo $query . "<br>";
+        }
+
+        try {
+            MySQL::bind_sql($query, $types, array_values($values));
+            echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
+        } catch (\Exception $e) {
+            echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
+        }
+    }
+
     static function getEdizmList(): array
     {
         $edizm = [
@@ -211,7 +308,6 @@ class Parser
     static function getEdizmByUnit(string $edizm): string|null
     {
         $edizm_values = self::getEdizmList();
-        echo "here";
         switch ($edizm) {
             case "рулон":
             case "рул.":
@@ -256,5 +352,81 @@ class Parser
         }
 
         return $edizm ?? null;
+    }
+
+    static function getLinkType(string $link): string|null
+    {
+        $keys = [
+            'product' => [
+                // preg_match("#https://mosplitka.ru/product.+#", $link),
+                // preg_match("#https://www.ampir.ru/catalog/.+/\d+/#", $link),
+                preg_match("#https://laparet.ru/catalog/.+\.html#", $link),
+                preg_match("#https://ntceramic.ru/catalog/.+/.*#", $link) and !preg_match("#https://ntceramic.ru/catalog/.+/?PAGEN_.+#", $link),
+                preg_match("#https://olimpparket.ru/product/.+/#", $link),
+                preg_match("#https://www.olimpparket.ru/catalog/plintusa_i_porogi/.+/.+/.+/#", $link),
+                preg_match(("#https://moscow.domix-club.ru/catalog/.+/.+/.*#"), $link),
+                preg_match("#https://finefloor.ru/product/.+#", $link),
+            ],
+            'catalog' => [
+                // preg_match("#https://mosplitka.ru/catalog.+#", $link) and !preg_match("#.php$#", $link),
+                preg_match("#https://olimpparket.ru/catalog/.+/#", $link),
+                preg_match("#https://www.ampir.ru/catalog/.+/page\d+.*#", $link),
+                preg_match("#https://ntceramic.ru/catalog/.+/?PAGEN_.+#", $link),
+                preg_match("#https://laparet.ru/catalog/.+page=\d+#", $link),
+                preg_match("#https://finefloor.ru/catalog/.+#", $link),
+                preg_match("#https://moscow.domix-club.ru/catalog/.+/?PAGEN_.+#", $link),
+            ],
+        ];
+
+        foreach ($keys as $key => $statements) {
+            foreach ($statements as $stmnt) {
+                if ($stmnt) {
+                    return $key;
+                }
+            }
+        }
+        return null;
+    }
+
+    static function getImages(array $images_res, string $provider): string
+    {
+        $keys = [
+            'ntceramic' => [
+                "attr" => "href",
+                "start" => "https://ntceramic.ru",
+                "replace" => "",
+            ],
+            'domix' => [
+                "attr" => "content",
+                "start" => "https://moscow.domix-club.ru",
+                "replace" => "",
+            ],
+            "laparet" => [
+                "attr" => "href",
+                "start" => "https://laparet.ru",
+                "replace" => "",
+            ],
+            "olimpparket" => [
+                "attr" => "href",
+                "start" => "https://www.olimpparket.ru",
+                "replace" => "",
+            ]
+        ];
+        $images = array();
+
+        foreach ($images_res as $i => $img) {
+            // echo $i . ' ' . $img->attr($keys[$provider]['attr']) . "<br />";
+            $i += 1;
+            if ($img->attr($keys[$provider]['attr'])) {
+                $src = $keys[$provider]['start'] . $img->attr($keys[$provider]['attr']);
+                // $src = str_replace("60_999_1", "700_370_1c25f2b498b88af7d613b511c3b4f7424", $src); //больше размер
+                // $src = str_replace("50_999_1", "500_999_1c25f2b498b88af7d613b511c3b4f7424", $src); //больше размер
+
+                if (array_search($src, $images)) continue;
+                $images["img$i"] = $src;
+            }
+        }
+        $images = json_encode($images, JSON_UNESCAPED_SLASHES);
+        return $images;
     }
 }
