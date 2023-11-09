@@ -58,6 +58,51 @@ class Categories
         return $char_value;
     }
 
+    static function getCategoriesByLink($product_link, $provider)
+    {
+        $all_categories = Parser::getCategoriesList($provider);
+        $all_subcategories = Parser::getSubcategoriesList($provider);
+
+        $keys = [
+            'alpinefloor' => [
+                [
+                    'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/spc-laminat') or (str_contains($product_link, "https://alpinefloor.su/catalog/laminat")),
+                    'category' => $all_categories[1],
+                    'subcategory' => $all_subcategories[27],
+                ],
+                [
+                    'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/kvartsvinilovaya-plitka'),
+                    'category' => $all_categories[1],
+                    'subcategory' => $all_subcategories[37],
+                ],
+                [
+                    'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/inzhenernaya-doska/'),
+                    'category' => $all_categories[1],
+                    'subcategory' => $all_subcategories[28],
+                ],
+                [
+                    'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/'),
+                    'category' => $all_categories[0],
+                    'subcategory' => $all_subcategories[26],
+                ],
+                [
+                    'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/related-products/'),
+                    'category' => $all_categories[1],
+                    'subcategory' => $all_subcategories[39],
+                ]
+            ],
+        ];
+
+        foreach ($keys[$provider] as $num => $value) {
+            if ($value['condition']) {
+                return [
+                    "category" => $keys[$provider][$num]['category'],
+                    "subcategory" => $keys[$provider][$num]['subcategory'],
+                ];
+            }
+        }
+    }
+
 
     static function getCategoriesByPath(array $path, $provider)
     {
@@ -93,21 +138,9 @@ class Categories
                     'subcategory' => $all_subcategories[11],
                 ],
             ],
-            'laparet' => [
-                'сантехника' => [
-                    'category' => $all_categories[3],
-                    'subcategory' => null, //в характеристиках - "категория"
-                ],
-                'керамогранит' => [
-                    'category' => $all_categories[2],
-                    'subcategory' => $all_subcategories[10],
-                ],
-                'керамическая плитка' => [
-                    'category' => $all_categories[2],
-                    'subcategory' => $all_subcategories[11],
-                ],
-            ],
             'domix' => [],
+            'dplintus' => [],
+            'centerkrasok' => [],
         ];
 
         $result = [
@@ -127,6 +160,7 @@ class Categories
             //если категории не прописаны в моем массиве $keys - прописываются категории поставщика
 
             if (!str_contains(trim(mb_strtolower($path_value)), 'каталог') and !str_contains(trim(mb_strtolower($path_value)), 'главная')) {
+
                 if (!isset($result['category'])) {
                     $result['category'] = $path_value;
                 } elseif (isset($result['category']) and !isset($result['subcategory'])) {

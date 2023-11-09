@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class Parser
 {
-    static function guzzleConnect(string $link): Document
+    static function guzzleConnect(string $link, $encoding = null): Document
     {
         $client = new GuzzleClient(['verify' => false]);
         $response = $client->request(
@@ -24,15 +24,19 @@ class Parser
             ],
         );
 
-        $document = self::getHTML($response);
+        $document = self::getHTML($response, $encoding ?? null);
 
         return $document;
     }
 
-    static function getHTML(ResponseInterface $response): Document
+    static function getHTML(ResponseInterface $response, $encoding = null): Document
     {
         $document = $response->getBody()->getContents();
-        $document = new Document($document);
+        if ($encoding) {
+            $document = new Document(string: $document, encoding: $encoding);
+        } else {
+            $document = new Document(string: $document);
+        }
         return $document;
     }
 
@@ -81,8 +85,29 @@ class Parser
         return null;
     }
 
+    static function nextLinkSurgaz(string $url_parser)
+    {
+        preg_match("#(.+PAGEN_1=)(\d+)(.*)#", $url_parser, $matches);
+
+        if ($matches) {
+            $new_offset_value = $matches[2] + 1;
+            $new_link = $matches[1] . $new_offset_value . $matches[3];
+
+            if ($new_link) {
+                $query = "INSERT INTO all_links (link, type, provider) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE type='product'";
+                $types = "sss";
+                $values = [$new_link, 'product', 'surgaz'];
+                MySQL::bind_sql($query, $types, $values);
+                echo "<b>Следующая ссылка: </b> $new_link (добавлена в БД)<br><br>";
+            }
+        }
+
+        return null;
+    }
+
     static function getCategoriesList(): array
     {
+        //не менять порядок
         $categories = [
             0 => 'Обои и настенные покрытия',
             1 => 'Напольные покрытия',
@@ -136,6 +161,9 @@ class Parser
             34 => 'Массивная доска',
             35 => 'Пробковое покрытие',
             36 => 'Линолиум',
+            37 => 'Кварцвиниловые полы',
+            38 => 'Кварциниловые панели',
+            39 => 'Сопутствующие',
         ];
 
         return $subcategories;
@@ -187,12 +215,20 @@ class Parser
             'ntceramic' => 'https://ntceramic.ru',
             'olimpparket' => 'https://olimpparket.ru',
             'domix' => 'https://moscow.domix-club.ru',
+            'finefloor' => "https://finefloor.ru",
+            'tdgalion' => "https://www.tdgalion.ru",
+            'dplintus' => "https://dplintus.ru",
+            'surgaz' => "https://surgaz.ru",
+            'centerkrasok' => "https://www.centerkrasok.ru",
+            'alpinefloor' => "https://alpinefloor.su",
         ];
 
         if ($url_parser == 'https://olimpparket.ru/catalog/plintusa_i_porogi/' and !str_contains($href, "/catalog")) {
             return $url_parser . $href;
         }
 
+        if ($provider == 'lkrn') return $href;     
+        
         return $starts[$provider] . $href;
     }
 
@@ -271,7 +307,6 @@ class Parser
             }
             $query = substr($query, 0, -2);
             $query .= " WHERE id=$id";
-
             // echo $query . "<br>";
         } else {
             $query = "INSERT INTO all_products (";
@@ -366,6 +401,12 @@ class Parser
                 preg_match("#https://www.olimpparket.ru/catalog/plintusa_i_porogi/.+/.+/.+/#", $link),
                 preg_match(("#https://moscow.domix-club.ru/catalog/.+/.+/.*#"), $link),
                 preg_match("#https://finefloor.ru/product/.+#", $link),
+                preg_match("#https://www.tdgalion.ru/catalog\/[^\/]+\/[^\/]+\/#", $link) and !preg_match("#https://www.tdgalion.ru/catalog.+PAGEN_.+#", $link),
+                preg_match("#https://dplintus.ru/catalog\/[^\/]+\/[^\/]+\/#", $link),
+                preg_match("#https://surgaz.ru/katalog\/[^\/]+\/#", $link),
+                preg_match("#https://www.centerkrasok.ru/product\/[^\/]+\/#", $link),
+                preg_match("#https://alpinefloor.su/catalog\/.+#", $link),
+                preg_match("#https://lkrn.ru/product\/.+#", $link),
             ],
             'catalog' => [
                 // preg_match("#https://mosplitka.ru/catalog.+#", $link) and !preg_match("#.php$#", $link),
@@ -375,6 +416,10 @@ class Parser
                 preg_match("#https://laparet.ru/catalog/.+page=\d+#", $link),
                 preg_match("#https://finefloor.ru/catalog/.+#", $link),
                 preg_match("#https://moscow.domix-club.ru/catalog/.+/?PAGEN_.+#", $link),
+                preg_match("#https://www.tdgalion.ru/catalog.+PAGEN_.+#", $link),
+                preg_match("#https://dplintus.ru/catalog\/[^\/]+\/#", $link),
+                preg_match("#https://www.centerkrasok.ru/catalog\/[^\/]+\/#", $link),
+                preg_match("#https://lkrn.ru/product-category/.+#", $link),
             ],
         ];
 
@@ -388,42 +433,65 @@ class Parser
         return null;
     }
 
-    static function getImages(array $images_res, string $provider): string
+    static function getImages($images_res, string $provider): string
     {
         $keys = [
             'ntceramic' => [
                 "attr" => "href",
                 "start" => "https://ntceramic.ru",
-                "replace" => "",
             ],
             'domix' => [
                 "attr" => "content",
                 "start" => "https://moscow.domix-club.ru",
-                "replace" => "",
             ],
             "laparet" => [
                 "attr" => "href",
                 "start" => "https://laparet.ru",
-                "replace" => "",
             ],
             "olimpparket" => [
                 "attr" => "href",
                 "start" => "https://www.olimpparket.ru",
-                "replace" => "",
+            ],
+            "finefloor" => [
+                "attr" => "href",
+                "start" => "https://finefloor.ru",
+            ],
+            "surgaz" => [
+                "attr" => "data-src",
+                "start" => "https://surgaz.ru",
+            ],
+            "dplintus" => [
+                "attr" => "src",
+                "start" => "https://dplintus.ru",
+            ],
+            "tdgalion" => [
+                "attr" => "data-src",
+                "start" => "https://www.tdgalion.ru",
+            ],
+            "centerkrasok" => [
+                "attr" => "data-image",
+                "start" => "https://www.centerkrasok.ru",
+            ],
+            "alpinefloor" => [
+                "attr" => "href", 
+                "start" => "https://alpinefloor.su",
+            ],
+            "lkrn" => [
+                "attr" => "href",
+                "start" => "",
             ]
         ];
+
         $images = array();
 
+        $n = 1;
         foreach ($images_res as $i => $img) {
             // echo $i . ' ' . $img->attr($keys[$provider]['attr']) . "<br />";
-            $i += 1;
             if ($img->attr($keys[$provider]['attr'])) {
                 $src = $keys[$provider]['start'] . $img->attr($keys[$provider]['attr']);
-                // $src = str_replace("60_999_1", "700_370_1c25f2b498b88af7d613b511c3b4f7424", $src); //больше размер
-                // $src = str_replace("50_999_1", "500_999_1c25f2b498b88af7d613b511c3b4f7424", $src); //больше размер
-
-                if (array_search($src, $images)) continue;
-                $images["img$i"] = $src;
+                if (array_search($src, $images) or str_contains($src, "youtube")) continue;
+                $images["img$n"] = $src;
+                $n += 1;
             }
         }
         $images = json_encode($images, JSON_UNESCAPED_SLASHES);

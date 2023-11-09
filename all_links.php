@@ -18,11 +18,12 @@ use GuzzleHttp\Client as GuzzleClient;
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 6; $i++) {
+    for ($i = 1; $i < 2; $i++) {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='lkrn' ORDER BY views, id LIMIT 1");
+
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
             TechInfo::errorExit("первый запрос, добавлены первичные ссылки для парсинга (или нет ссылок с типом `каталог`)");
@@ -33,6 +34,7 @@ try {
         //Получаем ссылку
         $url_parser = $res['link'];
         $provider = $res['provider'];
+        $url_parser = "https://lkrn.ru/catalog/";
         // $provider = Parser::getProvider($url_parser);
 
         TechInfo::whichLinkPass($url_parser);
@@ -60,7 +62,19 @@ try {
             ".catalog-tablet-wr a",
             "article .catalog__category a",
             ".paginations-list li a",
+            ".catalog__items__list a",
+            "a.product-item__link", //tdgalion
+            ".pagination-nav a", //tdgalion
+            ".category-grid a.item", //dplintus
+            ".product-grid a.product-item-image-wrapper", //dplintus
+            ".catalog a[href*=katalog]", //surgaz
+            "ul.catalog li a", //centerkrasok
+            ".dPagingParent a", //centerkrasok
+            ".catalogBox a", //centerkrasok
+            ".sub_item a", //centerkrasok
+            ".products__items a", //alpanefloor
         ];
+
         $search_classes = implode(", ", $search_classes);
         $all_res = $document->find($search_classes);
 
@@ -70,17 +84,16 @@ try {
         foreach ($all_res as $href) {
             $link = Parser::generateLink($href->attr('href'), $provider, $url_parser);
 
+
             // избавляемся от дублей
-            if (MySQL::sql("SELECT id, link FROM all_links WHERE link='$link'")->num_rows) 
-            {
+            if (MySQL::sql("SELECT id, link FROM all_links WHERE link='$link'")->num_rows) {
                 echo "$link - ссылка уже есть в БД<br>";
                 continue;
             }
 
             //определяем это ссылка на продукт или каталог
             $link_type = Parser::getLinkType($link);
-            if (!$link_type)             
-            {
+            if (!$link_type) {
                 echo "$link - не определился тип ссылки<br>";
                 continue;
             }

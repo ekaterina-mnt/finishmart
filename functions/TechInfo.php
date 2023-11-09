@@ -22,9 +22,11 @@ class TechInfo
         exit();
     }
 
-    static function whichLinkPass($link)
+    static function whichLinkPass($link, $sub = null)
     {
-        echo '<b>скрипт проходил ссылку <a href="' . $link . '">' . $link . '</a></b><br><br>';
+        echo '<b>скрипт проходил ссылку <a href="' . $link . '">' . $link . '</a>';
+        if (isset($sub)) echo " - брались товары по API";
+        echo '</b><br><br>';
     }
 
     static function iArray($array)

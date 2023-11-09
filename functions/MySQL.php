@@ -113,26 +113,26 @@ class MySQL
         } else {
 
             $add_links = [
-                // "https://laparet.ru/catalog/?page=1" => [
-                //     "catalog",
-                //     'laparet',
-                // ],
-                // "https://ntceramic.ru/catalog/keramogranit/?PAGEN_1=1" => [
-                //     "catalog",
-                //     'ntceramic',
-                // ],
-                // "https://ntceramic.ru/catalog/santekhnika/?PAGEN_1=1" => [
-                //     "catalog",
-                //     'ntceramic',
-                // ],
-                // "https://ntceramic.ru/catalog/mebel/?PAGEN_1=1" => [
-                //     "catalog",
-                //     'ntceramic',
-                // ],
-                // "https://www.olimpparket.ru/catalog/" => [
-                //     "catalog",
-                //     'olimpparket',
-                // ],
+                "https://laparet.ru/catalog/?page=1" => [
+                    "catalog",
+                    'laparet',
+                ],
+                "https://ntceramic.ru/catalog/keramogranit/?PAGEN_1=1" => [
+                    "catalog",
+                    'ntceramic',
+                ],
+                "https://ntceramic.ru/catalog/santekhnika/?PAGEN_1=1" => [
+                    "catalog", 
+                    'ntceramic',
+                ],
+                "https://ntceramic.ru/catalog/mebel/?PAGEN_1=1" => [
+                    "catalog",
+                    'ntceramic',
+                ],
+                "https://www.olimpparket.ru/catalog/" => [
+                    "catalog",
+                    'olimpparket',
+                ],
                 "https://moscow.domix-club.ru/catalog/laminat/?PAGEN_1=1" => [
                     "catalog",
                     'domix',
@@ -201,9 +201,57 @@ class MySQL
                     "catalog",
                     'domix',
                 ],
-                // "https://finefloor.ru/catalog/" => [
+                "https://finefloor.ru/catalog/" => [
+                    "catalog",
+                    "finefloor",
+                ],
+                "https://surgaz.ru/ajax.php?ajax=Y&PAGEN_1=1&PAGE_ELEMENT_COUNT=1000&LANGUAGE_ID=ru&act=collection" => [
+                    "catalog",
+                    "surgaz",
+                ],
+                "https://alpinefloor.su/catalog/spc-laminat/" => [
+                    "catalog",
+                    "alpinefloor",
+                ],
+                "https://alpinefloor.su/catalog/kvartsvinilovaya-plitka/" => [
+                    "catalog",
+                    "alpinefloor",
+                ],
+                "https://alpinefloor.su/catalog/laminat/" => [
+                    "catalog",
+                    "alpinefloor",
+                ],
+                "https://alpinefloor.su/catalog/inzhenernaya-doska/" => [
+                    "catalog",
+                    "alpinefloor",
+                ],
+                "https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/" => [
+                    "catalog",
+                    "alpinefloor",
+                ],
+                "https://alpinefloor.su/catalog/related-products/" => [
+                    "catalog",
+                    "alpinefloor",
+                ],
+                "https://www.centerkrasok.ru/catalog/" => [
+                    "catalog",
+                    "centerkrasok",
+                ], 
+                "https://www.tdgalion.ru/catalog/?view=products" => [
+                    "catalog",
+                    "tdgalion",
+                ],
+                "https://dplintus.ru/catalog/" => [
+                    "catalog",
+                    "dplintus",
+                ],
+                "https://lkrn.ru/catalog/" => [
+                    "catalog",
+                    "lkrn",
+                ], 
+                // "https://artkera.ru/collections/" => [
                 //     "catalog",
-                //     "finefloor",
+                //     "artkera",
                 // ],
             ];
 
