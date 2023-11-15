@@ -15,13 +15,14 @@ use functions\ParserMosplitka;
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 21; $i++) {
+    for ($i = 1; $i < 2; $i++) {
+        // sleep(mt_rand(2,6));
 
         echo "<br><b>Товар $i</b><br><br>";
 
 
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='masterdom' ORDER BY product_views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='ampir' ORDER BY product_views, id LIMIT 1");
 
         if (!$query->num_rows) {
             // Logs::writeCustomLog("не получено ссылки для парсинга", $provider);

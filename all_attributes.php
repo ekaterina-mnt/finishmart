@@ -2,6 +2,7 @@
 
 use functions\TechInfo;
 use functions\Parser;
+use functions\ParserMosplitka;
 use functions\Logs;
 use functions\Categories;
 
@@ -17,6 +18,7 @@ $attributes_classes = [
         ".item h1", //centerkrasok
         "h1.item-detail__header", //alpinefloor
         ".product_title", //lkrn
+        ".dititle", //ampir
     ],
 
     "price" => [
@@ -29,7 +31,8 @@ $attributes_classes = [
         ".product-item-detail-price-current", //dplintus
         ".sku-info .price", //centerkrasok
         ".item-detail-price__value", //alpinefloor
-        ".price .woocommerce-Price-amount bdi"
+        ".price .woocommerce-Price-amount bdi",
+        ".newprice", //ampir
     ],
 
     "stock" => [
@@ -80,6 +83,7 @@ $attributes_classes = [
         ".product-item-detail-properties dt", //dplintus
         ".item-detail-classes .item-detail-class", //alpinefloor
         ".tile-card__prop-title", //artkera
+        ".dfparams tr .dfplabel", //ampir
     ],
 
     "char_name" => [
@@ -93,6 +97,7 @@ $attributes_classes = [
         ".product-item-detail-properties dt", //dplintus
         ".item-detail-class__title", //alpinefloor
         ".tile-card__prop-title", //artkera
+        ".dfparams tr .dfplabel", //ampir
     ],
 
     "char_value" => [
@@ -106,6 +111,7 @@ $attributes_classes = [
         ".product-item-detail-properties dd", //dplintus
         ".item-detail-class__name", //alpinefloor
         "..tile-card__prop-desc", //artkera
+        ".dfparams tr .dfpval", //ampir
     ],
 
     "path" => [
@@ -135,6 +141,14 @@ $attributes_classes = [
         ".posted_in a", //lkrn
     ],
 ];
+
+if ($provider == 'ampir') {
+    $check_if_archieve = ParserMosplitka::check_if_archive($document);
+
+    if ($check_if_archieve) {
+        $all_product_data['status'] = ['archived', 's'];
+    }
+}
 
 
 //название товара
@@ -234,6 +248,10 @@ if ($provider == 'olimpparket' and isset($all_product_data['title'][0])) {
 if ($provider == 'lkrn') {
     $categories_res = $document->find(implode(', ', $attributes_classes['category']));
     $all_product_data['category'] = !empty($categories_res) ? [$categories_res[0]->text(), 's'] : [null, 's'];
+} elseif ($provider == 'ampir') {
+    $category = Categories::getCategoryAmpir($url_parser);
+    $all_product_data['category'] = $category ? [$category, 's'] : [null, 's'];
+    $all_product_data['subcategory'] = [Categories::getSubcategoryAmpir($url_parser, $all_product_data['title'][0], $all_product_data['product_usages'][0] ?? null), 's'];
 }
 
 //подкатегория
@@ -300,21 +318,175 @@ if ($provider == 'lkrn') {
 
         $characteristics[$name] = $value;
 
+
+        //артикул
         if ((str_contains(mb_strtolower($name), "артикул") and $provider != 'tdgalion') or
             (str_contains(mb_strtolower($name), 'код товара') and $provider == 'alpinefloor')
         ) {
             $all_product_data['articul'] = [$value, 's'];
         }
 
+        //код 1с
         if (str_contains(mb_strtolower($name), "код 1с")) {
             $all_product_data['good_id_from_provider'] = [$value, 's'];
         }
 
+        //категория
         if ((str_contains($name, "категория") and !isset($all_product_data['subcategory'][0])) or
             ((str_contains(mb_strtolower($name), "тип товара") and !isset($all_product_data['subcategory'][0]) and $provider == 'tdgalion'))
         ) {
             $subcategory = Categories::getSubcategoryByCharacteristics($value);
             $all_product_data['subcategory'] = [$value, 's'];
+        }
+
+
+        /////////////////////////////////////////////////БЫЛО ДО АМПИРА///////////////////////////////////////////////////////////////////
+
+
+        //производитель
+        if ($name == 'Производитель') {
+            $all_product_data['producer'] = [$value, 's'];
+        }
+
+        //бренд
+        if ($name == 'Бренд') {
+            $all_product_data['brand'] = [$value, 's'];
+        }
+
+        //коллекция
+        if ($name == 'Коллекция') {
+            $all_product_data['collection'] = [$value, 's'];
+        }
+
+        //длина          
+        if (str_contains($name, 'Длина')) {
+            $all_product_data['length'] = [(float) str_replace(",", ".", $value), 'd'];
+        }
+
+        //ширина          
+        if (str_contains($name, 'Ширина')) {
+            $all_product_data['width'] = [(float) str_replace(",", ".", $value), 'd'];
+        }
+
+        //высота          
+        if (str_contains($name, 'Высота')) {
+            $all_product_data['height'] = [(float) str_replace(",", ".", $value), 'd'];
+        }
+
+        //глубина          
+        if (str_contains($name, 'Глубина')) {
+            $all_product_data['depth'] = [(float) str_replace(",", ".", $value), 'd'];
+        }
+
+        //толщина          
+        if (str_contains($name, 'Толщина')) {
+            $all_product_data['thickness'] = [(float) str_replace(",", ".", $value), 'd'];
+        }
+
+        //формат          
+        if (str_contains($name, 'Формат')) {
+            $all_product_data['format'] = [str_replace(["X", "Х", "x", "х"], "x", $value), 's'];
+        }
+
+        //материал          
+        if (str_contains($name, 'Материал') or str_contains($name, 'Тип материала')) {
+            $all_product_data['material'] = [$value, 's'];
+        }
+
+        //страна          
+        if (str_contains($name, 'Страна')) {
+            $all_product_data['country'] = [$value, 's'];
+        }
+
+        //форма      
+        if (str_contains($name, 'Форма')) {
+            $all_product_data['form'] = [$value, 's'];
+        }
+
+        //цвет    
+        if (str_contains($name, 'Цвет') or str_contains($name, 'цвет')) {
+            $all_product_data['color'] = [$value, 's'];
+        }
+
+        //монтаж
+        if (str_contains($name, 'Тип установки') or str_contains($name, 'Монтаж')) {
+            $all_product_data['montage'] = [$value, 's'];
+        }
+
+        //дизайн
+        if (str_contains($name, 'Стиль') or str_contains($name, 'Дизайн')) {
+            $all_product_data['design'] = [$value, 's'];
+        }
+
+        //рисунок 
+        if (str_contains($name, 'Рисунок')) {
+            $all_product_data['pattern'] = [$value, 's'];
+        }
+
+        //ориентация
+        if (str_contains($name, 'Ориентация')) {
+            $all_product_data['orientation'] = [$value, 's'];
+        }
+
+        //поверхность
+        if (str_contains($name, 'Поверхность')) {
+            $all_product_data['surface'] = [$value, 's'];
+        }
+
+        //назначение
+        if (str_contains($name, 'Назначение') or str_contains($name, 'Применение')) {
+            $all_product_data['product_usages'] = [$value, 's'];
+        }
+
+        //фактура
+        if (str_contains($name, 'Фактура')) {
+            $all_product_data['facture'] = [$value, 's'];
+        }
+
+        //тип
+        if (($name == 'Тип' or $name == 'Тип краски') and $provider == 'ampir') {
+            $all_product_data['type'] = [$value, 's'];
+        }
+
+        //единица измерения
+        if (str_contains($name, 'Ед. изм.') and !isset($all_product_data['edizm'])) {
+            $edizm = Parser::getEdizmByUnit($value);
+            $all_product_data['edizm'] = [$edizm, 's'];
+        }
+
+        //разбавление
+        if (str_contains($name, 'Разбавление') and !isset($all_product_data['dilution'])) {
+            $all_product_data['dilution'] = [$value, 's'];
+        }
+
+        //расход
+        if ($name == 'Расход' and !isset($all_product_data['consumption'])) {
+            $all_product_data['consumption'] = [$value, 's'];
+        }
+
+        //область применения
+        if ($name == 'Область применения' and !isset($all_product_data['area'])) {
+            $all_product_data['usable_area'] = [$value, 's'];
+        }
+
+        //способ нанесения
+        if ($name == 'Способ нанесения' and !isset($all_product['method'])) {
+            $all_product_data['method'] = [$value, 's'];
+        }
+
+        //количество слоев 
+        if ($name == 'Количество слоев краски' and !isset($all_product_data['count_layers'])) {
+            $all_product_data['count_layers'] = [$value, 's'];
+        }
+
+        //колеровка
+        if ($name == 'Колеровка' and !isset($all_product_data['blending'])) {
+            $all_product_data['blending'] = [$value, 's'];
+        }
+
+        //объем банки
+        if (str_contains($name, 'Объем банки') and !isset($all_product_data['volume'])) {
+            $all_product_data['volume'] = [$value, 's'];
         }
     }
 

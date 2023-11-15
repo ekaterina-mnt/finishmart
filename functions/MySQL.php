@@ -98,6 +98,30 @@ class MySQL
                     "catalog",
                     "mosplitka",
                 ],
+                "https://mosplitka.ru/catalog/plitka/view_product/" => [
+                    'catalog', 
+                    'mosplitka',
+                ],
+                "https://www.ampir.ru/catalog/oboi/page1/" => [ //категория Обои, подкатегории: Обои под покраску, Фотообои, Декоративные
+                    "catalog",
+                    "ampir",
+                ],
+                "https://www.ampir.ru/catalog/lepnina/page1/" => [ //категория Лепнина, подкатегории: Карнизы, Молдинги, Плинтусы, Дверное обрамление, Потолочный декор, Другое
+                    "catalog",
+                    "ampir",
+                ],
+                "https://www.ampir.ru/catalog/kraski/page1/" => [ //категория Краски, подкатегорий нет
+                    "catalog",
+                    "ampir",
+                ],
+                "https://www.ampir.ru/catalog/shtukaturka/page1/" => [ //категория Краски, подкатегория Штукатурка
+                    "catalog",
+                    "ampir",
+                ],
+                "https://www.ampir.ru/catalog/rozetki/page1/" => [ //категория Лепнина, подкатегория Розетки
+                    "catalog",
+                    "ampir",
+                ],
                 "https://oboi.masterdom.ru/find/?sort=popular&offset=0" => [
                     "product",
                     "masterdom",
@@ -151,7 +175,7 @@ class MySQL
                     'ntceramic',
                 ],
                 "https://ntceramic.ru/catalog/santekhnika/?PAGEN_1=1" => [
-                    "catalog", 
+                    "catalog",
                     'ntceramic',
                 ],
                 "https://ntceramic.ru/catalog/mebel/?PAGEN_1=1" => [
@@ -265,7 +289,7 @@ class MySQL
                 "https://www.centerkrasok.ru/catalog/" => [
                     "catalog",
                     "centerkrasok",
-                ], 
+                ],
                 "https://www.tdgalion.ru/catalog/?view=products" => [
                     "catalog",
                     "tdgalion",
@@ -277,7 +301,7 @@ class MySQL
                 "https://lkrn.ru/catalog/" => [
                     "catalog",
                     "lkrn",
-                ], 
+                ],
                 "https://artkera.ru/collections/" => [
                     "catalog",
                     "artkera",

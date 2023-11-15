@@ -1,19 +1,21 @@
 <?php
 
 use functions\TechInfo;
-            $print_result = [];
-            foreach ($all_product_data as $key => $val) {
-                $print_result[$key] = $val[0];
-            }
-            TechInfo::preArray($print_result);
+use functions\Parser;
 
-            //Для передачи в MySQL
+$print_result = [];
+foreach ($all_product_data as $key => $val) {
+    $print_result[$key] = $val[0];
+}
+TechInfo::preArray($print_result);
 
-            $types = '';
-            $values = array();
-            foreach ($all_product_data as $key => $n) {
-                $types .= $n[1];
-                $values[$key] = $n[0];
-            }
+//Для передачи в MySQL
 
-            // Parser::insertProductData1($types, $values, $url_parser);
+$types = '';
+$values = array();
+foreach ($all_product_data as $key => $n) {
+    $types .= $n[1];
+    $values[$key] = $n[0];
+}
+
+Parser::insertProductData1($types, $values, $url_parser);

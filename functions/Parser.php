@@ -11,8 +11,12 @@ use Psr\Http\Message\ResponseInterface;
 
 class Parser
 {
-    static function guzzleConnect(string $link, $encoding = null): Document
+    static function guzzleConnect(string $link, $encoding = null, $num = null): Document
     {
+        $proxies = [
+            'http://74vy0Q:RJ8SWP@192.168.16.1:10', //https://shopproxy.net/lk/
+            'http://5LIZu3:C8V5mJmxxY@46.8.16.94', //https://ru.dashboard.proxy.market/proxy
+        ];
         $client = new GuzzleClient(['verify' => false]);
         $response = $client->request(
             'GET',
@@ -20,6 +24,8 @@ class Parser
             [
                 'headers' => [
                     'X-Requested-With' => 'XMLHttpRequest',
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36 OPR/104.0.0.0 (Edition Yx 05)',
+                    'Cookie' => 'BITRIX_SM_FIRST_SITE_VIZIT=otherpage; BITRIX_SM_H2O_COOKIE_USER_ID=0c7b53e54c7a1261c53b057b9344953b; BITRIX_SM_REASPEKT_GEOBASE=false; BITRIX_SM_REASPEKT_LAST_IP=54.86.50.139%2C%2046.235.188.17%2C%20212.193.152.15; BITRIX_SM_ab_test_list_buttons=A; PHPSESSID=6MCzH3hwXwzcVmd6iqznkLxR76Ci6yJA; region=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0',
                 ],
             ],
         );
@@ -230,7 +236,7 @@ class Parser
             return $url_parser . $href;
         }
 
-        if ($provider == 'lkrn') return $href;
+        if (in_array($provider, ['lkrn', 'ampir'])) return $href;
 
         return $starts[$provider] . $href;
     }
@@ -311,6 +317,7 @@ class Parser
             $query = substr($query, 0, -2);
             $query .= " WHERE id=$id";
             // echo $query . "<br>";
+            echo "<b>товар должен обновиться</b><br><br>";
         } else {
             $query = "INSERT INTO all_products (";
             foreach ($values as $key => $value) {
@@ -321,6 +328,7 @@ class Parser
             $quest = substr($quest, 0, -2);
             $query .= $colms . " VALUES (" . $quest . ")";
             // echo $query . "<br>";
+            echo "<b>товар должен добавиться</b><br><br>";
         }
 
         try {
@@ -329,7 +337,6 @@ class Parser
         } catch (\Exception $e) {
             echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
         }
-        exit;
     }
 
     static function getEdizmList(): array
@@ -398,7 +405,7 @@ class Parser
         $keys = [
             'product' => [
                 preg_match("#https://mosplitka.ru/product.+#", $link),
-                preg_match("#https://www.ampir.ru/catalog/.+/\d+/#", $link),
+                preg_match("#https://ampir.ru/catalog/.+/\d+/#", $link),
                 preg_match("#https://laparet.ru/catalog/.+\.html#", $link),
                 preg_match("#https://ntceramic.ru/catalog/.+/.*#", $link) and !preg_match("#https://ntceramic.ru/catalog/.+/?PAGEN_.+#", $link),
                 preg_match("#https://olimpparket.ru/product/.+/#", $link),
@@ -418,7 +425,7 @@ class Parser
             'catalog' => [
                 preg_match("#https://mosplitka.ru/catalog.[^?]+#", $link) and !preg_match("#.php$#", $link),
                 preg_match("#https://olimpparket.ru/catalog/.+/#", $link),
-                preg_match("#https://www.ampir.ru/catalog/.+/page\d+.*#", $link),
+                preg_match("#https://ampir.ru/catalog/.+/page\d+.*#", $link),
                 preg_match("#https://ntceramic.ru/catalog/.+/?PAGEN_.+#", $link),
                 preg_match("#https://laparet.ru/catalog/.+page=\d+#", $link),
                 preg_match("#https://finefloor.ru/catalog/.+#", $link),
@@ -515,3 +522,4 @@ class Parser
         return $images;
     }
 }
+

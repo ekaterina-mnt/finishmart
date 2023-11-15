@@ -22,7 +22,7 @@ try {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='mosplitka' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='ampir' ORDER BY views, id LIMIT 1");
 
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
@@ -49,13 +49,18 @@ try {
         $document = Parser::guzzleConnect($url_parser);
 
         //Получаем все данные со страницы
-
         $search_classes = [
             ".catalog_nav_list .cc__hl_inner li a", //mosplitka
             ".product-list-block a[href*=product]", //mosplitka
             ".catSection a[href*=product]", //mosplitka
             ".pagination-catalog a[href*=catalog]", //mosplitka
-            ".products-count-search__wrap a", //mosplitka
+            // ".products-count-search__wrap a", //mosplitka
+            ".swiper-wrapper .swiper-slide a[href*=catalog]", //mosplitka
+            ".product-list-block a[href*=product]", //ampir
+            ".catSection a[href*=product]", //ampir
+            ".brand__row a[href*=catalog]", //ampir
+            ".pagination-catalog a[href*=catalog]", //ampir
+            ".pagination-list a[href*=catalog]", //ampir
             ".catalog__data a",
             ".section-list a",
             "#content ul li a",
@@ -83,9 +88,7 @@ try {
             // ".col-prod-nav a.col-prod-nav-item", //evroplast
             // ".col-prod-tab a", //evroplast
             // ".content-wrapper a.collection-see", //evroplast
-        ];
-
-        
+        ];        
 
         $search_classes = implode(", ", $search_classes);
         $all_res = $document->find($search_classes);
@@ -96,10 +99,15 @@ try {
         foreach ($all_res as $href) {
             $link = Parser::generateLink($href->attr('href'), $provider, $url_parser);
 
-
             // избавляемся от дублей
             if (MySQL::sql("SELECT id, link FROM all_links WHERE link='$link'")->num_rows) {
                 echo "$link - ссылка уже есть в БД<br>";
+                continue;
+            }
+
+            if (($provider == 'mosplitka' and str_contains($link, "//filter//")) or
+            ($provider == 'mosplitka' and $link == 'https://mosplitka.ru/catalog/plitka/')) {
+                echo "$link - ненужная ссылка-фильтр<br>";
                 continue;
             }
 
