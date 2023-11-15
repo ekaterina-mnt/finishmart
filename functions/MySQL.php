@@ -22,6 +22,7 @@ class MySQL
 
         $stmt->bind_param($types, ...$values);
         $stmt->execute();
+        if ($stmt->errno) var_dump($stmt->errno);
         $stmt->close();
     }
 
@@ -68,26 +69,6 @@ class MySQL
                         "https://api.masterdom.ru/api/rest/bathrooms/parts/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
                     ];
                     break;
-                case "mosplitka":
-                    $add_links = [
-                        "https://mosplitka.ru/catalog/rakoviny/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/unitazy/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/pissuary/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/bide/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/installyatsii/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/klavishi-smyva/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/vanny/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/kukhonnye-moyki/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/smesiteli/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/polotentsesushiteli/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/mebel-dlya-vannoy/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/aksessuary/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/dushevye-garnitury/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/poddony-trapy-lotki/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/dushevye-boksy/?PAGEN_1=1" => "catalog",
-                        "https://mosplitka.ru/catalog/plitka/view_product/?PAGEN_1=1" => "catalog",
-                    ];
-                    break;
                 case "ampir":
                     $add_links = [
                         "https://www.ampir.ru/catalog/oboi/page1/" => "catalog", //категория Обои, подкатегории: Обои под покраску, Фотообои, Декоративные
@@ -113,6 +94,54 @@ class MySQL
         } else {
 
             $add_links = [
+                "https://mosplitka.ru/catalog/" => [
+                    "catalog",
+                    "mosplitka",
+                ],
+                "https://oboi.masterdom.ru/find/?sort=popular&offset=0" => [
+                    "product",
+                    "masterdom",
+                ],
+                "https://api.masterdom.ru/api/rest/tile/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                    "product",
+                    "masterdom",
+                ],
+                "https://api.masterdom.ru/api/rest/bathrooms/sink/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                    "product",
+                    "masterdom",
+                ],
+                "https://api.masterdom.ru/api/rest/bathrooms/toilet_bidet/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                    "product",
+                    "masterdom",
+                ],
+                "https://api.masterdom.ru/api/rest/bathrooms/bathtub/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                    "product",
+                    "masterdom",
+                ],
+                "https://api.masterdom.ru/api/rest/bathrooms/shower/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                    "product",
+                    "masterdom",
+                ],
+                "https://api.masterdom.ru/api/rest/bathrooms/faucet/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                    "product",
+                    "masterdom",
+                ],
+                "https://api.masterdom.ru/api/rest/bathrooms/furniture/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                    "product",
+                    "masterdom",
+                ],
+                "https://api.masterdom.ru/api/rest/bathrooms/accessories/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                    "product",
+                    "masterdom",
+                ],
+                "https://santehnika.masterdom.ru/polotencesushitely/catalog/" => [
+                    "product",
+                    "masterdom",
+                ],
+                "https://api.masterdom.ru/api/rest/bathrooms/parts/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                    "product",
+                    "masterdom",
+                ],
                 "https://laparet.ru/catalog/?page=1" => [
                     "catalog",
                     'laparet',
@@ -249,10 +278,14 @@ class MySQL
                     "catalog",
                     "lkrn",
                 ], 
-                // "https://artkera.ru/collections/" => [
-                //     "catalog",
-                //     "artkera",
-                // ],
+                "https://artkera.ru/collections/" => [
+                    "catalog",
+                    "artkera",
+                ],
+                "https://evroplast.ru/smart_search/ajax.php?type=get_list" => [
+                    "product",
+                    "evroplast",
+                ],
             ];
 
             foreach ($add_links as $link => $data) {

@@ -22,13 +22,13 @@ $attributes_classes = [
     "price" => [
         ".single-price", //domix
         ".product-page.product_details .price span", //olimpparket
-        // ".productCard__priceValue", //laparet
-        // ".good-price__value", //ntceramic
-        // ".catalog__product__info__price .price", //finefloor
-        // ".sproduct-price__value", //tdgalion
-        // ".product-item-detail-price-current", //dplintus
-        // ".sku-info .price", //centerkrasok
-        // ".item-detail-price__value", //alpinefloor
+        ".productCard__priceValue", //laparet
+        ".good-price__value", //ntceramic
+        ".catalog__product__info__price .price", //finefloor
+        ".sproduct-price__value", //tdgalion
+        ".product-item-detail-price-current", //dplintus
+        ".sku-info .price", //centerkrasok
+        ".item-detail-price__value", //alpinefloor
         ".price .woocommerce-Price-amount bdi"
     ],
 
@@ -79,6 +79,7 @@ $attributes_classes = [
         ".sproduct-info__name", //tdgalion
         ".product-item-detail-properties dt", //dplintus
         ".item-detail-classes .item-detail-class", //alpinefloor
+        ".tile-card__prop-title", //artkera
     ],
 
     "char_name" => [
@@ -91,6 +92,7 @@ $attributes_classes = [
         ".sproduct-info__name", //tdgalion
         ".product-item-detail-properties dt", //dplintus
         ".item-detail-class__title", //alpinefloor
+        ".tile-card__prop-title", //artkera
     ],
 
     "char_value" => [
@@ -103,6 +105,7 @@ $attributes_classes = [
         ".sproduct-info__value", //tdgalion
         ".product-item-detail-properties dd", //dplintus
         ".item-detail-class__name", //alpinefloor
+        "..tile-card__prop-desc", //artkera
     ],
 
     "path" => [
@@ -130,8 +133,9 @@ $attributes_classes = [
     "category" => [
         ".sproduct-info__value",
         ".posted_in a", //lkrn
-    ]
+    ],
 ];
+
 
 //название товара
 $title_res = $document->find(implode(', ', $attributes_classes['title']));
@@ -299,18 +303,18 @@ if ($provider == 'lkrn') {
         if ((str_contains(mb_strtolower($name), "артикул") and $provider != 'tdgalion') or
             (str_contains(mb_strtolower($name), 'код товара') and $provider == 'alpinefloor')
         ) {
-            $all_product_data['articul'] = [$value, 'i'];
+            $all_product_data['articul'] = [$value, 's'];
         }
 
         if (str_contains(mb_strtolower($name), "код 1с")) {
-            $all_product_data['good_id_from_provider'] = [$value, 'i'];
+            $all_product_data['good_id_from_provider'] = [$value, 's'];
         }
 
         if ((str_contains($name, "категория") and !isset($all_product_data['subcategory'][0])) or
             ((str_contains(mb_strtolower($name), "тип товара") and !isset($all_product_data['subcategory'][0]) and $provider == 'tdgalion'))
         ) {
             $subcategory = Categories::getSubcategoryByCharacteristics($value);
-            $all_product_data['subcategory'] = [$value, 'i'];
+            $all_product_data['subcategory'] = [$value, 's'];
         }
     }
 

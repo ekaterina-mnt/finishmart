@@ -1,179 +1,520 @@
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Title");
-?>
-<?
-
-$db = mysqli_connect('ekatergz.beget.tech', 'ekatergz_2109', 'G&LCN&8t', 'ekatergz_2109');
-mysqli_query($db, 'SET character_set_results = "utf8"');
-$query = "SELECT * FROM all_products LIMIT 1";
-$result = mysqli_query($db, $query);
-
-foreach ($result as $good) {
- // echo "<pre>";
-// print_r($good);
-//  echo "</pre>";
-}
-echo "<br><br><br>";
-
-CModule::IncludeModule('iblock');
-CModule::IncludeModule('sale');
-
-///////////////ОБЪЯВЛЕНИЕ НУЖНЫХ ПЕРЕМЕННЫХ
-$PRODUCT_ID = $PRODUCT_OFFER_ID = 327;
-$IBLOCK_ID = 2; //категория
-$IBLOCK_SECTION_ID = 2; //подкатегория
-$CODE = "blahf1fdfff2er";
-$TITLE = 'Тестовый товар битрикс';
-$PRICE = 666;
-$QUANTITY = 10;
-$ARTICLE =  "my45arti";
-$PROP1 = array();
-$PROP[2] = $TITLE;
-$PROP[3] = '';
-$PROP[4] = '';
-$PROP[5] = "MY brend";
-$PROP[6] = "Y";
-$PROP[7] = "N";
-$PROP[8] = "N";
-$PROP[9] = $ARTICLE;
-$PROP[10] = "FF";
-$PROP[11] = 'f';
-$PROP[12] = 'Розовый';
-$PROP[13] = 'fa';
-$PROP[14] = "MY brend";
-$PROP[15] = "Y";
-$PROP[16] = "N";
-$PROP[17] = "N";
-$PROP[18] = "my45arti";
-$PROP2 = array();
-$PROP[19] = $PRODUCT_ID;
-$PROP[20] = $ARTICLE;
-$PROP[21] = '';
-$PROP[22] = "MY brend";
-$PROP[23] = "Y";
-$PROP[24] = "N";
-///////////////////////////////////////////
-
-
-
-
-$ciBlockElement = new CIBlockElement;
-
-// Добавляем товар-родитель, у которго будут торг. предложения
-
-$arProductFields = array(
-    "ID" => $PRODUCT_ID,
-    "MODIFIED_BY"    => $USER->GetID(), // элемент изменен текущим пользователем
-    "IBLOCK_SECTION_ID" => $IBLOCK_SECTION_ID,
-    "IBLOCK_ID"      => $IBLOCK_ID,
-    "CODE" => $CODE,
-    "PROPERTY_VALUES" => $PROP1,
-    "NAME"           => $TITLE,
-    "TYPE" => \Bitrix\Catalog\ProductTable::TYPE_SKU,
-    "WEIGHT" => 3,
-    "WIDTH" => 4,
-    "LENGTH" => 5,
-    "HEIGHT" => 6,
-    "ACTIVE"         => "Y", // активен
-    "PREVIEW_TEXT"   => "текст для списка элементов",
-    "DETAIL_TEXT"    => "текст для детального просмотра",
-);
-
-
-// добавляем нужное кол-во торговых предложений
-$arFields = array(
-    "ID" => $PRODUCT_OFFER_ID,
-    "IBLOCK_ID"      => $IBLOCK_ID, // IBLOCK торговых предложений
-    "NAME"           => $TITLE,
-    "ACTIVE"         => "Y",
-    "IBLOCK_SECTION_ID" => $IBLOCK_SECTION_ID,
-    "CODE" => $CODE,
-    'PROPERTY_VALUES' => $PROP2,
-    // Прочие параметры товара 
+class Parser
+{
+static function guzzleConnect(string $link, $encoding = null): Document
+{
+$link = "https://masterdom.ru";
+$client = new GuzzleClient(['verify' => false]);
+$response = $client->request(
+'GET',
+$link,
+[
+'headers' => [
+//'X-Requested-With' => 'XMLHttpRequest',
+'User-Agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/0.A.B.C Safari/525.13',
+'Cookie' => 'bh=EjciQ2hyb21pdW0iO3Y9IjExOCIsIk9wZXJhIjt2PSIxMDQiLCJOb3Q9QT9CcmFuZCI7dj0iOTkiGgUieDg2IiIPIjEwNC4wLjQ5NDQuMzYiKgI/MDoJIldpbmRvd3MiQggiMTUuMC4wIkoEIjY0IlJTIkNocm9taXVtIjt2PSIxMTguMC41OTkzLjExOCIsIk9wZXJhIjt2PSIxMDQuMC40OTQ0LjM2IiwiTm90PUE/QnJhbmQiO3Y9Ijk5LjAuMC4wIiI=; Expires=Tue, 12-Nov-2024 13:56:00 GMT; Domain=.yandex.ru; Path=/; SameSite=None; Secure',
+],
+'config' => [
+'curl' => [
+CURLOPT_SSLVERSION => 'CURL_SSLVERSION_MAX_TLSv1_2',
+CURLOPT_SSL_VERIFYPEER => false,
+CURLOPT_SSL_VERIFYHOST => false,
+CURLOPT_USE_SSL => 'CURLUSESSL_ALL',
+CURLOPT_CUSTOMREQUEST => 'GET',
+]
+],
+],
 );
 
 
 
 
+$document = self::getHTML($response, $encoding ?? null);
 
-$existProduct = \Bitrix\Catalog\Model\Product::getCacheItem($PRODUCT_ID, true);
-var_dump($existProduct);
+return $document;
+}
 
-if (!empty($existProduct)) {
-    $i = CCatalogProduct::update($PRODUCT_ID, $arFields);
+static function getHTML(ResponseInterface $response, $encoding = null): Document
+{
+$document = $response->getBody()->getContents();
+if ($encoding) {
+$document = new Document(string: $document, encoding: $encoding);
 } else {
-    $i = CCatalogProduct::add($arFields);
+$document = new Document(string: $document);
+}
+return $document;
 }
 
-// проверка на ошибки
-if (!empty($i)) {
-    echo "Ошибка добавления торгового предложения: ";
-    var_dump($i->LAST_ERROR);
-    die();
+static function getProvider(string $parser_link): string
+{
+$keys = [
+0 => str_contains($parser_link, 'masterdom'),
+1 => str_contains($parser_link, 'mosplitka'),
+2 => str_contains($parser_link, 'ampir'),
+3 => str_contains($parser_link, 'laparet'),
+4 => str_contains($parser_link, 'ntceramic'),
+5 => str_contains($parser_link, 'olimpparket')
+];
+
+$values = [
+0 => 'masterdom',
+1 => 'mosplitka',
+2 => 'ampir',
+3 => 'laparet',
+4 => 'ntceramic',
+5 => 'olimpparket',
+];
+
+foreach ($keys as $i => $key) {
+if ($key) {
+return $values[$i];
 }
-echo "here";
-// Добавляем параметры к торг. предложению
-if ($ciBlockElement->GetByID($PRODUCT_ID)) {
-    $ciBlockElement->Update($PRODUCT_ID, $PROP2);
-    // проверка на ошибки
-if (!empty($ciBlockElement->LAST_ERROR)) {
-    echo "Ошибка добавления торгового предложения: " . $ciBlockElement->LAST_ERROR;
-    die();
 }
-    CCatalogProduct::Update($PRODUCT_ID, 
-        array(
-            
-            "ID" => $PRODUCT_OFFER_ID,
-            "QUANTITY" => $QUANTITY,
-        )
-    );
-    $re = CPrice::Update($PRODUCT_ID,
-        array(
-            "CURRENCY" => "RUB",
-            "PRICE" => $PRICE,
-            "CATALOG_GROUP_ID" => $IBLOCK_ID,
-            "PRODUCT_ID" => $PRODUCT_OFFER_ID,
-        )
-    );
+}
+
+static function nextLink(string $link, int $limit): string|null
+{
+preg_match("#(.+offset=)(\d+)(.*)#", $link, $matches);
+if ($matches) {
+$new_offset_value = $matches[2] + $limit;
+$new_link = $matches[1] . $new_offset_value . $matches[3];
+
+$document = self::guzzleConnect($new_link);
+$api_data = self::getApiData($document);
+
+if (boolval(count($api_data) > 0)) {
+return $new_link;
+}
+}
+
+return null;
+}
+
+static function nextLinkSurgaz(string $url_parser)
+{
+preg_match("#(.+PAGEN_1=)(\d+)(.*)#", $url_parser, $matches);
+
+if ($matches) {
+$new_offset_value = $matches[2] + 1;
+$new_link = $matches[1] . $new_offset_value . $matches[3];
+
+if ($new_link) {
+$query = "INSERT INTO all_links (link, type, provider) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE type='product'";
+$types = "sss";
+$values = [$new_link, 'product', 'surgaz'];
+MySQL::bind_sql($query, $types, $values);
+echo "<b>Следующая ссылка: </b> $new_link (добавлена в БД)<br><br>";
+}
+}
+
+return null;
+}
+
+static function getCategoriesList(): array
+{
+//не менять порядок
+$categories = [
+0 => 'Обои и настенные покрытия',
+1 => 'Напольные покрытия',
+2 => 'Плитка и керамогранит',
+3 => 'Сантехника',
+4 => 'Краски',
+5 => 'Лепнина',
+];
+
+return $categories;
+}
+
+static function getSubcategoriesList(): array
+{
+//не менять порядок
+$subcategories = [
+0 => 'Раковины',
+1 => 'Унитазы, писсуары и биде',
+2 => 'Ванны',
+3 => 'Душевые',
+4 => 'Смесители',
+5 => 'Мебель для ванной',
+6 => 'Аксессуары для ванной комнаты',
+7 => 'Комплектующие',
+8 => 'Полотенцесушители',
+9 => 'Декоративные обои',
+10 => 'Керамогранит',
+11 => 'Керамическая плитка',
+12 => 'Натуральный камень',
+13 => 'Мозаика',
+14 => 'Кухонные мойки',
+15 => 'Ступени и клинкер',
+16 => 'SPC-плитка',
+17 => 'Фотообои',
+18 => 'Обои под покраску',
+19 => 'Штукатурка',
+20 => 'Розетки',
+21 => 'Карнизы',
+22 => 'Молдинги',
+23 => 'Плинтусы',
+24 => 'Дверное обрамление',
+25 => 'Потолочный декор',
+26 => 'Другое',
+27 => 'Ламинат',
+28 => 'Инженерная доска',
+29 => 'Паркетная доска',
+30 => 'Штучный паркет',
+31 => 'Виниловые полы',
+32 => 'Подложка под напольные покрытия',
+33 => 'Плинтус напольный',
+34 => 'Массивная доска',
+35 => 'Пробковое покрытие',
+36 => 'Линолиум',
+37 => 'Кварцвиниловые полы',
+38 => 'Кварциниловые панели',
+39 => 'Сопутствующие',
+];
+
+return $subcategories;
+}
+
+static function getApiData(Document $document): array
+{
+$api_data = json_decode($document->text(), 1);
+$api_data = $api_data[array_keys($api_data)[0]];
+return $api_data;
+}
+
+static function insertLink(string $link, string $link_type, string $provider = null): string
+{
+if ($provider) {
+try {
+$query = "INSERT INTO " . $provider . "_links (link, type) VALUES (?, ?)";
+$types = "ss";
+$values = [$link, $link_type];
+MySQL::bind_sql($query, $types, $values);
+return "success";
+} catch (\Exception $e) {
+Logs::writeLog($e, $provider, $link);
+var_dump($e);
+return "fail";
+}
+}
+}
+
+static function insertLink1(string $link, string $link_type, string $provider): string
+{
+try {
+$query = "INSERT INTO all_links (link, type, provider) VALUES (?, ?, ?)";
+$types = "sss";
+$values = [$link, $link_type, $provider];
+MySQL::bind_sql($query, $types, $values);
+return "success";
+} catch (\Exception $e) {
+Logs::writeLog($e, $provider, $link);
+var_dump($e);
+return "fail";
+}
+}
+
+static function generateLink($href, $provider, $url_parser = null)
+{
+$starts = [
+'laparet' => 'https://laparet.ru',
+'ntceramic' => 'https://ntceramic.ru',
+'olimpparket' => 'https://olimpparket.ru',
+'domix' => 'https://moscow.domix-club.ru',
+'finefloor' => "https://finefloor.ru",
+'tdgalion' => "https://www.tdgalion.ru",
+'dplintus' => "https://dplintus.ru",
+'surgaz' => "https://surgaz.ru",
+'centerkrasok' => "https://www.centerkrasok.ru",
+'alpinefloor' => "https://alpinefloor.su",
+'artkera' => "https://artkera.ru",
+'evroplast' => "https://evroplast.ru",
+'mosplitka' => "https://mosplitka.ru",
+];
+
+if ($url_parser == 'https://olimpparket.ru/catalog/plintusa_i_porogi/' and !str_contains($href, "/catalog")) {
+return $url_parser . $href;
+}
+
+if ($provider == 'lkrn') return $href;
+
+return $starts[$provider] . $href;
+}
+
+static function insertProductData(string $types, array $values, string $product_link, string $provider): void
+{
+//Получаем товар
+$product = MySQL::sql("SELECT id FROM " . $provider . "_products WHERE link='$product_link'");
+
+$quest = '';
+$colms = "";
+
+foreach ($values as $key => $value) {
+$values[$key] = isset($value) ? html_entity_decode($value) : null;
+}
+
+// echo count($values) . ' ' . count($columns) . '<br>';
+
+if ($product->num_rows) {
+$date_edit = MySQL::get_mysql_datetime();
+$types .= 's';
+$values["date_edit"] = $date_edit;
+$id = mysqli_fetch_assoc($product)['id'];
+
+$query = "UPDATE " . $provider . "_products SET ";
+foreach ($values as $key => $value) {
+$query .= "`" . $key . "`=?, ";
+}
+$query = substr($query, 0, -2);
+$query .= " WHERE id=$id";
+
+// echo $query . "<br>";
 } else {
-    $PRODUCT_OFFER_ID = $ciBlockElement->Add($arProduct);
-    // проверка на ошибки
-if (!empty($ciBlockElement->LAST_ERROR)) {
-    echo "Ошибка добавления торгового предложения: " . $ciBlockElement->LAST_ERROR;
-    die();
+$query = "INSERT INTO " . $provider . "_products (";
+foreach ($values as $key => $value) {
+$colms .= $key . ", ";
+$quest .= "?, ";
 }
-    // Добавляем цены к торг. предложению
-
-    CCatalogProduct::Add(
-        array(
-            "ID" => $PRODUCT_OFFER_ID,
-            "QUANTITY" => $QUANTITY,
-        )
-    );
-    CPrice::Add(
-        array(
-            "CURRENCY" => "RUB",
-            "PRICE" => $PRICE,
-            "CATALOG_GROUP_ID" => $IBLOCK_ID,
-            "PRODUCT_ID" => $PRODUCT_OFFER_ID,
-        )
-    );
+$colms = substr($colms, 0, -2) . ")";
+$quest = substr($quest, 0, -2);
+$query .= $colms . " VALUES (" . $quest . ")";
+// echo $query . "<br>";
 }
 
-echo "<pre>";
-print_r(CCatalogProduct::getByID($PRODUCT_ID));
-//print_r(CPrice::getByID($PRODUCT_ID));
-//print_r(CIBlockElement::getProperty($IBLOCK_ID, $PRODUCT_ID));
-echo "</pre>";
-
-// проверка на ошибки
-if (!empty($ciBlockElement->LAST_ERROR)) {
-    echo "Ошибка добавления торгового предложения: " . $ciBlockElement->LAST_ERROR;
-    die();
+try {
+MySQL::bind_sql($query, $types, array_values($values));
+echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
+} catch (\Exception $e) {
+Logs::writeLog($e, $provider);
+echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
+}
 }
 
+static function insertProductData1(string $types, array $values, string $product_link): void
+{
+//Получаем товар
+$product = MySQL::sql("SELECT id FROM all_products WHERE link='$product_link'");
 
-?>
+$quest = '';
+$colms = "";
 
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+foreach ($values as $key => $value) {
+$values[$key] = isset($value) ? html_entity_decode($value) : null;
+}
+
+// echo count($values) . ' ' . count($columns) . '<br>';
+
+if ($product->num_rows) {
+$date_edit = MySQL::get_mysql_datetime();
+$types .= 's';
+$values["date_edit"] = $date_edit;
+$id = mysqli_fetch_assoc($product)['id'];
+
+$query = "UPDATE all_products SET ";
+foreach ($values as $key => $value) {
+$query .= "`" . $key . "`=?, ";
+}
+$query = substr($query, 0, -2);
+$query .= " WHERE id=$id";
+// echo $query . "<br>";
+} else {
+$query = "INSERT INTO all_products (";
+foreach ($values as $key => $value) {
+$colms .= $key . ", ";
+$quest .= "?, ";
+}
+$colms = substr($colms, 0, -2) . ")";
+$quest = substr($quest, 0, -2);
+$query .= $colms . " VALUES (" . $quest . ")";
+// echo $query . "<br>";
+}
+try {
+MySQL::bind_sql($query, $types, array_values($values));
+$res = MySQL::sql("SELECT id FROM all_products WHERE link='$product_link'");
+echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
+} catch (\Exception $e) {
+echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
+}
+}
+
+static function getEdizmList(): array
+{
+$edizm = [
+0 => "рулон",
+1 => "м2",
+2 => "шт",
+3 => "пог.м",
+4 => "л",
+];
+return $edizm;
+}
+
+static function getEdizmByUnit(string $edizm): string|null
+{
+$edizm_values = self::getEdizmList();
+switch ($edizm) {
+case "рулон":
+case "рул.":
+return $edizm_values[0];
+break;
+case "м2":
+case "кв. м":
+return $edizm_values[1];
+break;
+case "шт.":
+return $edizm_values[2];
+break;
+case "пог. м":
+return $edizm_values[3];
+break;
+case "краски":
+return $edizm_values[4];
+break;
+default:
+return $edizm_values[2];
+break;
+}
+return null;
+}
+
+static function getEdizm(string $category): string|null
+{
+$edizm_keys = [
+boolval($category == 'Обои и настенные покрытия'),
+boolval($category == 'Плитка и керамогранит'),
+boolval($category == 'Сантехника'),
+];
+
+$edizm_values = self::getEdizmList();
+
+foreach ($edizm_keys as $i => $edizm_key) {
+if ($edizm_key) {
+
+$edizm = $edizm_values[$i];
+break;
+}
+}
+
+return $edizm ?? null;
+}
+
+static function getLinkType(string $link): string|null
+{
+$keys = [
+'product' => [
+preg_match("#https://mosplitka.ru/product.+#", $link),
+preg_match("#https://www.ampir.ru/catalog/.+/\d+/#", $link),
+preg_match("#https://laparet.ru/catalog/.+\.html#", $link),
+preg_match("#https://ntceramic.ru/catalog/.+/.*#", $link) and !preg_match("#https://ntceramic.ru/catalog/.+/?PAGEN_.+#", $link),
+preg_match("#https://olimpparket.ru/product/.+/#", $link),
+preg_match("#https://www.olimpparket.ru/catalog/plintusa_i_porogi/.+/.+/.+/#", $link),
+preg_match(("#https://moscow.domix-club.ru/catalog/.+/.+/.*#"), $link),
+preg_match("#https://finefloor.ru/product/.+#", $link),
+preg_match("#https://www.tdgalion.ru/catalog\/[^\/]+\/[^\/]+\/#", $link) and !preg_match("#https://www.tdgalion.ru/catalog.+PAGEN_.+#", $link),
+preg_match("#https://dplintus.ru/catalog\/[^\/]+\/[^\/]+\/#", $link),
+preg_match("#https://surgaz.ru/katalog\/[^\/]+\/#", $link),
+preg_match("#https://www.centerkrasok.ru/product\/[^\/]+\/#", $link),
+preg_match("#https://alpinefloor.su/catalog\/.+#", $link),
+preg_match("#https://lkrn.ru/product\/.+#", $link),
+preg_match("#https://artkera.ru/collections/.+#", $link),
+preg_match("#https://evroplast.ru\/[^\/]+\/[^\/]+\/#", $link),
+
+],
+'catalog' => [
+preg_match("#https://mosplitka.ru/catalog.[^?]+#", $link) and !preg_match("#.php$#", $link),
+preg_match("#https://olimpparket.ru/catalog/.+/#", $link),
+preg_match("#https://www.ampir.ru/catalog/.+/page\d+.*#", $link),
+preg_match("#https://ntceramic.ru/catalog/.+/?PAGEN_.+#", $link),
+preg_match("#https://laparet.ru/catalog/.+page=\d+#", $link),
+preg_match("#https://finefloor.ru/catalog/.+#", $link),
+preg_match("#https://moscow.domix-club.ru/catalog/.+/?PAGEN_.+#", $link),
+preg_match("#https://www.tdgalion.ru/catalog.+PAGEN_.+#", $link),
+preg_match("#https://dplintus.ru/catalog\/[^\/]+\/#", $link),
+preg_match("#https://www.centerkrasok.ru/catalog\/[^\/]+\/#", $link),
+preg_match("#https://lkrn.ru/product-category/.+#", $link),
+preg_match("#https://evroplast.ru/collection/.+#", $link),
+preg_match("#https://evroplast.ru/collection\/[^\/]+\/\#[a-zA-Z]+#", $link),
+],
+];
+
+foreach ($keys as $key => $statements) {
+foreach ($statements as $stmnt) {
+if ($stmnt) {
+return $key;
+}
+}
+}
+return null;
+}
+
+static function getImages($images_res, string $provider): string
+{
+$keys = [
+'ntceramic' => [
+"attr" => "href",
+"start" => "https://ntceramic.ru",
+],
+'domix' => [
+"attr" => "content",
+"start" => "https://moscow.domix-club.ru",
+],
+"laparet" => [
+"attr" => "href",
+"start" => "https://laparet.ru",
+],
+"olimpparket" => [
+"attr" => "href",
+"start" => "https://www.olimpparket.ru",
+],
+"finefloor" => [
+"attr" => "href",
+"start" => "https://finefloor.ru",
+],
+"surgaz" => [
+"attr" => "data-src",
+"start" => "https://surgaz.ru",
+],
+"dplintus" => [
+"attr" => "src",
+"start" => "https://dplintus.ru",
+],
+"tdgalion" => [
+"attr" => "data-src",
+"start" => "https://www.tdgalion.ru",
+],
+"centerkrasok" => [
+"attr" => "data-image",
+"start" => "https://www.centerkrasok.ru",
+],
+"alpinefloor" => [
+"attr" => "href",
+"start" => "https://alpinefloor.su",
+],
+"lkrn" => [
+"attr" => "href",
+"start" => "",
+],
+"artkera" => [
+"attr" => "href",
+"start" => "https://artkera.ru",
+],
+"mosplitka" => [
+"attr" => "data-big",
+"start" => "https://mosplitka.ru",
+],
+];
+
+$images = array();
+
+$n = 1;
+foreach ($images_res as $i => $img) {
+// echo $i . ' ' . $img->attr($keys[$provider]['attr']) . "<br />";
+if ($img->attr($keys[$provider]['attr'])) {
+$src = $keys[$provider]['start'] . $img->attr($keys[$provider]['attr']);
+if (array_search($src, $images) or str_contains($src, "youtube")) continue;
+$images["img$n"] = $src;
+$n += 1;
+}
+}
+$images = json_encode($images, JSON_UNESCAPED_SLASHES);
+return $images;
+}
+}

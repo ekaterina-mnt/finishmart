@@ -18,15 +18,15 @@ use GuzzleHttp\Client as GuzzleClient;
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 2; $i++) {
+    for ($i = 1; $i < 6; $i++) {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='lkrn' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='mosplitka' ORDER BY views, id LIMIT 1");
 
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
-            TechInfo::errorExit("первый запрос, добавлены первичные ссылки для парсинга (или нет ссылок с типом `каталог`)");
+            TechInfo::errorExit("первый запрос, добавлены первичные ссылки для парсинга (или нет ссылок с типом `каталог` у этого провайдера)");
         }
 
         $res = mysqli_fetch_assoc($query);
@@ -34,7 +34,6 @@ try {
         //Получаем ссылку
         $url_parser = $res['link'];
         $provider = $res['provider'];
-        $url_parser = "https://lkrn.ru/catalog/";
         // $provider = Parser::getProvider($url_parser);
 
         TechInfo::whichLinkPass($url_parser);
@@ -44,12 +43,19 @@ try {
         $date_edit = MySQL::get_mysql_datetime();
         MySQL::sql("UPDATE all_links SET views=$views WHERE link='$url_parser'");
 
+        if ($provider == 'masterdom') continue; //
+
         //Получаем html у себя
         $document = Parser::guzzleConnect($url_parser);
 
         //Получаем все данные со страницы
 
         $search_classes = [
+            ".catalog_nav_list .cc__hl_inner li a", //mosplitka
+            ".product-list-block a[href*=product]", //mosplitka
+            ".catSection a[href*=product]", //mosplitka
+            ".pagination-catalog a[href*=catalog]", //mosplitka
+            ".products-count-search__wrap a", //mosplitka
             ".catalog__data a",
             ".section-list a",
             "#content ul li a",
@@ -73,7 +79,13 @@ try {
             ".catalogBox a", //centerkrasok
             ".sub_item a", //centerkrasok
             ".products__items a", //alpanefloor
+            ".catalog__grid a.catalog-card", //artkera
+            // ".col-prod-nav a.col-prod-nav-item", //evroplast
+            // ".col-prod-tab a", //evroplast
+            // ".content-wrapper a.collection-see", //evroplast
         ];
+
+        
 
         $search_classes = implode(", ", $search_classes);
         $all_res = $document->find($search_classes);
@@ -103,7 +115,7 @@ try {
             $res = Parser::insertLink1($link, $link_type, $provider);
             if ($res == "success") $add[] = ['link' => $link, 'comment' => $link_type];
             if ($res == "fail") $add[] = ['link' => $link . ' - не получилось добавить в БД', 'comment' => $link_type];
-        }
+        } 
         sort($add);
         echo "<br><b>из них скрипт добавил (" . count($add) . "шт):</b><br>";
         foreach ($add as $add_key => $add_value) {

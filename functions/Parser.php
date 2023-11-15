@@ -221,14 +221,17 @@ class Parser
             'surgaz' => "https://surgaz.ru",
             'centerkrasok' => "https://www.centerkrasok.ru",
             'alpinefloor' => "https://alpinefloor.su",
+            'artkera' => "https://artkera.ru",
+            'evroplast' => "https://evroplast.ru",
+            'mosplitka' => "https://mosplitka.ru",
         ];
 
         if ($url_parser == 'https://olimpparket.ru/catalog/plintusa_i_porogi/' and !str_contains($href, "/catalog")) {
             return $url_parser . $href;
         }
 
-        if ($provider == 'lkrn') return $href;     
-        
+        if ($provider == 'lkrn') return $href;
+
         return $starts[$provider] . $href;
     }
 
@@ -326,6 +329,7 @@ class Parser
         } catch (\Exception $e) {
             echo "<b>возникла ошибка с добавлением продукта в БД:</b><br>" . $e->getMessage() . '<br><br>';
         }
+        exit;
     }
 
     static function getEdizmList(): array
@@ -393,8 +397,8 @@ class Parser
     {
         $keys = [
             'product' => [
-                // preg_match("#https://mosplitka.ru/product.+#", $link),
-                // preg_match("#https://www.ampir.ru/catalog/.+/\d+/#", $link),
+                preg_match("#https://mosplitka.ru/product.+#", $link),
+                preg_match("#https://www.ampir.ru/catalog/.+/\d+/#", $link),
                 preg_match("#https://laparet.ru/catalog/.+\.html#", $link),
                 preg_match("#https://ntceramic.ru/catalog/.+/.*#", $link) and !preg_match("#https://ntceramic.ru/catalog/.+/?PAGEN_.+#", $link),
                 preg_match("#https://olimpparket.ru/product/.+/#", $link),
@@ -407,9 +411,12 @@ class Parser
                 preg_match("#https://www.centerkrasok.ru/product\/[^\/]+\/#", $link),
                 preg_match("#https://alpinefloor.su/catalog\/.+#", $link),
                 preg_match("#https://lkrn.ru/product\/.+#", $link),
+                preg_match("#https://artkera.ru/collections/.+#", $link),
+                preg_match("#https://evroplast.ru\/[^\/]+\/[^\/]+\/#", $link),
+
             ],
             'catalog' => [
-                // preg_match("#https://mosplitka.ru/catalog.+#", $link) and !preg_match("#.php$#", $link),
+                preg_match("#https://mosplitka.ru/catalog.[^?]+#", $link) and !preg_match("#.php$#", $link),
                 preg_match("#https://olimpparket.ru/catalog/.+/#", $link),
                 preg_match("#https://www.ampir.ru/catalog/.+/page\d+.*#", $link),
                 preg_match("#https://ntceramic.ru/catalog/.+/?PAGEN_.+#", $link),
@@ -420,6 +427,8 @@ class Parser
                 preg_match("#https://dplintus.ru/catalog\/[^\/]+\/#", $link),
                 preg_match("#https://www.centerkrasok.ru/catalog\/[^\/]+\/#", $link),
                 preg_match("#https://lkrn.ru/product-category/.+#", $link),
+                preg_match("#https://evroplast.ru/collection/.+#", $link),
+                preg_match("#https://evroplast.ru/collection\/[^\/]+\/\#[a-zA-Z]+#", $link),
             ],
         ];
 
@@ -473,13 +482,21 @@ class Parser
                 "start" => "https://www.centerkrasok.ru",
             ],
             "alpinefloor" => [
-                "attr" => "href", 
+                "attr" => "href",
                 "start" => "https://alpinefloor.su",
             ],
             "lkrn" => [
                 "attr" => "href",
                 "start" => "",
-            ]
+            ],
+            "artkera" => [
+                "attr" => "href",
+                "start" => "https://artkera.ru",
+            ],
+            "mosplitka" => [
+                "attr" => "data-big",
+                "start" => "https://mosplitka.ru",
+            ],
         ];
 
         $images = array();
