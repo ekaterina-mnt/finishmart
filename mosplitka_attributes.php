@@ -8,7 +8,6 @@ use functions\Parser;
 use functions\ParserMasterdom;
 use functions\ParserMosplitka;
  
-echo "here";
 $check_if_complect = ParserMosplitka::check_if_complect($document);
 
 if ($check_if_complect) {
@@ -189,7 +188,8 @@ if ($check_if_complect) {
     $all_product_data['characteristics'] = [$characteristics, 's'];
 
     //картинки
-    $images_res = $document->find('.tile-picture-prev li img');
+    $images_res = $document->find('.tile-picture-prev li img, .single-product___main-info--thumbnail img');
+
     $images = Parser::getImages($images_res, $provider);
     $all_product_data['images'] = [$images, 's'];
 

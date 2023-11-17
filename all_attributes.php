@@ -47,7 +47,7 @@ $attributes_classes = [
         //larapet (есть только id)
         //olimpparket (в характеристиках)
         ".good-code-and-series .good-block__value", //ntceramic
-        ".single-articul .product-article", //domix
+        ".product-article", //domix
         ".product-detailed .art", //dplintus
 
     ],
@@ -117,7 +117,7 @@ $attributes_classes = [
     "path" => [
         ".breadcrumbs-list .breadcrumbs-item", //ntceramic
         ".breadcrumbs__list .breadcrumbs__item", //laparet
-        "ul.breadcrumbs-list li a", //domix
+        ".breadcrumbs-list li", //domix
         ".bx-breadcrumb .bx-breadcrumb-item", //dplintus
     ],
 
@@ -140,6 +140,10 @@ $attributes_classes = [
         ".sproduct-info__value",
         ".posted_in a", //lkrn
     ],
+
+    "error" => [
+        ".b-cat-description", //tdgalion
+    ]
 ];
 
 if ($provider == 'ampir') {
@@ -204,7 +208,7 @@ if ($stock_res) {
 //артикул
 $articul_res = $document->find(implode(', ', $attributes_classes['articul']));
 if ($articul_res) {
-    $all_product_data['articul'] = [str_replace('Артикул: ', '', $articul_res[0]->text()), 's'];
+    $all_product_data['articul'] = [str_replace('Артикул ', '', str_replace('Артикул: ', '', $articul_res[0]->text())), 's'];
 
     //форматирование артикула
     // while (str_contains($all_product_data['stock'][0], '  ')) {
@@ -217,6 +221,7 @@ if ($articul_res) {
 //категории из пути
 $path_res = $document->find(implode(', ', $attributes_classes['path']));
 if ($path_res) {
+
     $path = Categories::getPath($path_res, $provider);
 
     $categories = Categories::getCategoriesByPath($path, $provider);
@@ -225,24 +230,23 @@ if ($path_res) {
         $all_product_data['subcategory'] = [$categories['subcategory'], 's'];
     } elseif (isset($categories['category_key']) and !in_array($provider, ['laparet'])) {
         $all_product_data['subcategory'] = [Categories::getSubcategoryByPath($path, $provider, $categories['category_key']), 's'];
-        echo $all_product_data['subcategory'][0];
     }
 }
-
 
 //категории из названия/ссылки товара/провайдера
 if ($provider == 'olimpparket' and isset($all_product_data['title'][0])) {
     $categories = Categories::getCategoriesByTitle($all_product_data['title'][0], $provider);
     $all_product_data['category'] = isset($categories['category']) ? [$categories['category'], 's'] : [Parser::getCategoriesList()[1], 's'];
     $all_product_data['subcategory'] = isset($categories['subcategory']) ? [$categories['subcategory'], 's'] : [Parser::getSubcategoriesList()[26], 's'];
-} elseif ($provider == 'finefloor') {
-    $all_product_data['category'] = [Parser::getCategoriesList()[1], 's'];
-    $all_product_data['subcategory'] = [Parser::getSubcategoriesList()[37], 's'];
-} elseif ($provider == 'alpinefloor') {
-    $categories = Categories::getCategoriesByLink($url_parser, $provider);
-    $all_product_data['category'] = isset($categories['category']) ? [$categories['category'], 's'] : [null, 's'];
-    $all_product_data['subcategory'] = isset($categories['subcategory']) ? [$categories['subcategory'], 's'] : [null, 's'];
-}
+} 
+// elseif ($provider == 'finefloor') {
+//     $all_product_data['category'] = [Parser::getCategoriesList()[1], 's'];
+//     $all_product_data['subcategory'] = [Parser::getSubcategoriesList()[37], 's'];
+// } elseif ($provider == 'alpinefloor') {
+//     $categories = Categories::getCategoriesByLink($url_parser, $provider);
+//     $all_product_data['category'] = isset($categories['category']) ? [$categories['category'], 's'] : [null, 's'];
+//     $all_product_data['subcategory'] = isset($categories['subcategory']) ? [$categories['subcategory'], 's'] : [null, 's'];
+// }
 
 //категория
 if ($provider == 'lkrn') {
@@ -255,7 +259,6 @@ if ($provider == 'lkrn') {
 }
 
 //подкатегория
-
 
 //все характеристики
 $characteristics_count = count($document->find(implode(', ', $attributes_classes['characteristics_count']))) - 1;
@@ -332,16 +335,16 @@ if ($provider == 'lkrn') {
         }
 
         //категория
-        if ((str_contains($name, "категория") and !isset($all_product_data['subcategory'][0])) or
-            ((str_contains(mb_strtolower($name), "тип товара") and !isset($all_product_data['subcategory'][0]) and $provider == 'tdgalion'))
+        if ((str_contains(mb_strtolower(html_entity_decode($name)), "категория") and $provider == 'domix') or
+            (str_contains(mb_strtolower($name), "категория") and !isset($all_product_data['subcategory'][0])) or
+            ((str_contains(mb_strtolower(html_entity_decode($name)), "тип товара") and !isset($all_product_data['subcategory'][0]) and $provider == 'tdgalion'))
         ) {
-            $subcategory = Categories::getSubcategoryByCharacteristics($value);
-            $all_product_data['subcategory'] = [$value, 's'];
+            if ($provider == 'tdgalion') {
+                $all_product_data['category'] = [$value, 's'];
+            } else {
+                $all_product_data['subcategory'] = [$value, 's'];
+            }
         }
-
-
-        /////////////////////////////////////////////////БЫЛО ДО АМПИРА///////////////////////////////////////////////////////////////////
-
 
         //производитель
         if ($name == 'Производитель') {
@@ -510,6 +513,7 @@ foreach ($all_product_data as $data_key => $data_value) {
 if (isset($all_product_data['title']) and isset($all_product_data['subcategory'])) {
     $all_product_data['subcategory'][0] = (mb_strtolower($all_product_data['title'][0]) == mb_strtolower($all_product_data['subcategory'][0])) ? null : $all_product_data['subcategory'][0];
 }
+
 
 //картинки
 $images_res = $document->find(implode(', ', $attributes_classes['images']));

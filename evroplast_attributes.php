@@ -23,20 +23,5 @@ foreach ($apiData as $num => $item) {
     $all_product_data['characteristics'] = [json_encode($item['params'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 's'];
     $all_product_data['stock'] = $item['availableToSell'] ? ['В наличии', 's'] : [null, 's']; 
 
-    $print_result = [];
-    foreach ($all_product_data as $key => $val) {
-        $print_result[$key] = $val[0];
-    }
-    TechInfo::preArray($print_result);
-
-    //Для передачи в MySQL
-
-    $types = '';
-    $values = array();
-    foreach ($all_product_data as $key => $n) {
-        $types .= $n[1];
-        $values[$key] = $n[0];
-    }
-
-    Parser::insertProductData1($types, $values, $all_product_data['link'][0]);
+        include "insert_ending.php";
 }

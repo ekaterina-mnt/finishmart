@@ -2,6 +2,13 @@
 
 use functions\TechInfo;
 use functions\Parser;
+use functions\Categories;
+
+$all_product_data['provider_subcategory'] = [$all_product_data['subcategory'][0] ?? null, 's'];
+$all_product_data['provider_category'] = [$all_product_data['category'][0] ?? null, 's'];
+
+$all_product_data['subcategory'] = [Categories::finalSubcategory($provider, $all_product_data['category'][0] ?? null, $all_product_data['subcategory'][0] ?? null, $all_product_data['title'][0] ?? null, $all_product_data['link'][0] ?? null), 's'];
+$all_product_data['category'] = [Categories::finalCategory($provider, $all_product_data['category'][0] ?? null, $all_product_data['title'][0] ?? null, $all_product_data['link'][0] ?? null), 's'];
 
 $print_result = [];
 foreach ($all_product_data as $key => $val) {
@@ -18,4 +25,4 @@ foreach ($all_product_data as $key => $n) {
     $values[$key] = $n[0];
 }
 
-Parser::insertProductData1($types, $values, $url_parser);
+Parser::insertProductData1($types, $values, $all_product_data['link'][0]);

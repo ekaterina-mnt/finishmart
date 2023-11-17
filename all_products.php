@@ -7,6 +7,7 @@ use functions\TechInfo;
 use functions\Parser;
 use functions\ParserMasterdom;
 use functions\ParserMosplitka;
+use functions\Categories;
 
 
 //ПОМЕНЯТЬ ЗАПРОС MYSQL В САМОМ НАЧАЛЕ + ЗАХАРДКОЖЕННУЮ ССЫЛКУ И ПРОВАЙДЕРА
@@ -22,7 +23,7 @@ try {
 
 
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='ampir' ORDER BY product_views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='evroplast' ORDER BY product_views, id LIMIT 1");
 
         if (!$query->num_rows) {
             // Logs::writeCustomLog("не получено ссылки для парсинга", $provider);
@@ -33,6 +34,8 @@ try {
         //Получаем ссылку
         $url_parser = $res['link'];
         $provider = $res['provider'];
+        $url_parser = "https://dplintus.ru/catalog/aksessuary/kopirovalnyy-shablon/";
+        $provider = "dplintus";
 
         // $provider = "domix";
         TechInfo::whichLinkPass($url_parser);
@@ -46,7 +49,15 @@ try {
 
         //Получаем html страницы
         if ($provider == 'tdgalion' or $provider == 'surgaz') $encoding = "windows-1251";
-        $document = Parser::guzzleConnect($url_parser, $encoding ?? null);
+        try { 
+            $document = Parser::guzzleConnect($url_parser, $encoding ?? null);
+            MySQL::sql("UPDATE all_products SET status='ok', date_edit='$date_edit' WHERE link='$url_parser'"); 
+        } catch (\Throwable $e) {
+            MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
+            Logs::writeLog1($e,  $provider, $url_parser); 
+            TechInfo::errorExit($e);
+            var_dump($e);
+        }
 
         if ($provider == 'surgaz') {
             include "surgaz_attributes.php";

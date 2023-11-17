@@ -22,7 +22,7 @@ try {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='ampir' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='alpinefloor' ORDER BY views, id LIMIT 1");
 
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
@@ -83,7 +83,8 @@ try {
             ".dPagingParent a", //centerkrasok
             ".catalogBox a", //centerkrasok
             ".sub_item a", //centerkrasok
-            ".products__items a", //alpanefloor
+            ".products__items a", //alpinefloor
+            ".catalog-pages button", //alpinefloor
             ".catalog__grid a.catalog-card", //artkera
             // ".col-prod-nav a.col-prod-nav-item", //evroplast
             // ".col-prod-tab a", //evroplast
@@ -98,6 +99,9 @@ try {
         $add = [];
         foreach ($all_res as $href) {
             $link = Parser::generateLink($href->attr('href'), $provider, $url_parser);
+            if ($provider == 'alpinefloor' and $href->attr('data-endpoint')) {
+                $link = Parser::generateLink(str_replace(["is_ajax=y&", "ajax=y&"], '', $href->attr('data-endpoint')), $provider, $url_parser);
+            }
 
             // избавляемся от дублей
             if (MySQL::sql("SELECT id, link FROM all_links WHERE link='$link'")->num_rows) {

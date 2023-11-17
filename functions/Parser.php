@@ -166,10 +166,27 @@ class Parser
             33 => 'Плинтус напольный',
             34 => 'Массивная доска',
             35 => 'Пробковое покрытие',
-            36 => 'Линолиум',
+            36 => 'Линолеум',
             37 => 'Кварцвиниловые полы',
             38 => 'Кварциниловые панели',
             39 => 'Сопутствующие',
+            40 => 'Порожки',
+            41 => 'Профили',
+            42 => 'Ковры',
+            43 => 'Ковровые покрытия',
+            44 => 'Панели',
+            45 => 'Краски, эмали',
+            46 => 'Грунтовки',
+            47 => 'Лаки и масла', 
+            48 => 'Антисептики и пропитки', 
+            49 => 'Затирки и клей',
+            50 => 'Камины',
+            51 => 'Декоративные элементы',
+            52 => null,
+            53 => 'Кронштейны, ниши',
+            54 => 'Колонны',
+            55 => 'Шпатлевки',
+            56 => 'Декоративное покрытие',
         ];
 
         return $subcategories;
@@ -416,7 +433,7 @@ class Parser
                 preg_match("#https://dplintus.ru/catalog\/[^\/]+\/[^\/]+\/#", $link),
                 preg_match("#https://surgaz.ru/katalog\/[^\/]+\/#", $link),
                 preg_match("#https://www.centerkrasok.ru/product\/[^\/]+\/#", $link),
-                preg_match("#https://alpinefloor.su/catalog\/.+#", $link),
+                preg_match("#https://alpinefloor.su/catalog\/.+#", $link) and !preg_match("#https://alpinefloor.su/catalog\/.+PAGEN.+#", $link),
                 preg_match("#https://lkrn.ru/product\/.+#", $link),
                 preg_match("#https://artkera.ru/collections/.+#", $link),
                 preg_match("#https://evroplast.ru\/[^\/]+\/[^\/]+\/#", $link),
@@ -432,6 +449,7 @@ class Parser
                 preg_match("#https://moscow.domix-club.ru/catalog/.+/?PAGEN_.+#", $link),
                 preg_match("#https://www.tdgalion.ru/catalog.+PAGEN_.+#", $link),
                 preg_match("#https://dplintus.ru/catalog\/[^\/]+\/#", $link),
+                preg_match("#https://alpinefloor.su/catalog\/.+PAGEN.+#", $link),
                 preg_match("#https://www.centerkrasok.ru/catalog\/[^\/]+\/#", $link),
                 preg_match("#https://lkrn.ru/product-category/.+#", $link),
                 preg_match("#https://evroplast.ru/collection/.+#", $link),
@@ -510,9 +528,11 @@ class Parser
 
         $n = 1;
         foreach ($images_res as $i => $img) {
-            // echo $i . ' ' . $img->attr($keys[$provider]['attr']) . "<br />";
-            if ($img->attr($keys[$provider]['attr'])) {
+            if ($img->attr($keys[$provider]['attr']) or ($provider == 'mosplitka' and !$img->attr($keys[$provider]['attr']))) {
                 $src = $keys[$provider]['start'] . $img->attr($keys[$provider]['attr']);
+                if ($provider == 'mosplitka' and !$img->attr($keys[$provider]['attr'])) {
+                    $src = $keys[$provider]['start'] . $img->attr('data-full');
+                }
                 if (array_search($src, $images) or str_contains($src, "youtube")) continue;
                 $images["img$n"] = $src;
                 $n += 1;

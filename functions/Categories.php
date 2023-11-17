@@ -11,97 +11,299 @@ use Psr\Http\Message\ResponseInterface;
 
 class Categories
 {
-
-    static function getSubcategoryByCharacteristics($char_value)
+    static function finalSubcategory($provider, $providerCategory = 'none', $providerSubcategory = null, $title = null, $product_link = null)
     {
-        // $all_subcategories = Parser::getSubcategoriesList();
+        $providerCategory = $providerCategory ?? 'null';
+        $providerSubcategory = $providerSubcategory ?? 'null';
+        $title = $title ?? 'null';
+        $all_subcategories = Parser::getSubcategoriesList();
 
-        // $keys = [
-        //     'laparet' => [
-        //         $all_subcategories[27] => str_contains(mb_strtolower($char_value), "унитаз"),
-        //     ],
-        // ];
-        // $subcategories = Parser::getSubcategoriesList();
-
-        // $subcategories_keys = [
-        //     0 => 'Раковины',
-        //     1 => ['Унитазы', 'Инсталляции', 'Писсуары', 'Биде', 'Кнопки смыва'],
-        //     2 => 'Ванны',
-        //     3 => ['Душевые', 'Поддоны, трапы, лотки'],
-        //     4 => 'Смесители',
-        //     5 => 'Мебель для ванной',
-        //     6 => ['Аксессуары для ванной комнаты', 'Аксессуары для ванной'],
-        //     7 => 'Комплектующие',
-        //     8 => 'Полотенцесушители',
-        //     9 => 'Декоративные обои',
-        //     10 => ['Керамогранит', 'керамогранит'],
-        //     11 => ['Керамическая плитка', 'керамическая плитка'],
-        //     12 => 'Натуральный камень',
-        //     13 => ['Мозаика', 'мозаика'],
-        //     14 => 'Кухонные мойки',
-        //     15 => 'клинкер',
-        //     16 => 'SPC-плитка',
-        // ];
-
-        // foreach ($subcategories_keys as $key => $value) {
-        //     if (is_array($value)) {
-        //         foreach ($value as $value_i) {
-        //             if (str_contains($subcategory, $value_i)) {
-        //                 return $subcategories[$key];
-        //             };
-        //         }
-        //     } elseif (str_contains($subcategory, $value)) {
-        //         return $subcategories[$key];
-        //     };
-        // }
-
-        return $char_value;
-    }
-
-    static function getCategoriesByLink($product_link, $provider)
-    {
-        $all_categories = Parser::getCategoriesList($provider);
-        $all_subcategories = Parser::getSubcategoriesList($provider);
+        if (in_array($providerSubcategory, $all_subcategories)) return $providerSubcategory;
 
         $keys = [
-            'alpinefloor' => [
-                [
-                    'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/spc-laminat') or (str_contains($product_link, "https://alpinefloor.su/catalog/laminat")),
-                    'category' => $all_categories[1],
-                    'subcategory' => $all_subcategories[27],
-                ],
-                [
-                    'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/kvartsvinilovaya-plitka'),
-                    'category' => $all_categories[1],
-                    'subcategory' => $all_subcategories[37],
-                ],
-                [
-                    'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/inzhenernaya-doska/'),
-                    'category' => $all_categories[1],
-                    'subcategory' => $all_subcategories[28],
-                ],
-                [
-                    'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/'),
-                    'category' => $all_categories[0],
-                    'subcategory' => $all_subcategories[26],
-                ],
-                [
-                    'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/related-products/'),
-                    'category' => $all_categories[1],
-                    'subcategory' => $all_subcategories[39],
-                ]
+            0 => [ //'Раковины'
+                ($provider == 'laparet' and preg_match("#(Раковин)#", $title)),
+                ($provider == 'ntceramic' and preg_match("#(Раковин)#", $providerSubcategory)),
+            ],
+            1 => [ //'Унитазы, писсуары и биде',
+                ($provider == 'laparet' and preg_match("#(Унитаз|Писсуар|Сиденье|Бачок)#", $title)),
+            ],
+            2 => [ //'Ванны',
+                ($provider == 'ntceramic' and preg_match("#(Ванны)#", $providerSubcategory)),
+            ],
+            3 => [ //'Душевые',
+                ($provider == 'laparet' and preg_match("#(Душ|душ)#", $title)),
+            ],
+            4 => [ //'Смесители',
+                ($provider == 'mosplitka' and preg_match("#(Смесител)#", $title)),
+                ($provider == 'laparet' and preg_match("#(Смесител)#", $title)),
+                ($provider == 'ntceramic' and preg_match("#(Смесител)#", $providerSubcategory)),
+            ],
+            5 => [ //'Мебель для ванной',
+                ($provider == 'dplintus' and preg_match("#(Полки для ванной и душа)#", $providerCategory)),
+                ($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)),
+                ($provider == 'laparet' and preg_match("#(Пенал|Зеркал|Тумб)#", $title)),
+                ($provider == 'ntceramic' and preg_match("#(Мебель для ванной)#", $providerSubcategory)),
+            ],
+            6 => [ //'Аксессуары для ванной комнаты',
+            ],
+            7 => [ //'Комплектующие',
+            ],
+            8 => [ //'Полотенцесушители',
+            ],
+            9 => [ //'Декоративные обои',
+                ($provider == 'domix' and preg_match("#(Обои)#", $providerCategory))
+            ],
+            10 => [ //'Керамогранит',
+                ($provider == 'tdgalion' and preg_match("#(Керамогранит)#", $providerCategory)),
+                ($provider == 'laparet' and preg_match("#(Керамогранит|Керамопаркет)#", $providerCategory)),
+                ($provider == 'ntceramic' and preg_match("#(Керамогранит)#", $providerSubcategory)),
+            ],
+            11 => [ //'Керамическая плитка',
+                // ($provider == 'mosplitka' and preg_match("#(Керамическая плитка)#", $title))
+                ($provider == 'tdgalion' and preg_match("#(Керамическая плитка)#", $providerCategory)),
+            ],
+            12 => [ //'Натуральный камень',
+            ],
+            13 => [ //'Мозаика',
+                ($provider == 'laparet' and preg_match("#(Мозаика)#", $providerCategory)),
+            ],
+            14 => [ //'Кухонные мойки',
+            ],
+            15 => [ //'Ступени и клинкер',
+            ],
+            16 => [ //'SPC-плитка',
+            ],
+            17 => [ //'Фотообои',
+            ],
+            18 => [ //'Обои под покраску',
+            ],
+            19 => [ //'Штукатурка',
+                ($provider = 'centerkrasok' and preg_match("#(Штукатурки)#", $providerCategory)),
+            ],
+            20 => [ //'Розетки',
+            ],
+            21 => [ //'Карнизы',
+                ($provider == 'dplintus' and preg_match("#(Карнизы)#", $providerCategory)),
+                ($provider == 'evroplast' and preg_match("#(карниз)#", $providerCategory)),
+            ],
+            22 => [ //'Молдинги',
+                ($provider == 'evroplast' and preg_match("#(молдинг)#", $providerCategory)),
+            ],
+            23 => [ //'Плинтусы',
+                ($provider == 'evroplast' and preg_match("#(плинтус)#", $providerCategory)),
+            ],
+            24 => [ //'Дверное обрамление',
+            ],
+            25 => [ //'Потолочный декор',
+            ],
+            26 => [ //'Другое',
+                ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
+                ($provider == 'evroplast' and preg_match("#(арочн|архитрав|балясин|гибкие аналоги|)#", $providerCategory)),
+                ($provider == 'evroplast' and preg_match("#(дополнительные элементы|камни|кессон|крышки столба|монтажный комплект|накладные элементы|наличники)#", $providerCategory)),
+                ($provider = 'centerkrasok' and preg_match("#(Монтажные пены|Промышленные покрытия|Растворители|Стеклохолст|Эпоксидные)#", $providerCategory)),
+                $provider == 'alpinefloor' and str_contains($product_link, 'https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/'),
+            ],
+            27 => [ //'Ламинат',
+                ($provider == 'domix' and preg_match("#(Ламинат)#", $providerCategory)),
+                ($provider == 'alpinefloor' and preg_match("#(ламинат)#", $title)) or str_contains($product_link, 'https://alpinefloor.su/catalog/spc-laminat') or (str_contains($product_link, "https://alpinefloor.su/catalog/laminat")),
+            ],
+            28 => [ //'Инженерная доска',
+                ($provider == 'domix' and preg_match("#(Инженерная доска)#", $providerCategory)),
+                $provider == 'alpinefloor' and str_contains($product_link, 'https://alpinefloor.su/catalog/inzhenernaya-doska/')
+            ],
+            29 => [ //'Паркетная доска',
+                ($provider == 'domix' and preg_match("#(Паркетная доска)#", $providerCategory))
+            ],
+            30 => [ //'Штучный паркет',
+            ],
+            31 => [ //'Виниловые полы',
+            ],
+            32 => [ //'Подложка под напольные покрытия',
+            ],
+            33 => [ //'Плинтус напольный',
+                ($provider == 'dplintus' and preg_match("#(Плинтус)#", $providerCategory)),
+                ($provider == 'domix' and preg_match("#(Плинтус)#", $providerCategory))
+            ],
+            34 => [ //'Массивная доска',
+            ],
+            35 => [ //'Пробковое покрытие',
+            ],
+            36 => [ //'Линолеум',
+                ($provider == 'domix' and preg_match("#(Линолеум)#", $providerCategory))
+            ],
+            37 => [ //'Кварцвиниловые полы',
+                ($provider == 'domix' and preg_match("#(Кварц-винил)#", $providerCategory)),
+                ($provider == 'aplinefloor' and str_contains($product_link, 'https://alpinefloor.su/catalog/kvartsvinilovaya-plitka')),
+            ],
+            38 => [ //'Кварциниловые панели',
+            ],
+            39 => [ //'Сопутствующие',
+                ($provider = 'centerkrasok' and preg_match("#(Инструменты)#", $providerCategory)),
+                $provider == 'alpinefloor' and str_contains($product_link, 'https://alpinefloor.su/catalog/related-products/'),
+            ],
+            40 => [ //'Порожки',
+                ($provider == 'dplintus' and preg_match("#(Порожки)#", $providerCategory))
+            ],
+            41 => [ //'Профили',
+                ($provider == 'dplintus' and preg_match("#(Профили)#", $providerCategory))
+            ],
+            42 => [ //'Ковры',
+                ($provider == 'domix' and preg_match("#(Ковры)#", $providerCategory))
+            ],
+            43 => [ //'Ковровые покрытия',
+                ($provider == 'domix' and preg_match("#(Ковровые покрытия)#", $providerCategory))
+            ],
+            44 => [ //'Панели',
+                ($provider == 'dplintus' and preg_match("#(Панели)#", $providerCategory)),
+                ($provider == 'domix' and preg_match("#(Панели)#", $providerCategory)),
+                ($provider == 'evroplast' and preg_match("#(панел)#", $providerCategory)),
+            ],
+            45 => [ //'Краски, эмали',
+                ($provider == 'domix' and preg_match("#(Краски)#", $providerCategory)),                
+                ($provider = 'centerkrasok' and preg_match("#(Краски)#", $providerCategory)),
+            ],
+            46 => [ //'Грунтовки',
+                ($provider = 'centerkrasok' and preg_match("#(Грунтовки)#", $providerCategory)),
+            ],
+            47 => [ //'Лаки и масла', 
+                ($provider = 'centerkrasok' and preg_match("#(Лаки и масла)#", $providerCategory)),
+            ],
+            48 => [ //'Антисептики и пропитки', 
+                ($provider = 'centerkrasok' and preg_match("#(Антисептики)#", $providerCategory)),
+            ],
+            49 => [ //'Затирки и клей',
+                ($provider == 'laparet' and preg_match("#(Клей|Затирка)#", $providerCategory)),
+                ($provider == 'evroplast' and preg_match("#клей#", $providerCategory)),
+                ($provider = 'centerkrasok' and preg_match("#(Клеи|затирки)#", $providerCategory)),
+            ],
+            50 => [ //'Камины',
+                ($provider == 'evroplast' and preg_match("#(камин)#", $providerCategory)),
+            ],
+            51 => [ //'Декоративные элементы',
+                ($provider == 'evroplast' and preg_match("#(декоративные элементы)#", $providerCategory)),
+            ],
+            52 => [ //null
+            ],
+            53 => [ //'Кронштейны, ниши',
+                ($provider == 'evroplast' and preg_match("#(кронштейн)#", $providerCategory)),
+            ],
+            54 => [ //'Колонны',
+                ($provider == 'evroplast' and preg_match("#(колонн)#", $providerCategory)),
+            ],
+            55 => [ //'Шпатлевки',
+                ($provider = 'centerkrasok' and preg_match("#(Шпатлевки)#", $providerCategory)),
+            ],
+            56 => [ //'Декоративное покрытие',
+                ($provider = 'centerkrasok' and preg_match("#(Декоративные дизайнерские покрытия)#", $providerCategory)),
             ],
         ];
 
-        foreach ($keys[$provider] as $num => $value) {
-            if ($value['condition']) {
-                return [
-                    "category" => $keys[$provider][$num]['category'],
-                    "subcategory" => $keys[$provider][$num]['subcategory'],
-                ];
+        foreach ($keys as $key => $stmnts) {
+            foreach ($stmnts as $stmnt) {
+                if ($stmnt) {
+                    return $all_subcategories[$key];
+                }
             }
         }
+
+        return $providerSubcategory = 'null' ? null : $providerSubcategory;
     }
+
+    static function finalCategory($provider, $providerCategory = null, $title = null, $product_link = null)
+    {
+        $providerCategory = $providerCategory ?? 'null';
+        $title = $title ?? 'null';
+        $all_categories = Parser::getCategoriesList();
+
+        if (in_array($providerCategory, $all_categories)) return $providerCategory;
+
+        $keys = [
+            0 => [ //'Обои и настенные покрытия'
+                ($provider == 'domix' and preg_match("#(Обои)#", $providerCategory)),
+                ($provider == 'alpinefloor' and str_contains($product_link, 'https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/')),
+            ],
+            1 => [ //'Напольные покрытия',
+                ($provider == 'domix' and preg_match("#(Плитнус|Кварц-винил|Линолеум|Ламинат|Ковровые|Ковры|Паркет)#", $providerCategory)),
+                $provider == 'alpinefloor' and (str_contains($product_link, 'https://alpinefloor.su/catalog/spc-laminat') or str_contains($product_link, "https://alpinefloor.su/catalog/laminat") or str_contains($product_link, 'https://alpinefloor.su/catalog/kvartsvinilovaya-plitka') or str_contains($product_link, 'https://alpinefloor.su/catalog/related-products/')),
+            ],
+            2 => [ //'Плитка и керамогранит',
+                ($provider == 'dplintus' and preg_match("#(Аксессуары|Плинтус)#", $providerCategory)),
+                ($provider == 'domix' and preg_match("#(Плитка и керамогранит)#", $providerCategory)),
+                ($provider == 'tdgalion' and preg_match("#(Керамическая плитка|Керамогранит)#", $providerCategory)),
+                ($provider == 'laparet' and preg_match("#(Керамопаркет|Мозаика)#", $providerCategory)),
+                ($provider == 'alpinefloor' and preg_match("#(ламинат)#", $title)),
+            ],
+            3 => [ //'Сантехника',
+                ($provider == 'dplintus' and preg_match("#(Полки для ванной и душа)#", $providerCategory)),
+            ],
+            4 => [ //'Краски',
+                ($provider == 'domix' and preg_match("#(Краски)#", $providerCategory)),
+                ($provider == 'laparet' and preg_match("#(Клей|Затирка)#", $providerCategory)),
+                ($provider == 'centerkrasok'),
+                ($provider == 'evroplast' and preg_match("#клей#", $providerCategory)),
+            ],
+            5 => [ //'Лепнина',
+                ($provider == 'dplintus' and preg_match("#(Карнизы|Общестроительные профили|Панели для|Профили для|Порожки|Углы и профили)#", $providerCategory)),
+                ($provider == 'evroplast' and !preg_match("#клей#", $providerCategory)),
+            ],
+        ];
+
+        foreach ($keys as $key => $stmnts) {
+            foreach ($stmnts as $stmnt) {
+                if ($stmnt) {
+                    return $all_categories[$key];
+                }
+            }
+        }
+
+        return $providerCategory = 'null' ? null : $providerCategory;
+    }
+
+    // static function getCategoriesByLink($product_link, $provider)
+    // {
+    //     $all_categories = Parser::getCategoriesList($provider);
+    //     $all_subcategories = Parser::getSubcategoriesList($provider);
+
+    //     $keys = [
+    //         'alpinefloor' => [
+    //             // [
+    //             //     'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/spc-laminat') or (str_contains($product_link, "https://alpinefloor.su/catalog/laminat")),
+    //             //     'category' => $all_categories[1],
+    //             //     'subcategory' => $all_subcategories[27],
+    //             // ],
+    //             // [
+    //             //     'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/kvartsvinilovaya-plitka'),
+    //             //     'category' => $all_categories[1],
+    //             //     'subcategory' => $all_subcategories[37],
+    //             // ],
+    //             // [
+    //             //     'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/inzhenernaya-doska/'),
+    //             //     'category' => $all_categories[1],
+    //             //     'subcategory' => $all_subcategories[28],
+    //             // ],
+    //             // [
+    //             //     'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/'),
+    //             //     'category' => $all_categories[0],
+    //             //     'subcategory' => $all_subcategories[26],
+    //             // ],
+    //             // [
+    //             //     'condition' => str_contains($product_link, 'https://alpinefloor.su/catalog/related-products/'),
+    //             //     'category' => $all_categories[1],
+    //             //     'subcategory' => $all_subcategories[39],
+    //             // ]
+    //         ],
+    //     ];
+
+    //     foreach ($keys[$provider] as $num => $value) {
+    //         if ($value['condition']) {
+    //             return [
+    //                 "category" => $keys[$provider][$num]['category'],
+    //                 "subcategory" => $keys[$provider][$num]['subcategory'],
+    //             ];
+    //         }
+    //     }
+    // }
 
 
     static function getCategoriesByPath(array $path, $provider)
@@ -148,6 +350,7 @@ class Categories
             'category' => null,
             'subcategory' => null,
         ];
+
 
         foreach ($path as $path_key => $path_value) {
             $path_value = $path_value->text();
@@ -285,8 +488,8 @@ class Categories
         } elseif (preg_match("#https://www.ampir.ru/catalog/rozetki/.*#", $url_parser)) {
             $subcategory = $all_subcategories[20];
         } elseif (preg_match("#https://www.ampir.ru/catalog/kraski/.*#", $url_parser)) {
-            $subcategory = null;
-        }elseif (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser) and str_contains(mb_strtolower($title), 'обои под покраску')) {
+            $subcategory = $all_subcategories[45];
+        } elseif (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser) and str_contains(mb_strtolower($title), 'обои под покраску')) {
             $subcategory = $all_subcategories[18];
         } elseif (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser) and str_contains(mb_strtolower($title), 'фотообои')) {
             $subcategory = $all_subcategories[17];

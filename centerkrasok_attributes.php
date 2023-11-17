@@ -80,7 +80,7 @@ foreach ($goods as $num => $good) {
 
     // $all_product_data['collection'] = [$collection, 's'];
     // $all_product_data['producer'] = [$fabric, 's'];
-    // $all_product_data['provider'] = [$provider, 's'];
+    $all_product_data['provider'] = ['centerkrasok', 's'];
 
     foreach ($all_product_data as $data_key => $data_value) {
         $all_product_data[$data_key][0] = trim($all_product_data[$data_key][0]);
@@ -97,21 +97,5 @@ foreach ($goods as $num => $good) {
     }
     
 
-
-    $print_result = [];
-    foreach ($all_product_data as $key => $val) {
-        $print_result[$key] = $val[0];
-    }
-    TechInfo::preArray($print_result);
-
-    //Для передачи в MySQL
-
-    $types = '';
-    $values = array();
-    foreach ($all_product_data as $key => $n) {
-        $types .= $n[1];
-        $values[$key] = $n[0];
-    }
-
-    // Parser::insertProductData1($types, $values, $url_parser);
+    include "insert_ending.php";
 }
