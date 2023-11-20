@@ -235,14 +235,7 @@ if ($items) {
             $categories = Categories::getCategoriesByTitle($all_product_data['title'][0], $provider);
             $all_product_data['category'] = isset($categories['category']) ? [$categories['category'], 's'] : [Parser::getCategoriesList()[1], 's'];
             $all_product_data['subcategory'] = isset($categories['subcategory']) ? [$categories['subcategory'], 's'] : [Parser::getSubcategoriesList()[26], 's'];
-        } elseif ($provider == 'finefloor') {
-            $all_product_data['category'] = [Parser::getCategoriesList()[1], 's'];
-            $all_product_data['subcategory'] = [Parser::getSubcategoriesList()[37], 's'];
-        } elseif ($provider == 'alpinefloor') {
-            $categories = Categories::getCategoriesByLink($url_parser, $provider);
-            $all_product_data['category'] = isset($categories['category']) ? [$categories['category'], 's'] : [null, 's'];
-            $all_product_data['subcategory'] = isset($categories['subcategory']) ? [$categories['subcategory'], 's'] : [null, 's'];
-        }
+        } 
 
         //категория
         if ($provider == 'lkrn') {
@@ -368,6 +361,8 @@ if ($items) {
         if ($provider == 'artkera') {
             $all_product_data['link'] = [$url_parser . "?art=" . $all_product_data['articul'][0], 's'];
         }
+
+        $all_product_data['provider'] = ['artkera', 's'];
 
             include "insert_ending.php";
     }

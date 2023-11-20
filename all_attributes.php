@@ -119,6 +119,7 @@ $attributes_classes = [
         ".breadcrumbs__list .breadcrumbs__item", //laparet
         ".breadcrumbs-list li", //domix
         ".bx-breadcrumb .bx-breadcrumb-item", //dplintus
+        ".breadcrumbs .breadcrumbs__item", //finefloor
     ],
 
     "images" => [ //маленькие 
@@ -143,6 +144,7 @@ $attributes_classes = [
 
     "error" => [
         ".b-cat-description", //tdgalion
+        ".not-provides", //centerkrasok
     ]
 ];
 

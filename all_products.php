@@ -7,7 +7,6 @@ use functions\TechInfo;
 use functions\Parser;
 use functions\ParserMasterdom;
 use functions\ParserMosplitka;
-use functions\Categories;
 
 
 //ПОМЕНЯТЬ ЗАПРОС MYSQL В САМОМ НАЧАЛЕ + ЗАХАРДКОЖЕННУЮ ССЫЛКУ И ПРОВАЙДЕРА
@@ -16,14 +15,14 @@ use functions\Categories;
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 2; $i++) {
-        // sleep(mt_rand(2,6));
+    for ($i = 1; $i < 2; $i++) { //тест
+        sleep(mt_rand(2, 6));
 
         echo "<br><b>Товар $i</b><br><br>";
 
 
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='evroplast' ORDER BY product_views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='mosplitka' ORDER BY product_views, id LIMIT 1");
 
         if (!$query->num_rows) {
             // Logs::writeCustomLog("не получено ссылки для парсинга", $provider);
@@ -32,56 +31,65 @@ try {
         $res = mysqli_fetch_assoc($query);
 
         //Получаем ссылку
+
         $url_parser = $res['link'];
         $provider = $res['provider'];
-        $url_parser = "https://dplintus.ru/catalog/aksessuary/kopirovalnyy-shablon/";
-        $provider = "dplintus";
 
-        // $provider = "domix";
-        TechInfo::whichLinkPass($url_parser);
 
-        if ($provider == 'dplintus' and $i > 10) continue; //банят если много запросов
+        $links = MySQL::sql("SELECT link, provider from all_products WHERE provider='domix' and category IS NULL or category='null' ORDER BY date_edit LIMIT 10"); //тест
+        foreach ($links as $link) { //тест
+            sleep(mt_rand(2, 6)); //тест
+            $url_parser = $link['link']; //тест
+            $provider = $link['provider']; //тест
+            
+            $url_parser = "https://moscow.domix-club.ru/catalog/mebel_dlya_vannoi/kontinent-demure-led-60x80sm/";
+            
 
-        //Увеличиваем просмотры ссылки
-        $views = $res['product_views'] + 1;
-        $date_edit = MySQL::get_mysql_datetime();
-        MySQL::sql("UPDATE all_links SET product_views=$views, date_edit='$date_edit' WHERE link='$url_parser'");
+            TechInfo::whichLinkPass($url_parser);
 
-        //Получаем html страницы
-        if ($provider == 'tdgalion' or $provider == 'surgaz') $encoding = "windows-1251";
-        try { 
-            $document = Parser::guzzleConnect($url_parser, $encoding ?? null);
-            MySQL::sql("UPDATE all_products SET status='ok', date_edit='$date_edit' WHERE link='$url_parser'"); 
-        } catch (\Throwable $e) {
-            MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
-            Logs::writeLog1($e,  $provider, $url_parser); 
-            TechInfo::errorExit($e);
-            var_dump($e);
-        }
+            if ($provider == 'dplintus' and $i > 10) continue; //банят если много запросов
 
-        if ($provider == 'surgaz') {
-            include "surgaz_attributes.php";
-            break; //выход из цикла для получения новых ссылок, т.к. выгружает по 100 товаров с 1 ссылки
-        } elseif ($provider == 'centerkrasok') {
-            include "centerkrasok_attributes.php";
-        } elseif ($provider == 'artkera') {
-            include "artkera_attributes.php";
-        } elseif ($provider == 'evroplast') {
-            include "evroplast_attributes.php";
-        } elseif ($provider == 'mosplitka') {
-            include "mosplitka_attributes.php";
-        } elseif ($provider == 'masterdom.php') {
-            include "masterdom_attributes.php";
-        } else {
-            $all_product_data = [];
+            //Увеличиваем просмотры ссылки
+            $views = $res['product_views'] + 1;
+            $date_edit = MySQL::get_mysql_datetime();
+            // MySQL::sql("UPDATE all_links SET product_views=$views, date_edit='$date_edit' WHERE link='$url_parser'"); //тест
 
-            $all_product_data['link'] = [$url_parser, 's'];
-            $all_product_data['provider'] = [$provider, 's'];
+            //Получаем html страницы
+            if ($provider == 'tdgalion' or $provider == 'surgaz') $encoding = "windows-1251";
+            try {
+                $document = Parser::guzzleConnect($url_parser, $encoding ?? null);
+                MySQL::sql("UPDATE all_products SET status='ok', date_edit='$date_edit' WHERE link='$url_parser'");
+            } catch (\Throwable $e) {
+                MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
+                Logs::writeLog1($e,  $provider, $url_parser);
+                TechInfo::errorExit($e);
+                var_dump($e);
+            }
 
-            include "all_attributes.php";
+            if ($provider == 'surgaz') {
+                include "surgaz_attributes.php";
+                break; //выход из цикла для получения новых ссылок, т.к. выгружает по 100 товаров с 1 ссылки
+            } elseif ($provider == 'centerkrasok') {
+                include "centerkrasok_attributes.php";
+            } elseif ($provider == 'artkera') {
+                include "artkera_attributes.php";
+            } elseif ($provider == 'evroplast') {
+                include "evroplast_attributes.php";
+            } elseif ($provider == 'mosplitka') {
+                include "mosplitka_attributes.php";
+            } elseif ($provider == 'masterdom.php') {
+                include "masterdom_attributes.php";
+            } else {
+                $all_product_data = [];
 
-            include "insert_ending.php";
-        }
+                $all_product_data['link'] = [$url_parser, 's'];
+                $all_product_data['provider'] = [$provider, 's'];
+
+                include "all_attributes.php";
+
+                include "insert_ending.php";
+            }
+        } //тест
     } //конец итерации 1 товара (для сургаза стоит break, выгружает по 100 товаров с 1 ссылки)
 
 } catch (\Throwable $e) { //конец глобального try

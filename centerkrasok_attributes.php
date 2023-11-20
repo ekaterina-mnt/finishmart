@@ -32,6 +32,14 @@ foreach ($goods as $num => $good) {
     $all_product_data['link'] = ["https://www.centerkrasok.ru" . $good_a[0]->attr('href'), 's'];
 
 
+    //статус ссылки
+    $error_res = $good->find(".not-provides");
+    if ($error_res) {
+        if (str_contains($error_res->text(), "товар более не поставляется")) {
+            $all_product_data['status'] = ['invalide', 's'];
+        }
+    }
+
     //категории
     $path_res = $document->find('.c_breadcrumbs li');
     if ($path_res) {
@@ -95,7 +103,7 @@ foreach ($goods as $num => $good) {
     if (isset($all_product_data['good_id_from_provider'][0])) {
         $all_product_data['good_id_from_provider'][0] = str_replace('Код: ', '', $all_product_data['good_id_from_provider'][0]);
     }
-    
+
 
     include "insert_ending.php";
 }

@@ -7,8 +7,8 @@ use functions\Categories;
 $all_product_data['provider_subcategory'] = [$all_product_data['subcategory'][0] ?? null, 's'];
 $all_product_data['provider_category'] = [$all_product_data['category'][0] ?? null, 's'];
 
-$all_product_data['subcategory'] = [Categories::finalSubcategory($provider, $all_product_data['category'][0] ?? null, $all_product_data['subcategory'][0] ?? null, $all_product_data['title'][0] ?? null, $all_product_data['link'][0] ?? null), 's'];
-$all_product_data['category'] = [Categories::finalCategory($provider, $all_product_data['category'][0] ?? null, $all_product_data['title'][0] ?? null, $all_product_data['link'][0] ?? null), 's'];
+$all_product_data['subcategory'] = [Categories::finalSubcategory($provider, $all_product_data['provider_category'][0] ?? null, $all_product_data['provider_subcategory'][0] ?? null, $all_product_data['title'][0] ?? null, $all_product_data['link'][0] ?? null), 's'];
+$all_product_data['category'] = [Categories::finalCategory($provider, $all_product_data['provider_category'][0] ?? null, $all_product_data['provider_subcategory'][0] ?? null, $all_product_data['title'][0] ?? null, $all_product_data['link'][0] ?? null), 's'];
 
 $print_result = [];
 foreach ($all_product_data as $key => $val) {
