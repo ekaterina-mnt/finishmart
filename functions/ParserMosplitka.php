@@ -235,7 +235,7 @@ class ParserMosplitka
     static function validateSubcategory(string $category, string|null $subcategory, string $title = null): string|null
     {
         $subcategories = Parser::getSubcategoriesList();
-
+    
         $subcategories_keys = [
             0 => 'Раковины',
             1 => ['Унитазы', 'Инсталляции', 'Писсуары', 'Биде', 'Кнопки смыва'],

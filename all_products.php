@@ -22,7 +22,7 @@ try {
 
 
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='mosplitka' ORDER BY product_views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='laparet' ORDER BY product_views, id LIMIT 1");
 
         if (!$query->num_rows) {
             // Logs::writeCustomLog("не получено ссылки для парсинга", $provider);
@@ -36,14 +36,11 @@ try {
         $provider = $res['provider'];
 
 
-        $links = MySQL::sql("SELECT link, provider from all_products WHERE provider='domix' and category IS NULL or category='null' ORDER BY date_edit LIMIT 10"); //тест
-        foreach ($links as $link) { //тест
-            sleep(mt_rand(2, 6)); //тест
-            $url_parser = $link['link']; //тест
-            $provider = $link['provider']; //тест
-            
-            $url_parser = "https://moscow.domix-club.ru/catalog/mebel_dlya_vannoi/kontinent-demure-led-60x80sm/";
-            
+        // $links = MySQL::sql("SELECT link, provider from all_products WHERE provider='domix' and category IS NULL or category='null' ORDER BY date_edit LIMIT 10"); //тест
+        // foreach ($links as $link) { //тест
+        //     sleep(mt_rand(2, 6)); //тест
+        //     $url_parser = $link['link']; //тест
+        //     $provider = $link['provider']; //тест
 
             TechInfo::whichLinkPass($url_parser);
 
@@ -58,6 +55,7 @@ try {
             if ($provider == 'tdgalion' or $provider == 'surgaz') $encoding = "windows-1251";
             try {
                 $document = Parser::guzzleConnect($url_parser, $encoding ?? null);
+                echo $document;
                 MySQL::sql("UPDATE all_products SET status='ok', date_edit='$date_edit' WHERE link='$url_parser'");
             } catch (\Throwable $e) {
                 MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
@@ -89,7 +87,7 @@ try {
 
                 include "insert_ending.php";
             }
-        } //тест
+        // } //тест
     } //конец итерации 1 товара (для сургаза стоит break, выгружает по 100 товаров с 1 ссылки)
 
 } catch (\Throwable $e) { //конец глобального try

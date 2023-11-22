@@ -7,7 +7,7 @@ use functions\TechInfo;
 use functions\Parser;
 use functions\ParserMasterdom;
 use functions\ParserMosplitka;
- 
+
 $check_if_complect = ParserMosplitka::check_if_complect($document);
 
 if ($check_if_complect) {
@@ -29,8 +29,8 @@ if ($check_if_complect) {
 
     //категория
     if ($all_product_data['title'][0]) {
-    $categories = ParserMosplitka::getCategorySubcategory($document, $all_product_data['title'][0]);
-    $all_product_data['category'] = $categories['category'] ? [$categories['category'], 's'] : [null, 's'];
+        $categories = ParserMosplitka::getCategorySubcategory($document, $all_product_data['title'][0]);
+        $all_product_data['category'] = $categories['category'] ? [$categories['category'], 's'] : [null, 's'];
     }
 
     //подкатегория
@@ -38,8 +38,8 @@ if ($check_if_complect) {
 
     //единица измерения
     if ($all_product_data['category'][0]) {
-    $edizm = Parser::getEdizm($all_product_data['category'][0]);
-    $all_product_data['edizm'] = [$edizm, 's'];
+        $edizm = Parser::getEdizm($all_product_data['category'][0]);
+        $all_product_data['edizm'] = [$edizm, 's'];
     }
 
     //остатки товара
@@ -165,9 +165,10 @@ if ($check_if_complect) {
             }
 
             //подкатегория(для плитки)
-            if (str_contains($name, 'Категория') and !isset($all_product_data['subcategory'])) {
-                $subcategory = ParserMosplitka::validateSubcategory($category, $value);
+            if (str_contains($name, 'Категория') and !isset($all_product_data['subcategory'][0])) {
+                $subcategory = ParserMosplitka::validateSubcategory($all_product_data['category'][0] ?? null, $value);
                 $all_product_data['subcategory'] = $subcategory ? [$subcategory, 's'] : null;
+                $all_product_data['subcategory'][0] = $all_product_data['subcategory'][0] ? $all_product_data['subcategory'][0] : $value;
             }
 
             //тип

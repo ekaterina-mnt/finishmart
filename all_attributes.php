@@ -5,6 +5,7 @@ use functions\Parser;
 use functions\ParserMosplitka;
 use functions\Logs;
 use functions\Categories;
+use functions\MySQL;
 
 $attributes_classes = [
     "title" => [
@@ -41,6 +42,7 @@ $attributes_classes = [
         ".good-available__text", //ntceramic
         "#product-stocks-container tr", //domix
         ".product-item-rest-list .amount", //dplintus
+        ".nalichieVNalichii", //tdaglion
     ],
 
     "articul" => [
@@ -120,6 +122,7 @@ $attributes_classes = [
         ".breadcrumbs-list li", //domix
         ".bx-breadcrumb .bx-breadcrumb-item", //dplintus
         ".breadcrumbs .breadcrumbs__item", //finefloor
+        ".breadcrumbs .breadcrumbs__before", //alpinefloor
     ],
 
     "images" => [ //маленькие 
@@ -144,7 +147,8 @@ $attributes_classes = [
 
     "error" => [
         ".b-cat-description", //tdgalion
-        ".not-provides", //centerkrasok
+        ".not-provides", //centerkrasok (в другом скрипте в итоге)
+        ".error404-container", //alpinefloor
     ]
 ];
 
@@ -156,6 +160,13 @@ if ($provider == 'ampir') {
     }
 }
 
+//ошибка
+$error_res = $document->find(implode(', ', $attributes_classes['error']));
+var_dump($error_res);
+if ($error_res) {
+    MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
+    TechInfo::errorExit("Страница вернула ошибку");
+}
 
 //название товара
 $title_res = $document->find(implode(', ', $attributes_classes['title']));

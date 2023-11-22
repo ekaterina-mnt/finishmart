@@ -22,7 +22,7 @@ try {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='mosplitka' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='laparet' ORDER BY views, id LIMIT 1");
 
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
@@ -46,7 +46,15 @@ try {
         if ($provider == 'masterdom') continue; //
 
         //Получаем html у себя
-        $document = Parser::guzzleConnect($url_parser);
+        try {
+            $document = Parser::guzzleConnect($url_parser, $encoding ?? null);
+            MySQL::sql("UPDATE all_products SET status='ok', date_edit='$date_edit' WHERE link='$url_parser'");
+        } catch (\Throwable $e) {
+            MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
+            Logs::writeLog1($e,  $provider, $url_parser);
+            TechInfo::errorExit($e);
+            var_dump($e);
+        }
 
         //Получаем все данные со страницы
         $search_classes = [
