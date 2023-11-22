@@ -22,7 +22,7 @@ try {
 
 
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='laparet' ORDER BY product_views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='mosplitka' ORDER BY product_views, id LIMIT 1");
 
         if (!$query->num_rows) {
             // Logs::writeCustomLog("не получено ссылки для парсинга", $provider);
@@ -36,14 +36,14 @@ try {
         $provider = $res['provider'];
 
 
-        // $links = MySQL::sql("SELECT link, provider from all_products WHERE provider='domix' and category IS NULL or category='null' ORDER BY date_edit LIMIT 10"); //тест
-        // foreach ($links as $link) { //тест
-        //     sleep(mt_rand(2, 6)); //тест
-        //     $url_parser = $link['link']; //тест
-        //     $provider = $link['provider']; //тест
+        $links = MySQL::sql("SELECT link, provider from all_products WHERE provider='mosplitka' and subcategory IS NULL or subcategory='null' ORDER BY date_edit LIMIT 10"); //тест
+        foreach ($links as $link) { //тест
+            sleep(mt_rand(2, 6)); //тест
+            $url_parser = $link['link']; //тест
+            $provider = $link['provider']; //тест
 
             TechInfo::whichLinkPass($url_parser);
-
+echo "here";
             if ($provider == 'dplintus' and $i > 10) continue; //банят если много запросов
 
             //Увеличиваем просмотры ссылки
@@ -54,16 +54,16 @@ try {
             //Получаем html страницы
             if ($provider == 'tdgalion' or $provider == 'surgaz') $encoding = "windows-1251";
             try {
+                echo "here2";
                 $document = Parser::guzzleConnect($url_parser, $encoding ?? null);
-                echo $document;
                 MySQL::sql("UPDATE all_products SET status='ok', date_edit='$date_edit' WHERE link='$url_parser'");
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
                 Logs::writeLog1($e,  $provider, $url_parser);
                 TechInfo::errorExit($e);
                 var_dump($e);
             }
-
+echo "here3";
             if ($provider == 'surgaz') {
                 include "surgaz_attributes.php";
                 break; //выход из цикла для получения новых ссылок, т.к. выгружает по 100 товаров с 1 ссылки
@@ -87,7 +87,7 @@ try {
 
                 include "insert_ending.php";
             }
-        // } //тест
+        } //тест
     } //конец итерации 1 товара (для сургаза стоит break, выгружает по 100 товаров с 1 ссылки)
 
 } catch (\Throwable $e) { //конец глобального try

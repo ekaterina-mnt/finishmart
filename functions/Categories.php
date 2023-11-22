@@ -159,7 +159,7 @@ class Categories
                 ($provider == 'alpinefloor' and preg_match("#(Подложк)#", $providerSubcategory)),
 
             ],
-            33 => [ //'Плинтус',
+            33 => [ //'Плинтус напольный',
                 ($provider == 'dplintus' and preg_match("#(Плинтус)#", $providerCategory)),
                 ($provider == 'domix' and preg_match("#(Плинтус)#", $providerCategory)),
                 ($provider == 'finefloor' and preg_match("#(Плинтус)#", $providerSubcategory)),

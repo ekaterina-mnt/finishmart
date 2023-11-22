@@ -148,7 +148,7 @@ $attributes_classes = [
     "error" => [
         ".b-cat-description", //tdgalion
         ".not-provides", //centerkrasok (в другом скрипте в итоге)
-        ".error404-container", //alpinefloor
+        ".error404__number", //alpinefloor
     ]
 ];
 
@@ -162,7 +162,6 @@ if ($provider == 'ampir') {
 
 //ошибка
 $error_res = $document->find(implode(', ', $attributes_classes['error']));
-var_dump($error_res);
 if ($error_res) {
     MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
     TechInfo::errorExit("Страница вернула ошибку");

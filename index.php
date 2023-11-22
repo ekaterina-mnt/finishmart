@@ -17,3 +17,5 @@
 <a href="/all_links.php">all_links.php</a>
 <br><br>
 <a href="/all_products.php">all_products.php</a>
+<br><br>
+<a href="/check_invalide_links.php">check_invalide_links.php</a>

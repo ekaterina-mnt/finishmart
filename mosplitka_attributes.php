@@ -8,6 +8,7 @@ use functions\Parser;
 use functions\ParserMasterdom;
 use functions\ParserMosplitka;
 
+try {
 $check_if_complect = ParserMosplitka::check_if_complect($document);
 
 if ($check_if_complect) {
@@ -200,4 +201,7 @@ if ($check_if_complect) {
     // $all_product_data['variants'] = [$variants, 's'];
 
     include "insert_ending.php";
+}
+} catch (Throwable $e) {
+    var_dump($e);
 }

@@ -101,9 +101,9 @@ class ParserMasterdom
         }
 
         if (str_contains($product_link, "https://santehnika.masterdom.ru")) {
-            $query = "INSERT INTO all_links (`link`, `type`, `provider`) VALUES (?,?,?) ON DUPLICATE KEY UPDATE type='additional'";
-            $types = "sss";
-            $values = [$product_link, 'additional', 'masterdom'];
+            $query = "INSERT INTO masterdom_links (`link`, `type`) VALUES (?,?)";
+            $types = "ss";
+            $values = [$product_link, 'additional'];
             MySQL::bind_sql($query, $types, $values);
         }
 

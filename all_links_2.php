@@ -22,7 +22,7 @@ try {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='laparet' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='alpinefloor' ORDER BY views, id LIMIT 1");
 
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
@@ -46,15 +46,7 @@ try {
         if ($provider == 'masterdom') continue; //
 
         //Получаем html у себя
-        try {
-            $document = Parser::guzzleConnect($url_parser, $encoding ?? null);
-            MySQL::sql("UPDATE all_products SET status='ok', date_edit='$date_edit' WHERE link='$url_parser'");
-        } catch (\Throwable $e) {
-            MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
-            Logs::writeLog1($e,  $provider, $url_parser);
-            TechInfo::errorExit($e);
-            var_dump($e);
-        }
+        $document = Parser::guzzleConnect($url_parser);
 
         //Получаем все данные со страницы
         $search_classes = [
@@ -108,8 +100,10 @@ try {
         foreach ($all_res as $href) {
             $link = Parser::generateLink($href->attr('href'), $provider, $url_parser);
             if ($provider == 'alpinefloor' and $href->attr('data-endpoint')) {
-                $link = Parser::generateLink(str_replace(["is_ajax=y&", "ajax=y&"], '', $href->attr('data-endpoint')), $provider, $url_parser);
+$link = Parser::generateLink(str_replace(["is_ajax=y&", "ajax=y&"], '', $href->attr('data-endpoint')), $provider, $url_parser);
+            
             }
+
 
             // избавляемся от дублей
             if (MySQL::sql("SELECT id, link FROM all_links WHERE link='$link'")->num_rows) {
