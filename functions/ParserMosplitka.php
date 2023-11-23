@@ -11,19 +11,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class ParserMosplitka
 {
-    static function check_if_complect(Document $document): bool
-    {
-        $goods = $document->find('.single-product___main-info--equip-body.e__flex.e__fdc .single-product___main-info--equip-item.e__flex');
-        if (empty($goods)) return false;
-        return boolval(count($goods) > 1);
-    }
+    // static function check_if_complect(Document $document): bool //в Parser
 
-    static function check_if_archive(Document $document): bool
-    {
-        $data = $document->find('.product-arhive-label');
-        if (empty($goods)) return false;
-        return boolval(count($data));
-    }
+    // static function check_if_archive(Document $document): bool //в Parser
+
+    // static function getLinkType(string $link): string|null //в Parser
 
     static function check_if_ampir_articul_exists(string $articul, string $provider, string $url_parser): bool
     {
@@ -150,174 +142,122 @@ class ParserMosplitka
         return $all_product_data;
     }
 
-    static function getLinkType(string $link): string|null
-    {
-        if (preg_match("#https://mosplitka.ru/catalog.+#", $link) and !preg_match("#.php$#", $link)) {
-            $type = 'catalog';
-        } elseif (preg_match("#https://mosplitka.ru/product.+#", $link)) {
-            $type = 'product';
-        } elseif (preg_match("#https://www.ampir.ru/catalog/.+/page(\d+).*#", $link)) {
-            $type = 'catalog';
-        } elseif (preg_match("#https://www.ampir.ru/catalog/.+/\d+/#", $link)) {
-            $type = 'product';
-        }
 
-        $type = $type ?? null;
+    // static function getCategorySubcategory(Document $document, string $title, string $producer = null, string $collection = null): array|null
+    // {
+    //     $path_res = $document->find('.product-breadcrumb a, .breadcrumb_cont a');
+    //     $path = "";
+    //     if (!$path_res) return null;
 
-        return $type;
-    }
+    //     foreach ($path_res as $a) {
+    //         $path .= $a->text() . "/";
+    //     }
+    //     $path = substr($path, 0, strlen($path) - 1);
 
-
-    static function getCategorySubcategory(Document $document, string $title, string $producer = null, string $collection = null): array|null
-    {
-        $path_res = $document->find('.product-breadcrumb a, .breadcrumb_cont a');
-        $path = "";
-        if (!$path_res) return null;
-
-        foreach ($path_res as $a) {
-            $path .= $a->text() . "/";
-        }
-        $path = substr($path, 0, strlen($path) - 1);
-
-        //категории
-        $categories = array();
-        foreach ($path_res as $a) {
-            $a = $a->text();
-            if (!isset($producer) && isset($collection)) {
-                if ($a != 'На главную' && $a != 'Каталог' && !str_contains($a, $collection)) {
-                    $categories[] = $a;
-                }
-            } elseif (isset($producer) && !isset($collection)) {
-                if ($a != 'На главную' && $a != 'Каталог' && !str_contains($a, $producer)) {
-                    $categories[] = $a;
-                }
-            } elseif (!isset($producer) && !isset($collection)) {
-                if ($a != 'На главную' && $a != 'Каталог') {
-                    $categories[] = $a;
-                }
-            } else {
-                if ($a != 'На главную' && $a != 'Каталог' && !str_contains($a, $producer) && !str_contains($a, $collection)) {
-                    $categories[] = $a;
-                }
-            }
-        }
+    //     //категории
+    //     $categories = array();
+    //     foreach ($path_res as $a) {
+    //         $a = $a->text();
+    //         if (!isset($producer) && isset($collection)) {
+    //             if ($a != 'На главную' && $a != 'Каталог' && !str_contains($a, $collection)) {
+    //                 $categories[] = $a;
+    //             }
+    //         } elseif (isset($producer) && !isset($collection)) {
+    //             if ($a != 'На главную' && $a != 'Каталог' && !str_contains($a, $producer)) {
+    //                 $categories[] = $a;
+    //             }
+    //         } elseif (!isset($producer) && !isset($collection)) {
+    //             if ($a != 'На главную' && $a != 'Каталог') {
+    //                 $categories[] = $a;
+    //             }
+    //         } else {
+    //             if ($a != 'На главную' && $a != 'Каталог' && !str_contains($a, $producer) && !str_contains($a, $collection)) {
+    //                 $categories[] = $a;
+    //             }
+    //         }
+    //     }
 
 
-        $category = self::validateCategory($categories[0]);
-        $subcategory = isset($categories[1]) ? self::validateSubcategory($category, $categories[1]) : self::validateSubcategory($category, null, $title);
+    //     $category = self::validateCategory($categories[0]);
+    //     $subcategory = isset($categories[1]) ? self::validateSubcategory($category, $categories[1]) : self::validateSubcategory($category, null, $title);
 
-        return ['category' => $category, 'subcategory' => $subcategory];
-    }
+    //     return ['category' => $category, 'subcategory' => $subcategory];
+    // }
 
-    static function validateCategory(string $category): string
-    {
-        $categories = Parser::getCategoriesList();
+    // static function validateCategory(string $category): string
+    // {
+    //     $categories = Parser::getCategoriesList();
 
-        $categories_keys = [
-            0 => null,
-            1 => null,
-            2 => boolval($category == 'Керамическая плитка'),
-            3 => boolval($category == 'Сантехника'),
-            4 => null,
-            5 => null,
-        ];
+    //     $categories_keys = [
+    //         0 => null,
+    //         1 => null,
+    //         2 => boolval($category == 'Керамическая плитка'),
+    //         3 => boolval($category == 'Сантехника'),
+    //         4 => null,
+    //         5 => null,
+    //     ];
 
-        foreach ($categories_keys as $key => $value) {
-            if ($value) {
-                $category = $categories[$key];
-                break;
-            }
-        }
+    //     foreach ($categories_keys as $key => $value) {
+    //         if ($value) {
+    //             $category = $categories[$key];
+    //             break;
+    //         }
+    //     }
 
-        return $category;
-    }
+    //     return $category;
+    // }
 
-    static function validateSubcategory(string $category, string|null $subcategory, string $title = null): string|null
-    {
-        $subcategories = Parser::getSubcategoriesList();
+    // static function validateSubcategory(string $category, string|null $subcategory, string $title = null): string|null
+    // {
+    //     $subcategories = Parser::getSubcategoriesList();
     
-        $subcategories_keys = [
-            0 => 'Раковины',
-            1 => ['Унитазы', 'Инсталляции', 'Писсуары', 'Биде', 'Кнопки смыва'],
-            2 => 'Ванны',
-            3 => ['Душевые', 'Поддоны, трапы, лотки'],
-            4 => 'Смесители',
-            5 => 'Мебель для ванной',
-            6 => ['Аксессуары для ванной комнаты', 'Аксессуары для ванной'],
-            7 => 'Комплектующие',
-            8 => 'Полотенцесушители',
-            9 => 'Декоративные обои',
-            10 => ['Керамогранит', 'керамогранит'],
-            11 => ['Керамическая плитка', 'керамическая плитка'],
-            12 => 'Натуральный камень',
-            13 => ['Мозаика', 'мозаика'],
-            14 => 'Кухонные мойки',
-            15 => 'клинкер',
-            16 => 'SPC-плитка',
-        ];
+    //     $subcategories_keys = [
+    //         0 => 'Раковины',
+    //         1 => ['Унитазы', 'Инсталляции', 'Писсуары', 'Биде', 'Кнопки смыва'],
+    //         2 => 'Ванны',
+    //         3 => ['Душевые', 'Поддоны, трапы, лотки'],
+    //         4 => 'Смесители',
+    //         5 => 'Мебель для ванной',
+    //         6 => ['Аксессуары для ванной комнаты', 'Аксессуары для ванной'],
+    //         7 => 'Комплектующие',
+    //         8 => 'Полотенцесушители',
+    //         9 => 'Декоративные обои',
+    //         10 => ['Керамогранит', 'керамогранит'],
+    //         11 => ['Керамическая плитка', 'керамическая плитка'],
+    //         12 => 'Натуральный камень',
+    //         13 => ['Мозаика', 'мозаика'],
+    //         14 => 'Кухонные мойки',
+    //         15 => 'клинкер',
+    //         16 => 'SPC-плитка',
+    //     ];
 
-        if (isset($title)) {
-            if (str_contains($title, "Биде") or str_contains($title, "биде")) {
-                return $subcategories[1];
-            } elseif (str_contains($title, "Душевой бокс")) {
-                return $subcategories[3];
-            } elseif (str_contains($title, 'Раковина')) {
-                return $subcategories[0];
-            }
-        } elseif (!isset($subcategory) and isset($category)) {
-            if (str_contains($category, "Керамическая плитка")) {
-                return $subcategories[11];
-            }
-        } elseif (isset($subcategory)) {
-            foreach ($subcategories_keys as $key => $value) {
-                if (is_array($value)) {
-                    foreach ($value as $value_i) {
-                        if (str_contains($subcategory, $value_i)) {
-                            return $subcategories[$key];
-                        };
-                    }
-                } elseif (str_contains($subcategory, $value)) {
-                    return $subcategories[$key];
-                };
-            }
-        }
-        return null;
-    }
+    //     if (isset($title)) {
+    //         if (str_contains($title, "Биде") or str_contains($title, "биде")) {
+    //             return $subcategories[1];
+    //         } elseif (str_contains($title, "Душевой бокс")) {
+    //             return $subcategories[3];
+    //         } elseif (str_contains($title, 'Раковина')) {
+    //             return $subcategories[0];
+    //         }
+    //     } elseif (!isset($subcategory) and isset($category)) {
+    //         if (str_contains($category, "Керамическая плитка")) {
+    //             return $subcategories[11];
+    //         }
+    //     } elseif (isset($subcategory)) {
+    //         foreach ($subcategories_keys as $key => $value) {
+    //             if (is_array($value)) {
+    //                 foreach ($value as $value_i) {
+    //                     if (str_contains($subcategory, $value_i)) {
+    //                         return $subcategories[$key];
+    //                     };
+    //                 }
+    //             } elseif (str_contains($subcategory, $value)) {
+    //                 return $subcategories[$key];
+    //             };
+    //         }
+    //     }
+    //     return null;
+    // }
 
-    static function getImages(Document $document, string $type = null): string
-    {
-        $images_res = $document->find('.single-product___main-info--main-image img, .single-product___main-info--thumbnails img, .tile-picture-main img, .tile-picture-prev__item img');
-        $images = array();
 
-        foreach ($images_res as $i => $img) {
-            if (!$img->attr('src') or $i == 1) continue;
-            $i += 1;
-            $src = 'https://mosplitka.ru' . $img->attr('src');
-            $src = str_replace("60_999_1", "700_370_1c25f2b498b88af7d613b511c3b4f7424", $src); //больше размер
-            $src = str_replace("50_999_1", "500_999_1c25f2b498b88af7d613b511c3b4f7424", $src); //больше размер
-
-            if (array_search($src, $images)) continue;
-            $images["img$i"] = $src;
-        }
-        $images = json_encode($images, JSON_UNESCAPED_SLASHES);
-
-        return $images;
-    }
-
-    static function getVariants(Document $document): string|null
-    {
-        $var_res = $document->find('.product-sku__section a, .product-variants-table a');
-        if (!$var_res) return null;
-
-        $variants = array();
-        $i = 1;
-        foreach ($var_res as $var) {
-            $src = 'https://mosplitka.ru' . $var->attr('href');
-            $variants["var$i"] = $src;
-            $i += 1;
-        }
-        $variants = json_encode($variants, JSON_UNESCAPED_SLASHES);
-
-        return $variants;
-    }
 }

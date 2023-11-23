@@ -34,40 +34,42 @@ class Categories
             ],
             2 => [ //'Ванны',
                 ($provider == 'ntceramic' and (preg_match("#(Ванны)#", $providerSubcategory) or preg_match("#(Ванн)#", $title))),
-                ($provider == 'mosplitka' and preg_match("#(ванна)#", $title)),
+                ($provider == 'mosplitka' and preg_match("#(ванна|Ванны)#", $title)),
                 ($provider == 'domix' and preg_match("#(Ванна)#", $title)),
             ],
             3 => [ //'Душевые',
                 ($provider == 'laparet' and preg_match("#(Душ|душ)#", $title)),
                 ($provider == 'domix' and preg_match("#(Душ|душ)#", $title)),
-                ($provider == 'mosplitka' and preg_match("#(Душ|Боковая стенка)#", $title) and $providerCategory == "Сантехника"),
+                ($provider == 'mosplitka' and preg_match("#(Душ|Боковая стенка|Поддоны)#", $title) and $providerCategory == "Сантехника"),
             ],
             4 => [ //'Смесители',
-                ($provider == 'mosplitka' and preg_match("#(Cмеситель)#", $title)),
+                ($provider == 'mosplitka' and preg_match("#(Смесител)#", $title)),
                 ($provider == 'laparet' and preg_match("#(Смесител)#", $title)),
                 ($provider == 'ntceramic' and preg_match("#(Смесител)#", $providerSubcategory) or preg_match("#(Cмесител)#", $title)),
                 ($provider == 'domix' and preg_match("#(Смесител|Набор смесител|Гигиенический набор|Гигиеническая лейка|Комплект смесител)#", $title)),
+                ($provider == 'domix' and preg_match("#(Смесител#", $providerSubcategory)),
             ],
             5 => [ //'Мебель для ванной',
                 ($provider == 'dplintus' and preg_match("#(Полки для ванной и душа)#", $providerCategory)),
                 ($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)),
                 ($provider == 'laparet' and preg_match("#(Пенал|Зеркал|Тумб)#", $title)),
                 ($provider == 'ntceramic' and preg_match("#(Мебель для ванной)#", $providerSubcategory)),
-                ($provider == 'mosplitka' and (preg_match("#(Зеркал|Панель с полками|Полка|Шкаф|Пенал|Тумба)#", $title))),
+                ($provider == 'mosplitka' and (preg_match("#(Зеркал|Панель с полками|Полка|Шкаф|Пенал|Тумба|Мебель для ванной)#", $title))),
             ],
             6 => [ //'Аксессуары для ванной комнаты',
-                ($provider == 'mosplitka' and (preg_match("#(Стакан|Держатель|аксессуар|Шторка|Мыльница|Корзина|для писсуаров|Крючок|Ершик)#", $title))),
+                ($provider == 'mosplitka' and (preg_match("#(Стакан|Держатель|аксессуар|Аксессуар|Шторка|Мыльница|Корзина|для писсуаров|Крючок|Ершик)#", $title))),
             ],
             7 => [ //'Комплектующие',
-                ($provider == 'mosplitka' and (preg_match("#(Клапан|клапан|Слив|Cифон|Инсталляци|труба|Насадка|Гофра|Гибкое соединение|Муфта|Отвод|инсталляци|Поручень для ванны|Вентиль|вентиль|Термостат|Кнопка смыва|Излив|заглушка|Подголовник для ванны)#", $title))),
-                ($provider == 'domix' and preg_match("#(Инсталляц|Каркас|Экран для ванн|Термостат|Базовый модуль|Пьедестал|Крышка-сидушка|Скрытая часть для|Излив|Уголок для|Слив|Крышка-сиденье)#", $title)),
+                ($provider == 'mosplitka' and (preg_match("#(Клапан|клапан|Слив|Cифон|Инсталляци|труба|Насадка|Гофра|Гибкое соединение|Муфта|Отвод|инсталляци|Поручень для ванны|Вентиль|вентиль|Термостат|Кнопка смыва|Копки смыва|Излив|заглушка|Подголовник для ванны|Комплектующ)#", $title))),
+                ($provider == 'domix' and preg_match("#(Инсталляц|инсталляц|Каркас|Экран для ванн|Термостат|Базовый модуль|Пьедестал|Крышка-сидушка|Скрытая часть для|Излив|Уголок для|Слив|Крышка-сиденье|Комплект подключения|Клавиша)#", $title)),
             ],
             8 => [ //'Полотенцесушители',
                 ($provider == 'mosplitka' and preg_match("#(Полотенцесушител)#", $providerSubcategory)),
                 ($provider == 'domix' and preg_match("#(Полотенцесушител)#", $title)),
             ],
             9 => [ //'Декоративные обои',
-                ($provider == 'domix' and preg_match("#(Обои)#", $providerCategory))
+                ($provider == 'domix' and preg_match("#(Обои)#", $providerCategory)),
+                ($provider == 'mosplitka' and preg_match("#(Декоративные обои)#", $title))
             ],
             10 => [ //'Керамогранит',
                 ($provider == 'tdgalion' and preg_match("#(Керамогранит)#", $providerCategory)),
@@ -98,7 +100,7 @@ class Categories
             ],
             16 => [ //'SPC-плитка',
                 ($provider == 'mosplitka' and preg_match("#(SPC-плитка)#", $title)),
-                $provider == 'alpinefloor' and (preg_match("#(spc-ламинат)#", $providerCategory) or preg_match("#(SPC ламинат)#", $title)),
+                ($provider == 'alpinefloor' and (preg_match("#(spc-ламинат)#", $providerCategory) or preg_match("#(SPC ламинат)#", $title))),
             ],
             17 => [ //'Фотообои и фрески',
                 ($provider == 'domix' and preg_match("#(фотообои)#", $providerCategory)),
@@ -373,6 +375,7 @@ class Categories
             'centerkrasok' => [],
             'ampir' => [],
             'alpinefloor' => [],
+            'mosplitka' => [],
         ];
 
         $result = [
@@ -481,10 +484,12 @@ class Categories
     {
         $path = array();
         foreach ($path_res as $value) {
-            if (!str_contains(mb_strtolower($value->text()), 'каталог') && !str_contains(mb_strtolower($value->text()), 'главная')) {
+            if (!preg_match("#(каталог|главная|главную)#", mb_strtolower($value->text()))) {
                 $path[] = $value;
             }
         }
+        // echo "path из Categories::getPath() - ";
+        // TechInfo::preArray($path);
 
         return $path;
     }

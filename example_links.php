@@ -9,10 +9,13 @@ use functions\Logs;
 use functions\Modes_1c;
 use functions\ParserMasterdom;
 use functions\TechInfo;
+use functions\Connect;
 use GuzzleHttp\Client as GuzzleClient;
 
 
-//ПОМЕНЯТЬ ЗАПРОС MYSQL В САМОМ НАЧАЛЕ + ЗАХАРДКОЖЕННУЮ ССЫЛКУ И ПРОВАЙДЕРА
+//МЕНЯТЬ ТОЛЬКО ЗДЕСЬ
+$script_iteration_provider = '';
+//
 
 
 TechInfo::start();
@@ -22,7 +25,7 @@ try {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='alpinefloor' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteraion_provider . "' ORDER BY views, id LIMIT 1");
 
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
@@ -34,7 +37,6 @@ try {
         //Получаем ссылку
         $url_parser = $res['link'];
         $provider = $res['provider'];
-        // $provider = Parser::getProvider($url_parser);
 
         TechInfo::whichLinkPass($url_parser);
 
@@ -46,7 +48,7 @@ try {
         if ($provider == 'masterdom') continue; //
 
         //Получаем html у себя
-        $document = Parser::guzzleConnect($url_parser);
+        $document = Connect::guzzleConnect($url_parser);
 
         //Получаем все данные со страницы
         $search_classes = [
@@ -89,7 +91,7 @@ try {
             // ".col-prod-nav a.col-prod-nav-item", //evroplast
             // ".col-prod-tab a", //evroplast
             // ".content-wrapper a.collection-see", //evroplast
-        ];        
+        ];
 
         $search_classes = implode(", ", $search_classes);
         $all_res = $document->find($search_classes);
@@ -100,8 +102,7 @@ try {
         foreach ($all_res as $href) {
             $link = Parser::generateLink($href->attr('href'), $provider, $url_parser);
             if ($provider == 'alpinefloor' and $href->attr('data-endpoint')) {
-$link = Parser::generateLink(str_replace(["is_ajax=y&", "ajax=y&"], '', $href->attr('data-endpoint')), $provider, $url_parser);
-            
+                $link = Parser::generateLink(str_replace(["is_ajax=y&", "ajax=y&"], '', $href->attr('data-endpoint')), $provider, $url_parser);
             }
 
 
@@ -112,7 +113,8 @@ $link = Parser::generateLink(str_replace(["is_ajax=y&", "ajax=y&"], '', $href->a
             }
 
             if (($provider == 'mosplitka' and str_contains($link, "//filter//")) or
-            ($provider == 'mosplitka' and $link == 'https://mosplitka.ru/catalog/plitka/')) {
+                ($provider == 'mosplitka' and $link == 'https://mosplitka.ru/catalog/plitka/')
+            ) {
                 echo "$link - ненужная ссылка-фильтр<br>";
                 continue;
             }
@@ -129,7 +131,7 @@ $link = Parser::generateLink(str_replace(["is_ajax=y&", "ajax=y&"], '', $href->a
             $res = Parser::insertLink1($link, $link_type, $provider);
             if ($res == "success") $add[] = ['link' => $link, 'comment' => $link_type];
             if ($res == "fail") $add[] = ['link' => $link . ' - не получилось добавить в БД', 'comment' => $link_type];
-        } 
+        }
         sort($add);
         echo "<br><b>из них скрипт добавил (" . count($add) . "шт):</b><br>";
         foreach ($add as $add_key => $add_value) {

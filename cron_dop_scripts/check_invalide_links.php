@@ -6,6 +6,7 @@ use functions\MySQL;
 use functions\ParserMosplitka;
 use functions\Parser;
 use functions\Logs;
+use functions\Connect;
 use functions\Modes_1c;
 use functions\ParserMasterdom;
 use functions\TechInfo;
@@ -43,7 +44,7 @@ try {
 
         //Получаем html у себя
         try {
-            $document = Parser::guzzleConnect($url_parser, $encoding ?? null);
+            $document = Connect::guzzleConnect($url_parser, $encoding ?? null);
             MySQL::sql("UPDATE all_products SET status='ok', date_edit='$date_edit' WHERE link='$url_parser'");
         } catch (\Throwable $e) {
             MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");

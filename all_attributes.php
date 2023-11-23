@@ -20,6 +20,8 @@ $attributes_classes = [
         "h1.item-detail__header", //alpinefloor
         ".product_title", //lkrn
         ".dititle", //ampir
+        ".single-product___page-header__h1", //mosplitka
+        ".tile__title", //mosplitka
     ],
 
     "price" => [
@@ -34,6 +36,8 @@ $attributes_classes = [
         ".item-detail-price__value", //alpinefloor
         ".price .woocommerce-Price-amount bdi",
         ".newprice", //ampir
+        ".single-product___main-info--price span", //mosplitka
+        ".tile-shop__price", //mosplitka
     ],
 
     "stock" => [
@@ -43,6 +47,8 @@ $attributes_classes = [
         "#product-stocks-container tr", //domix
         ".product-item-rest-list .amount", //dplintus
         ".nalichieVNalichii", //tdaglion
+        ".single-product___main-info--tag-item.is-green.e__flex.e__aic.e__jcc", //mosplitka
+        ".tile-shop-plashki-item.tile-shop-plashki-item__green", //mosplitka
     ],
 
     "articul" => [
@@ -53,17 +59,6 @@ $attributes_classes = [
         ".product-detailed .art", //dplintus
 
     ],
-
-    // "characteristics" => [
-    //     ".good-chars-list .good-char", //ntceramic
-    //     ".properties__content .properties__item", //laparet
-    //     ".product-params tr", //olimpparket
-    //     ".sinle-characters-wr.hide-cont .sinle-character", //domix
-    //     ".specifications__table .specifications__table__row", //finefloor
-    //     ".sproduct-charact__list", //tdgalion
-    //     ".sproduct-info__item", //tdgalion
-    //     ".product-item-detail-properties dt", //dplintus
-    // ],
 
     "char_double_count" => [
         "#chars-table tr", //alpinefloor
@@ -86,6 +81,8 @@ $attributes_classes = [
         ".item-detail-classes .item-detail-class", //alpinefloor
         ".tile-card__prop-title", //artkera
         ".dfparams tr .dfplabel", //ampir
+        "#atts .q_prop__name", //mosplitka
+        ".tile-prop-tabs__name", //mosplitka
     ],
 
     "char_name" => [
@@ -100,6 +97,8 @@ $attributes_classes = [
         ".item-detail-class__title", //alpinefloor
         ".tile-card__prop-title", //artkera
         ".dfparams tr .dfplabel", //ampir
+        "#atts .q_prop__name", //mosplitka
+        ".tile-prop-tabs__name", //mosplitka
     ],
 
     "char_value" => [
@@ -112,8 +111,10 @@ $attributes_classes = [
         ".sproduct-info__value", //tdgalion
         ".product-item-detail-properties dd", //dplintus
         ".item-detail-class__name", //alpinefloor
-        "..tile-card__prop-desc", //artkera
+        ".tile-card__prop-desc", //artkera
         ".dfparams tr .dfpval", //ampir
+        "#atts .q_prop__value", //mosplitka
+        ".tile-prop-tabs__value-name", //mosplitka
     ],
 
     "path" => [
@@ -123,6 +124,8 @@ $attributes_classes = [
         ".bx-breadcrumb .bx-breadcrumb-item", //dplintus
         ".breadcrumbs .breadcrumbs__item", //finefloor
         ".breadcrumbs .breadcrumbs__before", //alpinefloor
+        ".product-breadcrumb a", //mosplitka
+        ".breadcrumb_cont a", //mosplitka
     ],
 
     "images" => [ //маленькие 
@@ -136,6 +139,8 @@ $attributes_classes = [
         ".imageItemBig .innerImGItem", //tdgalion
         ".item-detail-slide a", //alpinefloor
         ".woocommerce-product-gallery__image a", //lkrn
+        ".tile-picture-prev li img", //mosplitka
+        ".single-product___main-info--thumbnail img", //mosplitka
     ],
 
     "good_id_from_provider" => [],
@@ -152,13 +157,21 @@ $attributes_classes = [
     ]
 ];
 
+$check_if_complect = false;
+
 if ($provider == 'ampir') {
-    $check_if_archieve = ParserMosplitka::check_if_archive($document);
+    $check_if_archieve = Parser::check_if_archive($document);
 
     if ($check_if_archieve) {
         $all_product_data['status'] = ['archived', 's'];
     }
+} elseif ($provider == 'mosplitka') {
+    $check_if_complect = Parser::check_if_complect($document);
 }
+
+// if ($check_if_complect) {
+//     $all_product_data = ParserMosplitka::getComplectData($document, $url_parser);
+// } else {
 
 //ошибка
 $error_res = $document->find(implode(', ', $attributes_classes['error']));
@@ -213,7 +226,9 @@ if ($stock_res) {
     } else {
         $all_product_data['stock'] = [$stock_res[0]->text(), 's'];
     }
-
+    if ($provider == 'mosplitka') {
+        $all_product_data['stock'] = ($stock_res) ? [str_replace('М', 'м', str_replace(" • ", ", ", trim($stock_res[0]->text()))), 's'] : [null, 's'];
+    }
     $all_product_data['stock'][0] = (trim($all_product_data['stock'][0]) == "Поставка от 2 дней") ? "В наличии" : $all_product_data['stock'][0];
 }
 
@@ -250,7 +265,7 @@ if ($provider == 'olimpparket' and isset($all_product_data['title'][0])) {
     $categories = Categories::getCategoriesByTitle($all_product_data['title'][0], $provider);
     $all_product_data['category'] = isset($categories['category']) ? [$categories['category'], 's'] : [Parser::getCategoriesList()[1], 's'];
     $all_product_data['subcategory'] = isset($categories['subcategory']) ? [$categories['subcategory'], 's'] : [Parser::getSubcategoriesList()[26], 's'];
-} 
+}
 // elseif ($provider == 'finefloor') {
 //     $all_product_data['category'] = [Parser::getCategoriesList()[1], 's'];
 //     $all_product_data['subcategory'] = [Parser::getSubcategoriesList()[37], 's'];
@@ -272,12 +287,19 @@ if ($provider == 'lkrn') {
 
 //подкатегория
 
+//единица измерения
+if ($all_product_data['category'][0] and $provider == 'mosplitka') {
+    $edizm = Parser::getEdizm($all_product_data['category'][0]);
+    $all_product_data['edizm'] = [$edizm, 's'];
+}
+
 //все характеристики
 $characteristics_count = count($document->find(implode(', ', $attributes_classes['characteristics_count']))) - 1;
 $char_names = $document->find(implode(', ', $attributes_classes['char_name']));
 $char_values = $document->find(implode(', ', $attributes_classes['char_value']));
 $char_double_count = count($document->find(implode(', ', $attributes_classes['char_double_count']))) - 1;
 $char_double = $document->find(implode(', ', $attributes_classes['char_double']));
+TechInfo::preArray($char_values);
 
 if ($provider == 'lkrn') {
     $char_res = "";
@@ -296,6 +318,7 @@ if ($provider == 'lkrn') {
     $characteristics = json_encode(['text' => $char_res, 'html' => $html_char_res], JSON_UNESCAPED_UNICODE);
     $all_product_data['characteristics'] = [$characteristics, 's'];
 } elseif ($characteristics_count > 0) {
+
     if ($char_double_count > 0) {
         foreach (range(0, count($char_double) - 1) as $charact) {
 
@@ -313,6 +336,7 @@ if ($provider == 'lkrn') {
 
     $characteristics = array();
 
+    $array_key_flag = 0; //позже когда артикул уже второго товара из комплекта будет, начнутся его характеристики
     foreach (range(0, count($char_names) - 1) as $charact) {
         if ($provider == 'domix') {
             if ($charact % 2) continue;
@@ -323,6 +347,17 @@ if ($provider == 'lkrn') {
             $value = $char_values[$charact]->text();
         }
 
+        //для значений в массиве (mosplitka)
+        $arr_value = $char_values[$charact]->find('.tile-prop-tabs__value-name .tile-prop-tabs__row');
+        if (count($arr_value)) {
+            $str = '';
+            foreach ($arr_value as $val) {
+                $str .= $val . ', ';
+            }
+            $value = substr($str, 0, -2);
+        }
+        //
+
         $name = str_replace(":", '', trim($name));
         $value = trim($value);
 
@@ -331,15 +366,31 @@ if ($provider == 'lkrn') {
             $name = str_replace(["  ", "\t", "\n"], ' ', $name);
         }
 
-        $characteristics[$name] = $value;
-
+        // and isset($all_product_data['cha']) and !preg_match("#($value)#", $all_product_data['articul'][0])
 
         //артикул
         if ((str_contains(mb_strtolower($name), "артикул") and $provider != 'tdgalion') or
             (str_contains(mb_strtolower($name), 'код товара') and $provider == 'alpinefloor')
         ) {
-            $all_product_data['articul'] = [$value, 's'];
+            
+            if ($check_if_complect and isset($all_product_data['articul']) and !preg_match("#($value)#", $all_product_data['articul'][0])) {
+                $all_product_data['articul'][0] .= ' + ' . $value;
+                $array_key_flag = 1;
+                // }
+            } else {
+                $all_product_data['articul'] = [$value, 's'];
+            }
         }
+
+
+        if ($check_if_complect) {
+            var_dump($array_key_flag);
+            echo "<br>";
+            $characteristics[$array_key_flag][$name] = $value;
+        } else {
+            $characteristics[$name] = $value;
+        }
+
 
         //код 1с
         if (str_contains(mb_strtolower($name), "код 1с")) {
@@ -453,6 +504,11 @@ if ($provider == 'lkrn') {
             $all_product_data['product_usages'] = [$value, 's'];
         }
 
+        //подкатегория(для плитки, mosplitka)
+        if (str_contains($name, 'Категория') and $provider == 'mosplitka' and !isset($all_product_data['subcategory'][0])) {
+            $all_product_data['subcategory'][0] = $all_product_data['subcategory'][0] ? $all_product_data['subcategory'][0] : $value;
+        }
+
         //фактура
         if (str_contains($name, 'Фактура')) {
             $all_product_data['facture'] = [$value, 's'];
@@ -461,6 +517,14 @@ if ($provider == 'lkrn') {
         //тип
         if (($name == 'Тип' or $name == 'Тип краски') and $provider == 'ampir') {
             $all_product_data['type'] = [$value, 's'];
+        } elseif ($name == 'Тип' and $provider == 'mosplitka') {
+            $all_product_data['type'] = [$value, 's'];
+        } elseif (str_contains($all_product_data['title'][0], "Биде") or str_contains($all_product_data['title'][0], "биде") and !isset($all_product_data['type'])) {
+            $all_product_data['type'] = ['Биде', 's'];
+        } elseif (str_contains($all_product_data['title'][0], "Кнопка смыва") or str_contains($all_product_data['title'][0], "Клавиша смыва") or str_contains($all_product_data['title'][0], 'Панель смыва') and !isset($all_product_data['type'])) {
+            $all_product_data['type'] = ['Кнопка смыва', 's'];
+        } elseif (str_contains($all_product_data['title'][0], "Инсталляция") or str_contains($all_product_data['title'][0], "инсталляции") or str_contains($all_product_data['title'][0], "Installiation") and !isset($all_product_data['type'])) {
+            $all_product_data['type'] = ['Инсталляция', 's'];
         }
 
         //единица измерения
@@ -505,6 +569,9 @@ if ($provider == 'lkrn') {
         }
     }
 
+    TechInfo::preArray($characteristics);
+    echo "<br><br>";
+
     $characteristics = json_encode($characteristics, JSON_UNESCAPED_UNICODE);
     $all_product_data['characteristics'] = [$characteristics, 's'];
 }
@@ -533,3 +600,4 @@ if ($images_res) {
     $images = Parser::getImages($images_res, $provider) ?? null;
     $all_product_data['images'] = [$images, 's'];
 }
+// }

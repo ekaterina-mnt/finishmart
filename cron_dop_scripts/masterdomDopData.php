@@ -4,6 +4,7 @@ require __DIR__ . "/vendor/autoload.php";
 use DiDom\Document;
 use functions\MySQL;
 use functions\Logs;
+use functions\Connect;
 use functions\Modes_1c;
 use functions\TechInfo;
 use functions\Parser;
@@ -38,7 +39,7 @@ try {
 
         //Получаем html страницы
         try {
-            $document = Parser::guzzleConnect($url_parser);
+            $document = Connect::guzzleConnect($url_parser);
 
             $data_keys = $document->find('.b-cart__info_wrapper dt');
             $data_values = $document->find('.b-cart__info_wrapper dd');

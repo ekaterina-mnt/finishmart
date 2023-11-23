@@ -9,7 +9,7 @@ use functions\ParserMasterdom;
 use functions\ParserMosplitka;
 
 try {
-$check_if_complect = ParserMosplitka::check_if_complect($document);
+$check_if_complect = Parser::check_if_complect($document);
 
 if ($check_if_complect) {
     $all_product_data = ParserMosplitka::getComplectData($document, $url_parser);

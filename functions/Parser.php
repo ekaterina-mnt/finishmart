@@ -11,66 +11,18 @@ use Psr\Http\Message\ResponseInterface;
 
 class Parser
 {
-    static function guzzleConnect(string $link, $encoding = null, $num = null): Document
+    static function check_if_complect(Document $document): bool //для мосплитки
     {
-        $proxies = [
-            'http://74vy0Q:RJ8SWP@192.168.16.1:10', //https://shopproxy.net/lk/
-            'http://5LIZu3:C8V5mJmxxY@46.8.16.94', //https://ru.dashboard.proxy.market/proxy
-        ];
-        $client = new GuzzleClient(['verify' => false]);
-        $response = $client->request(
-            'GET',
-            $link,
-            [
-                'headers' => [
-                    'X-Requested-With' => 'XMLHttpRequest',
-                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36 OPR/104.0.0.0 (Edition Yx 05)',
-                    'Cookie' => 'BITRIX_SM_FIRST_SITE_VIZIT=otherpage; BITRIX_SM_H2O_COOKIE_USER_ID=0c7b53e54c7a1261c53b057b9344953b; BITRIX_SM_REASPEKT_GEOBASE=false; BITRIX_SM_REASPEKT_LAST_IP=54.86.50.139%2C%2046.235.188.17%2C%20212.193.152.15; BITRIX_SM_ab_test_list_buttons=A; PHPSESSID=6MCzH3hwXwzcVmd6iqznkLxR76Ci6yJA; region=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0',
-                ],
-            ],
-        );
-
-        $document = self::getHTML($response, $encoding ?? null);
-
-        return $document;
+        $goods = $document->find('.single-product___main-info--equip-body.e__flex.e__fdc .single-product___main-info--equip-item.e__flex');
+        if (empty($goods)) return false;
+        return boolval(count($goods) > 1);
     }
 
-    static function getHTML(ResponseInterface $response, $encoding = null): Document
+    static function check_if_archive(Document $document): bool //вроде для ампира
     {
-        $document = $response->getBody()->getContents();
-        if ($encoding) {
-            $document = new Document(string: $document, encoding: $encoding);
-        } else {
-            $document = new Document(string: $document);
-        }
-        return $document;
-    }
-
-    static function getProvider(string $parser_link): string
-    {
-        $keys = [
-            0 => str_contains($parser_link, 'masterdom'),
-            1 => str_contains($parser_link, 'mosplitka'),
-            2 => str_contains($parser_link, 'ampir'),
-            3 => str_contains($parser_link, 'laparet'),
-            4 => str_contains($parser_link, 'ntceramic'),
-            5 => str_contains($parser_link, 'olimpparket')
-        ];
-
-        $values = [
-            0 => 'masterdom',
-            1 => 'mosplitka',
-            2 => 'ampir',
-            3 => 'laparet',
-            4 => 'ntceramic',
-            5 => 'olimpparket',
-        ];
-
-        foreach ($keys as $i => $key) {
-            if ($key) {
-                return $values[$i];
-            }
-        }
+        $data = $document->find('.product-arhive-label');
+        if (empty($goods)) return false;
+        return boolval(count($data));
     }
 
     static function nextLink(string $link, int $limit): string|null
@@ -80,7 +32,7 @@ class Parser
             $new_offset_value = $matches[2] + $limit;
             $new_link = $matches[1] . $new_offset_value . $matches[3];
 
-            $document = self::guzzleConnect($new_link);
+            $document = Connect::guzzleConnect($new_link);
             $api_data = self::getApiData($document);
 
             if (boolval(count($api_data) > 0)) {
@@ -178,8 +130,8 @@ class Parser
             44 => 'Панели',
             45 => 'Краски, эмали',
             46 => 'Грунтовки',
-            47 => 'Лаки и масла', 
-            48 => 'Антисептики и пропитки', 
+            47 => 'Лаки и масла',
+            48 => 'Антисептики и пропитки',
             49 => 'Затирки и клей',
             50 => 'Камины',
             51 => 'Декоративные элементы',
@@ -543,5 +495,21 @@ class Parser
         $images = json_encode($images, JSON_UNESCAPED_SLASHES);
         return $images;
     }
-}
 
+    static function getVariants(Document $document): string|null //для мосплитки, сейчас нигде не используется
+    {
+        $var_res = $document->find('.product-sku__section a, .product-variants-table a');
+        if (!$var_res) return null;
+
+        $variants = array();
+        $i = 1;
+        foreach ($var_res as $var) {
+            $src = 'https://mosplitka.ru' . $var->attr('href');
+            $variants["var$i"] = $src;
+            $i += 1;
+        }
+        $variants = json_encode($variants, JSON_UNESCAPED_SLASHES);
+
+        return $variants;
+    }
+}
