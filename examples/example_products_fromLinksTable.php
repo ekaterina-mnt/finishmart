@@ -12,7 +12,7 @@ use functions\ParserMosplitka;
 
 
 //МЕНЯТЬ ТОЛЬКО ЗДЕСЬ
-$script_iteration_provider = 'ntceramic';
+$script_iteration_provider = '';
 //
 
 
@@ -77,7 +77,7 @@ try {
             include __DIR__ . "/../artkera_attributes.php";
         } elseif ($provider == 'evroplast') {
             include __DIR__ . "/../evroplast_attributes.php";
-        } elseif ($provider == 'masterdom.php') {
+        } elseif ($provider == 'masterdom') {
             include __DIR__ . "/../masterdom_attributes.php";
         } else {
             $all_product_data = [];

@@ -25,7 +25,8 @@ $attributes_classes = [
     ],
 
     "price" => [
-        ".single-price", //domix
+        ".single-price", //domix (нужен ли вообще)
+        ".product", //domix
         ".product-page.product_details .price span", //olimpparket
         ".productCard__priceValue", //laparet
         ".good-price__value", //ntceramic
@@ -141,6 +142,7 @@ $attributes_classes = [
         ".woocommerce-product-gallery__image a", //lkrn
         ".tile-picture-prev li img", //mosplitka
         ".single-product___main-info--thumbnail img", //mosplitka
+        "a.fullimgitem", //ampir
     ],
 
     "good_id_from_provider" => [],
@@ -266,14 +268,6 @@ if ($provider == 'olimpparket' and isset($all_product_data['title'][0])) {
     $all_product_data['category'] = isset($categories['category']) ? [$categories['category'], 's'] : [Parser::getCategoriesList()[1], 's'];
     $all_product_data['subcategory'] = isset($categories['subcategory']) ? [$categories['subcategory'], 's'] : [Parser::getSubcategoriesList()[26], 's'];
 }
-// elseif ($provider == 'finefloor') {
-//     $all_product_data['category'] = [Parser::getCategoriesList()[1], 's'];
-//     $all_product_data['subcategory'] = [Parser::getSubcategoriesList()[37], 's'];
-// } elseif ($provider == 'alpinefloor') {
-//     $categories = Categories::getCategoriesByLink($url_parser, $provider);
-//     $all_product_data['category'] = isset($categories['category']) ? [$categories['category'], 's'] : [null, 's'];
-//     $all_product_data['subcategory'] = isset($categories['subcategory']) ? [$categories['subcategory'], 's'] : [null, 's'];
-// }
 
 //категория
 if ($provider == 'lkrn') {
@@ -299,8 +293,7 @@ $char_names = $document->find(implode(', ', $attributes_classes['char_name']));
 $char_values = $document->find(implode(', ', $attributes_classes['char_value']));
 $char_double_count = count($document->find(implode(', ', $attributes_classes['char_double_count']))) - 1;
 $char_double = $document->find(implode(', ', $attributes_classes['char_double']));
-TechInfo::preArray($char_values);
-
+var_dump($char_values);
 if ($provider == 'lkrn') {
     $char_res = "";
     $html_char_res = "";
@@ -384,8 +377,6 @@ if ($provider == 'lkrn') {
 
 
         if ($check_if_complect) {
-            var_dump($array_key_flag);
-            echo "<br>";
             $characteristics[$array_key_flag][$name] = $value;
         } else {
             $characteristics[$name] = $value;
@@ -568,9 +559,6 @@ if ($provider == 'lkrn') {
             $all_product_data['volume'] = [$value, 's'];
         }
     }
-
-    TechInfo::preArray($characteristics);
-    echo "<br><br>";
 
     $characteristics = json_encode($characteristics, JSON_UNESCAPED_UNICODE);
     $all_product_data['characteristics'] = [$characteristics, 's'];

@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 
 class Connect
 {
-    static function guzzleConnect(string $link, $encoding = null, $num = null): Document
+    static function guzzleConnect(string $link, $encoding = null): Document
     {
         $proxies = [
             'http://74vy0Q:RJ8SWP@192.168.16.1:10', //https://shopproxy.net/lk/

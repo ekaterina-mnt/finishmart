@@ -12,7 +12,7 @@ use functions\ParserMosplitka;
 
 
 //МЕНЯТЬ ТОЛЬКО ЗДЕСЬ
-$script_iteration_provider = 'ntceramic';
+$script_iteration_provider = 'masterdom';
 //
 
 

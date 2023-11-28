@@ -41,11 +41,12 @@ class Categories
                 ($provider == 'laparet' and preg_match("#(Душ|душ)#", $title)),
                 ($provider == 'domix' and preg_match("#(Душ|душ)#", $title)),
                 ($provider == 'mosplitka' and preg_match("#(Душ|Боковая стенка|Поддоны)#", $title) and $providerCategory == "Сантехника"),
+                ($provider == 'mosplitka' and preg_match("#(Душевые)#", $providerSubcategory)),
             ],
             4 => [ //'Смесители',
                 ($provider == 'mosplitka' and preg_match("#(Смесител)#", $title)),
                 ($provider == 'laparet' and preg_match("#(Смесител)#", $title)),
-                ($provider == 'ntceramic' and preg_match("#(Смесител)#", $providerSubcategory) or preg_match("#(Cмесител)#", $title)),
+                ($provider == 'ntceramic' and (preg_match("#(Смесител)#", $providerSubcategory) or preg_match("#(Cмесител)#", $title))),
                 ($provider == 'domix' and preg_match("#(Смесител|Набор смесител|Гигиенический набор|Гигиеническая лейка|Комплект смесител)#", $title)),
                 ($provider == 'domix' and preg_match("#(Смесител#", $providerSubcategory)),
             ],
@@ -61,6 +62,7 @@ class Categories
             ],
             7 => [ //'Комплектующие',
                 ($provider == 'mosplitka' and (preg_match("#(Клапан|клапан|Слив|Cифон|Инсталляци|труба|Насадка|Гофра|Гибкое соединение|Муфта|Отвод|инсталляци|Поручень для ванны|Вентиль|вентиль|Термостат|Кнопка смыва|Копки смыва|Излив|заглушка|Подголовник для ванны|Комплектующ)#", $title))),
+                ($provider == 'mosplitka' and (preg_match("#(Поддоны)#", $providerSubcategory))),
                 ($provider == 'domix' and preg_match("#(Инсталляц|инсталляц|Каркас|Экран для ванн|Термостат|Базовый модуль|Пьедестал|Крышка-сидушка|Скрытая часть для|Излив|Уголок для|Слив|Крышка-сиденье|Комплект подключения|Клавиша)#", $title)),
             ],
             8 => [ //'Полотенцесушители',
@@ -223,7 +225,7 @@ class Categories
             ],
             49 => [ //'Затирки и клей',
                 ($provider == 'laparet' and preg_match("#(Клеевые|Клей|Затирк)#", $providerCategory)),
-                ($provider == 'domix' and ((preg_match("#(Сопуствующие)#", $providerCategory) and preg_match("#(Клей)#", $title)) or preg_match("#Клей#", $providerSubcategory))),
+                ($provider == 'domix' and ((preg_match("#(Сопуствующие)#", $providerCategory) and (preg_match("#(Клей)#", $title)) or preg_match("#Клей#", $providerSubcategory)))),
                 ($provider == 'evroplast' and preg_match("#клей#", $providerCategory)),
                 ($provider == 'centerkrasok' and preg_match("#(Клеи|затирки)#", $providerCategory)),
                 ($provider == 'finefloor' and preg_match("#(Клеевые)#", $providerSubcategory)),
@@ -498,15 +500,15 @@ class Categories
     {
         $all_categories = Parser::getCategoriesList();
 
-        if (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser)) {
+        if (preg_match("#ampir.ru/catalog/oboi/.*#", $url_parser)) {
             $category = $all_categories[0];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/lepnina/.*#", $url_parser)) {
+        } elseif (preg_match("#ampir.ru/catalog/lepnina/.*#", $url_parser)) {
             $category = $all_categories[5];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/kraski/.*#", $url_parser)) {
+        } elseif (preg_match("#ampir.ru/catalog/kraski/.*#", $url_parser)) {
             $category = $all_categories[4];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/shtukaturka/.*#", $url_parser)) {
+        } elseif (preg_match("#ampir.ru/catalog/shtukaturka/.*#", $url_parser)) {
             $category = $all_categories[4];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/rozetki/.*#", $url_parser)) {
+        } elseif (preg_match("#ampir.ru/catalog/rozetki/.*#", $url_parser)) {
             $category = $all_categories[5];
         }
 
@@ -517,29 +519,29 @@ class Categories
     {
         $all_subcategories = Parser::getSubcategoriesList();
 
-        if (preg_match("#https://www.ampir.ru/catalog/shtukaturka/.*#", $url_parser)) {
+        if (preg_match("#ampir.ru/catalog/shtukaturka/.*#", $url_parser)) {
             $subcategory = $all_subcategories[19];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/rozetki/.*#", $url_parser)) {
+        } elseif (preg_match("#ampir.ru/catalog/rozetki/.*#", $url_parser)) {
             $subcategory = $all_subcategories[20];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/kraski/.*#", $url_parser)) {
+        } elseif (preg_match("#ampir.ru/catalog/kraski/.*#", $url_parser)) {
             $subcategory = $all_subcategories[45];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser) and str_contains(mb_strtolower($title), 'обои под покраску')) {
+        } elseif (preg_match("#ampir.ru/catalog/oboi/.*#", $url_parser) and str_contains(mb_strtolower($title), 'обои под покраску')) {
             $subcategory = $all_subcategories[18];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser) and str_contains(mb_strtolower($title), 'фотообои')) {
+        } elseif (preg_match("#ampir.ru/catalog/oboi/.*#", $url_parser) and str_contains(mb_strtolower($title), 'фотообои')) {
             $subcategory = $all_subcategories[17];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/oboi/.*#", $url_parser)) {
+        } elseif (preg_match("#ampir.ru/catalog/oboi/.*#", $url_parser)) {
             $subcategory = $all_subcategories[9];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/lepnina/.*#", $url_parser) and str_contains(mb_strtolower($product_usages), 'карниз')) {
+        } elseif (preg_match("#ampir.ru/catalog/lepnina/.*#", $url_parser) and str_contains(mb_strtolower($product_usages), 'карниз')) {
             $subcategory = $all_subcategories[21];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/lepnina/.*#", $url_parser) and str_contains(mb_strtolower($product_usages), 'дверное обрамление')) {
+        } elseif (preg_match("#ampir.ru/catalog/lepnina/.*#", $url_parser) and str_contains(mb_strtolower($product_usages), 'дверное обрамление')) {
             $subcategory = $all_subcategories[24];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/lepnina/.*#", $url_parser) and str_contains(mb_strtolower($product_usages), 'молдинг')) {
+        } elseif (preg_match("#ampir.ru/catalog/lepnina/.*#", $url_parser) and str_contains(mb_strtolower($product_usages), 'молдинг')) {
             $subcategory = $all_subcategories[22];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/lepnina/.*#", $url_parser) and str_contains(mb_strtolower($product_usages), 'плинтус')) {
+        } elseif (preg_match("#ampir.ru/catalog/lepnina/.*#", $url_parser) and str_contains(mb_strtolower($product_usages), 'плинтус')) {
             $subcategory = $all_subcategories[23];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/lepnina/.*#", $url_parser) and str_contains(mb_strtolower($product_usages), 'потолочный декор')) {
+        } elseif (preg_match("#ampir.ru/catalog/lepnina/.*#", $url_parser) and str_contains(mb_strtolower($product_usages), 'потолочный декор')) {
             $subcategory = $all_subcategories[25];
-        } elseif (preg_match("#https://www.ampir.ru/catalog/lepnina/.*#", $url_parser)) {
+        } elseif (preg_match("#ampir.ru/catalog/lepnina/.*#", $url_parser)) {
             $subcategory = $all_subcategories[26];
         }
 

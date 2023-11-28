@@ -30,6 +30,7 @@ class MySQL
     {
         if (!self::$db) {
             self::$db = mysqli_connect('localhost', 'root', '', 'parser');
+            // self::$db = mysqli_connect('localhost', 'penzevrv_2109', 'Q7&ziPyd', 'penzevrv_2109');
         }
         return self::$db;
     }
@@ -48,276 +49,236 @@ class MySQL
         return $date;
     }
 
-    static function firstLinksInsert(string $provider = null)
+    static function firstLinksInsert()
     {
-        $add_links = [];
+        $add_links = [
+            "https://mosplitka.ru/catalog/" => [
+                "catalog",
+                "mosplitka",
+            ],
+            "https://mosplitka.ru/catalog/plitka/view_product/" => [
+                'catalog',
+                'mosplitka',
+            ],
+            "https://www.ampir.ru/catalog/oboi/page1/" => [ //категория Обои, подкатегории: Обои под покраску, Фотообои, Декоративные
+                "catalog",
+                "ampir",
+            ],
+            "https://www.ampir.ru/catalog/lepnina/page1/" => [ //категория Лепнина, подкатегории: Карнизы, Молдинги, Плинтусы, Дверное обрамление, Потолочный декор, Другое
+                "catalog",
+                "ampir",
+            ],
+            "https://www.ampir.ru/catalog/kraski/page1/" => [ //категория Краски, подкатегорий нет
+                "catalog",
+                "ampir",
+            ],
+            "https://www.ampir.ru/catalog/shtukaturka/page1/" => [ //категория Краски, подкатегория Штукатурка
+                "catalog",
+                "ampir",
+            ],
+            "https://www.ampir.ru/catalog/rozetki/page1/" => [ //категория Лепнина, подкатегория Розетки
+                "catalog",
+                "ampir",
+            ],
+            "https://oboi.masterdom.ru/find/?sort=popular&offset=0" => [
+                "product",
+                "masterdom",
+            ],
+            "https://api.masterdom.ru/api/rest/tile/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                "product",
+                "masterdom",
+            ],
+            "https://api.masterdom.ru/api/rest/bathrooms/sink/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                "product",
+                "masterdom",
+            ],
+            "https://api.masterdom.ru/api/rest/bathrooms/toilet_bidet/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                "product",
+                "masterdom",
+            ],
+            "https://api.masterdom.ru/api/rest/bathrooms/bathtub/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                "product",
+                "masterdom",
+            ],
+            "https://api.masterdom.ru/api/rest/bathrooms/shower/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                "product",
+                "masterdom",
+            ],
+            "https://api.masterdom.ru/api/rest/bathrooms/faucet/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                "product",
+                "masterdom",
+            ],
+            "https://api.masterdom.ru/api/rest/bathrooms/furniture/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                "product",
+                "masterdom",
+            ],
+            "https://api.masterdom.ru/api/rest/bathrooms/accessories/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                "product",
+                "masterdom",
+            ],
+            "https://santehnika.masterdom.ru/polotencesushitely/catalog/" => [
+                "product",
+                "masterdom",
+            ],
+            "https://api.masterdom.ru/api/rest/bathrooms/parts/search.json?sort=popularity_desc&limit=100&offset=0" => [
+                "product",
+                "masterdom",
+            ],
+            "https://laparet.ru/catalog/?page=1" => [
+                "catalog",
+                'laparet',
+            ],
+            "https://ntceramic.ru/catalog/keramogranit/?PAGEN_1=1" => [
+                "catalog",
+                'ntceramic',
+            ],
+            "https://ntceramic.ru/catalog/santekhnika/?PAGEN_1=1" => [
+                "catalog",
+                'ntceramic',
+            ],
+            "https://ntceramic.ru/catalog/mebel/?PAGEN_1=1" => [
+                "catalog",
+                'ntceramic',
+            ],
+            "https://www.olimpparket.ru/catalog/" => [
+                "catalog",
+                'olimpparket',
+            ],
+            "https://moscow.domix-club.ru/catalog/laminat/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/vinilovaya_plitka/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/kraski/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/oboi/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/plitka/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/santehnika/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/mebel_dlya_vannoi/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/linoleum/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/kovry/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/inzhenernaya_doska/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/parketnaya_doska/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/kovrovye_pokrytiya/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/freski-i-fotooboi/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/soputstvuyushie-tovary/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/arkhitekturnyy-dekor/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/podlozhka/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://moscow.domix-club.ru/catalog/plintusy_i_porogi/?PAGEN_1=1" => [
+                "catalog",
+                'domix',
+            ],
+            "https://finefloor.ru/catalog/" => [
+                "catalog",
+                "finefloor",
+            ],
+            // "https://surgaz.ru/ajax.php?ajax=Y&PAGEN_1=1&PAGE_ELEMENT_COUNT=1000&LANGUAGE_ID=ru&act=collection" => [
+            //     "catalog",
+            //     "surgaz",
+            // ],
+            "https://surgaz.ru/katalog/" => [
+                "catalog",
+                "surgaz",
+            ],
+            "https://alpinefloor.su/catalog/spc-laminat/" => [
+                "catalog",
+                "alpinefloor",
+            ],
+            "https://alpinefloor.su/catalog/kvartsvinilovaya-plitka/" => [
+                "catalog",
+                "alpinefloor",
+            ],
+            "https://alpinefloor.su/catalog/laminat/" => [
+                "catalog",
+                "alpinefloor",
+            ],
+            "https://alpinefloor.su/catalog/inzhenernaya-doska/" => [
+                "catalog",
+                "alpinefloor",
+            ],
+            "https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/" => [
+                "catalog",
+                "alpinefloor",
+            ],
+            "https://alpinefloor.su/catalog/related-products/" => [
+                "catalog",
+                "alpinefloor",
+            ],
+            "https://www.centerkrasok.ru/catalog/" => [
+                "catalog",
+                "centerkrasok",
+            ],
+            "https://www.tdgalion.ru/catalog/?view=products" => [
+                "catalog",
+                "tdgalion",
+            ],
+            "https://dplintus.ru/catalog/" => [
+                "catalog",
+                "dplintus",
+            ],
+            "https://lkrn.ru/catalog/" => [
+                "catalog",
+                "lkrn",
+            ],
+            "https://artkera.ru/collections/" => [
+                "catalog",
+                "artkera",
+            ],
+            "https://evroplast.ru/smart_search/ajax.php?type=get_list" => [
+                "product",
+                "evroplast",
+            ],
+        ];
 
-        if ($provider) {
-            switch ($provider) {
-                case "masterdom":
-                    $add_links = [
-                        "https://oboi.masterdom.ru/find/?sort=popular&offset=0" => "product",
-                        "https://api.masterdom.ru/api/rest/tile/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-                        "https://api.masterdom.ru/api/rest/bathrooms/sink/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-                        "https://api.masterdom.ru/api/rest/bathrooms/toilet_bidet/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-                        "https://api.masterdom.ru/api/rest/bathrooms/bathtub/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-                        "https://api.masterdom.ru/api/rest/bathrooms/shower/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-                        "https://api.masterdom.ru/api/rest/bathrooms/faucet/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-                        "https://api.masterdom.ru/api/rest/bathrooms/furniture/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-                        "https://api.masterdom.ru/api/rest/bathrooms/accessories/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-                        "https://santehnika.masterdom.ru/polotencesushitely/catalog/" => "product",
-                        "https://api.masterdom.ru/api/rest/bathrooms/parts/search.json?sort=popularity_desc&limit=100&offset=0" => "product",
-                    ];
-                    break;
-                case "ampir":
-                    $add_links = [
-                        "https://www.ampir.ru/catalog/oboi/page1/" => "catalog", //категория Обои, подкатегории: Обои под покраску, Фотообои, Декоративные
-                        "https://www.ampir.ru/catalog/lepnina/page1/" => "catalog", //категория Лепнина, подкатегории: Карнизы, Молдинги, Плинтусы, Дверное обрамление, Потолочный декор, Другое
-                        "https://www.ampir.ru/catalog/kraski/page1/" => "catalog", //категория Краски, подкатегорий нет
-                        "https://www.ampir.ru/catalog/shtukaturka/page1/" => "catalog", //категория Краски, подкатегория Штукатурка
-                        "https://www.ampir.ru/catalog/rozetki/page1/" => "catalog", //категория Лепнина, подкатегория Розетки
-                    ];
-                case "laparet":
-                    $add_links = [
-                        "https://laparet.ru/catalog/?page=1" => "catalog",
-                    ];
-            }
-
-            if ($provider) {
-                foreach ($add_links as $link => $type) {
-                    $query = "INSERT INTO " . $provider . "_links (`link`, `type`) VALUES (?, ?) ON DUPLICATE KEY UPDATE type='$type'";
-                    $types = "ss";
-                    $values = array($link, $type);
-                    self::bind_sql($query, $types, $values);
-                }
-            }
-        } else {
-
-            $add_links = [
-                "https://mosplitka.ru/catalog/" => [
-                    "catalog",
-                    "mosplitka",
-                ],
-                "https://mosplitka.ru/catalog/plitka/view_product/" => [
-                    'catalog', 
-                    'mosplitka',
-                ],
-                "https://www.ampir.ru/catalog/oboi/page1/" => [ //категория Обои, подкатегории: Обои под покраску, Фотообои, Декоративные
-                    "catalog",
-                    "ampir",
-                ],
-                "https://www.ampir.ru/catalog/lepnina/page1/" => [ //категория Лепнина, подкатегории: Карнизы, Молдинги, Плинтусы, Дверное обрамление, Потолочный декор, Другое
-                    "catalog",
-                    "ampir",
-                ],
-                "https://www.ampir.ru/catalog/kraski/page1/" => [ //категория Краски, подкатегорий нет
-                    "catalog",
-                    "ampir",
-                ],
-                "https://www.ampir.ru/catalog/shtukaturka/page1/" => [ //категория Краски, подкатегория Штукатурка
-                    "catalog",
-                    "ampir",
-                ],
-                "https://www.ampir.ru/catalog/rozetki/page1/" => [ //категория Лепнина, подкатегория Розетки
-                    "catalog",
-                    "ampir",
-                ],
-                "https://oboi.masterdom.ru/find/?sort=popular&offset=0" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://api.masterdom.ru/api/rest/tile/search.json?sort=popularity_desc&limit=100&offset=0" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://api.masterdom.ru/api/rest/bathrooms/sink/search.json?sort=popularity_desc&limit=100&offset=0" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://api.masterdom.ru/api/rest/bathrooms/toilet_bidet/search.json?sort=popularity_desc&limit=100&offset=0" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://api.masterdom.ru/api/rest/bathrooms/bathtub/search.json?sort=popularity_desc&limit=100&offset=0" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://api.masterdom.ru/api/rest/bathrooms/shower/search.json?sort=popularity_desc&limit=100&offset=0" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://api.masterdom.ru/api/rest/bathrooms/faucet/search.json?sort=popularity_desc&limit=100&offset=0" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://api.masterdom.ru/api/rest/bathrooms/furniture/search.json?sort=popularity_desc&limit=100&offset=0" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://api.masterdom.ru/api/rest/bathrooms/accessories/search.json?sort=popularity_desc&limit=100&offset=0" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://santehnika.masterdom.ru/polotencesushitely/catalog/" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://api.masterdom.ru/api/rest/bathrooms/parts/search.json?sort=popularity_desc&limit=100&offset=0" => [
-                    "product",
-                    "masterdom",
-                ],
-                "https://laparet.ru/catalog/?page=1" => [
-                    "catalog",
-                    'laparet',
-                ],
-                "https://ntceramic.ru/catalog/keramogranit/?PAGEN_1=1" => [
-                    "catalog",
-                    'ntceramic',
-                ],
-                "https://ntceramic.ru/catalog/santekhnika/?PAGEN_1=1" => [
-                    "catalog",
-                    'ntceramic',
-                ],
-                "https://ntceramic.ru/catalog/mebel/?PAGEN_1=1" => [
-                    "catalog",
-                    'ntceramic',
-                ],
-                "https://www.olimpparket.ru/catalog/" => [
-                    "catalog",
-                    'olimpparket',
-                ],
-                "https://moscow.domix-club.ru/catalog/laminat/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/vinilovaya_plitka/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/kraski/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/oboi/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/plitka/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/santehnika/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/mebel_dlya_vannoi/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/linoleum/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/kovry/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/inzhenernaya_doska/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/parketnaya_doska/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/kovrovye_pokrytiya/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/freski-i-fotooboi/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/soputstvuyushie-tovary/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/arkhitekturnyy-dekor/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/podlozhka/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://moscow.domix-club.ru/catalog/plintusy_i_porogi/?PAGEN_1=1" => [
-                    "catalog",
-                    'domix',
-                ],
-                "https://finefloor.ru/catalog/" => [
-                    "catalog",
-                    "finefloor",
-                ],
-                "https://surgaz.ru/ajax.php?ajax=Y&PAGEN_1=1&PAGE_ELEMENT_COUNT=1000&LANGUAGE_ID=ru&act=collection" => [
-                    "catalog",
-                    "surgaz",
-                ],
-                "https://alpinefloor.su/catalog/spc-laminat/" => [
-                    "catalog",
-                    "alpinefloor",
-                ],
-                "https://alpinefloor.su/catalog/kvartsvinilovaya-plitka/" => [
-                    "catalog",
-                    "alpinefloor",
-                ],
-                "https://alpinefloor.su/catalog/laminat/" => [
-                    "catalog",
-                    "alpinefloor",
-                ],
-                "https://alpinefloor.su/catalog/inzhenernaya-doska/" => [
-                    "catalog",
-                    "alpinefloor",
-                ],
-                "https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/" => [
-                    "catalog",
-                    "alpinefloor",
-                ],
-                "https://alpinefloor.su/catalog/related-products/" => [
-                    "catalog",
-                    "alpinefloor",
-                ],
-                "https://www.centerkrasok.ru/catalog/" => [
-                    "catalog",
-                    "centerkrasok",
-                ],
-                "https://www.tdgalion.ru/catalog/?view=products" => [
-                    "catalog",
-                    "tdgalion",
-                ],
-                "https://dplintus.ru/catalog/" => [
-                    "catalog",
-                    "dplintus",
-                ],
-                "https://lkrn.ru/catalog/" => [
-                    "catalog",
-                    "lkrn",
-                ],
-                "https://artkera.ru/collections/" => [
-                    "catalog",
-                    "artkera",
-                ],
-                "https://evroplast.ru/smart_search/ajax.php?type=get_list" => [
-                    "product",
-                    "evroplast",
-                ],
-            ];
-
-            foreach ($add_links as $link => $data) {
-                $query = "INSERT INTO all_links (`link`, `type`, `provider`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE type='$data[0]'";
-                $types = "sss";
-                $values = array($link, $data[0], $data[1]);
-                self::bind_sql($query, $types, $values);
-            }
+        foreach ($add_links as $link => $data) {
+            $query = "INSERT INTO all_links (`link`, `type`, `provider`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE type='$data[0]'";
+            $types = "sss";
+            $values = array($link, $data[0], $data[1]);
+            self::bind_sql($query, $types, $values);
         }
     }
 

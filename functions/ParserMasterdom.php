@@ -6,6 +6,7 @@ require __DIR__ . "/../vendor/autoload.php";
 
 use DiDom\Document;
 use DOMDocument;
+use functions\Connect;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
 
@@ -136,7 +137,7 @@ class ParserMasterdom
         $collctions = []; //keys: name, id, fabric_id
         $usage = []; //keys: name, id, name_url
 
-        $document_1 = Parser::guzzleConnect("https://plitka.masterdom.ru/");
+        $document_1 = Connect::guzzleConnect("https://plitka.masterdom.ru/");
 
         $api_data_1 = $document_1->find('script')[9]->text();
         $api_data_1 = rtrim(str_replace("window.__initialData=", "", $api_data_1), ";");
@@ -186,7 +187,7 @@ class ParserMasterdom
         $fabrics = null; //даны в общем массиве товара
         $collections = null; //даны в общем массиве товара
 
-        $document_1 = Parser::guzzleConnect("https://oboi.masterdom.ru/ajax/reference/?type=wallpaper");
+        $document_1 = Connect::guzzleConnect("https://oboi.masterdom.ru/ajax/reference/?type=wallpaper");
 
         $api_data_1 = $document_1->text();
         $api_data_1 = json_decode($api_data_1, 1)['country'];
@@ -207,7 +208,7 @@ class ParserMasterdom
     */
     static function getDataSantechnika(): array
     {
-        $document_1 = Parser::guzzleConnect("https://santehnika.masterdom.ru/rakoviny/catalog/");
+        $document_1 = Connect::guzzleConnect("https://santehnika.masterdom.ru/rakoviny/catalog/");
 
         $api_data_1 = $document_1->find('script')[10]->text();
         $api_data_1 = rtrim(str_replace("window.__initialData=", "", $api_data_1), ";");
@@ -221,7 +222,7 @@ class ParserMasterdom
 
     static function getDataPolotencesushitely(): array
     {
-        $document_1 = Parser::guzzleConnect("https://santehnika.masterdom.ru/polotencesushitely/catalog/");
+        $document_1 = Connect::guzzleConnect("https://santehnika.masterdom.ru/polotencesushitely/catalog/");
         $api_data_1 = $document_1->find('script')[10]->text();
         $api_data_1 = rtrim(str_replace("window.__initialData=", "", $api_data_1), ";");
         $api_data_1 = json_decode($api_data_1, 1);

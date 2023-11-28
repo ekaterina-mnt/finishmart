@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "/vendor/autoload.php";
+require __DIR__ . "/../vendor/autoload.php";
 
 use DiDom\Document;
 use functions\MySQL;
@@ -25,7 +25,7 @@ try {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteraion_provider . "' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteration_provider . "' ORDER BY views, id LIMIT 1");
 
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
@@ -63,24 +63,24 @@ try {
             ".brand__row a[href*=catalog]", //ampir
             ".pagination-catalog a[href*=catalog]", //ampir
             ".pagination-list a[href*=catalog]", //ampir
-            ".catalog__data a",
-            ".section-list a",
-            "#content ul li a",
-            ".pagin a",
-            ".pag__list a",
-            ".pager-list a",
+            ".catalog__data a", //laparet
+            ".section-list a", //ntceramic
+            "#content ul li a.hover", //olimpparket
+            ".pagin a", //olimpparket
+            ".pag__list a", //laparet
+            ".pager-list a", //ntceramic
             ".product_list a",
             "#content .categories a",
-            "#content .product_list a",
-            ".catalog-tablet-wr a",
-            "article .catalog__category a",
-            ".paginations-list li a",
+            "#content .product_list a", //olimpparket
+            ".catalog-tablet-wr a", //domix
+            "article .catalog__category a", //finefloor
+            ".paginations-list li a", //finefloor
             ".catalog__items__list a",
             "a.product-item__link", //tdgalion
             ".pagination-nav a", //tdgalion
             ".category-grid a.item", //dplintus
             ".product-grid a.product-item-image-wrapper", //dplintus
-            ".catalog a[href*=katalog]", //surgaz
+            "#wrap-catalogs .catalog a[href*=katalog]", //surgaz
             "ul.catalog li a", //centerkrasok
             ".dPagingParent a", //centerkrasok
             ".catalogBox a", //centerkrasok

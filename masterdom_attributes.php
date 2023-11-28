@@ -10,6 +10,7 @@ use functions\ParserMasterdom;
 $limit = str_contains($url_parser, "oboi.masterdom") ? 30 : 100;
 $next_link = Parser::nextLink($url_parser, $limit);
 if ($next_link) {
+    
     $query = "INSERT INTO all_links (link, type, provider) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE type='product'";
     $types = "sss";
     $values = [$next_link, 'product', 'masterdom'];
@@ -25,6 +26,7 @@ if (str_contains($url_parser, 'polotencesushitely/catalog')) {
 
     $category = 'Сантехника';
 } else {
+    var_dump("here");
     //категория
     $category = ParserMasterdom::getCategory($url_parser);
 
@@ -53,10 +55,6 @@ $fabrics = isset($country_coll_producer_res['fabrics']) ? $country_coll_producer
 $collections = isset($country_coll_producer_res['collections']) ? $country_coll_producer_res['collections'] : null;
 $countries = isset($country_coll_producer_res['countries']) ? $country_coll_producer_res['countries'] : null;
 $usage_array = isset($country_coll_producer_res['usage']) ? $country_coll_producer_res['usage'] : null;
-
-
-
-
 
 
 //НЕПОСРЕДСТВЕННАЯ ОБРАБОТКА ПОЛУЧЕННЫХ ДАННЫХ

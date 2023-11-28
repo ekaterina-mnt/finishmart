@@ -1,21 +1,6 @@
-<a href="/mosplitkaLinks.php">mosplitkaLinks.php</a>
-<br><br>
-<a href="/mosplitkaProduct.php">mosplitkaProduct.php</a>
-<br><br>
-<a href="/bitrix/admin/1c_exchange.php">1c_exchange.php</a>
-<br><br>
-<a href="/masterDomLinks.php">masterDomLinks.php</a>
-<br><br>
-<a href="/masterDomProduct.php">masterDomProduct.php</a>
-<br><br>
-<a href="/masterdomDopData.php">masterDomDopData.php</a>
-<br><br>
-<a href="/ampirLinks.php">ampirLinks.php</a>
-<br><br>
-<a href="/ampirProduct.php">ampirProduct.php</a>
-<br><br>
-<a href="/all_links.php">all_links.php</a>
-<br><br>
-<a href="/all_products.php">all_products.php</a>
-<br><br>
-<a href="/check_invalide_links.php">check_invalide_links.php</a>
+<?php
+$providers = ['alpinefloor', 'ampir', 'artkera', 'centerkrasok', 'domix', 'dplintus', 'evroplast', 'finefloor', 'laparet', 'masterdom', 'mosplitka', 'ntceramic', 'olimpparket', 'surgaz', 'tdgalion'];
+foreach ($providers as $provider) {
+    echo '<a href="http://penzevrv.beget.tech/cron_products_scripts/products_' . $provider . '.php">products_' . $provider . '</a>';
+    echo "<br><br>";
+}

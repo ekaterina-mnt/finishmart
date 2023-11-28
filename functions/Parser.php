@@ -476,6 +476,10 @@ class Parser
                 "attr" => "data-big",
                 "start" => "https://mosplitka.ru",
             ],
+            "ampir" => [
+                "attr" => "href",
+                "start" => "",
+            ],
         ];
 
         $images = array();
