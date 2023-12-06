@@ -133,7 +133,7 @@ $attributes_classes = [
     "images" => [ //маленькие 
         ".swiper-wrapper a.good-slide__link", //ntceramic
         ".single-vertical meta", //domix
-        ".gallery__previews a.gallery__previewsItem", //laparet
+        ".gallery__previews a.gallery__previewsItem", //laparet + в коде ниже ("a.productCard__thumbnail")
         ".more-photo-container a.fancybox-gallery", //olimpparket
         ".main-img a.fancybox-gallery", //olimpparket главное фото
         "a.catalog__image__big__slide", //finefloor
@@ -586,6 +586,9 @@ if (isset($all_product_data['title']) and isset($all_product_data['subcategory']
 
 //картинки
 $images_res = $document->find(implode(', ', $attributes_classes['images']));
+if (!$images_res and $provider == 'laparet') {
+    $images_res = $document->find("a.productCard__thumbnail");
+}
 if ($images_res) {
     $images = Parser::getImages($images_res, $provider) ?? null;
     $all_product_data['images'] = [$images, 's'];

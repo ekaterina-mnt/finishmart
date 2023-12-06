@@ -578,7 +578,7 @@ class Parser
         if (!$products) return false;
 
 
-var_dump(count($products));
+        var_dump(count($products));
         echo "<b>были обновлены цены:</b><br><br>";
         $date_edit = MySQL::get_mysql_datetime();
         foreach ($products as $i => $product) {
@@ -617,5 +617,12 @@ var_dump(count($products));
             }
         }
         echo "<br>";
+    }
+
+    static function discardInvalideAlpinefloorLink($url_parser)
+    {
+        if (in_array($url_parser, ['https://alpinefloor.su/catalog/related-products/?'])) {
+            return true;
+        }
     }
 }

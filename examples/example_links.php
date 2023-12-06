@@ -109,7 +109,8 @@ try {
         foreach ($all_res as $href) {
             $link = Parser::generateLink($href->attr('href'), $provider, $url_parser);
             if ($provider == 'alpinefloor' and $href->attr('data-endpoint')) {
-                $link = Parser::generateLink(str_replace(["is_ajax=y&", "ajax=y&"], '', $href->attr('data-endpoint')), $provider, $url_parser);
+                // if (preg_match("#https://alpinefloor.su/catalog/.+[^/"]/(is_ajax|ajax)#"
+                $link = Parser::generateLink(str_replace("is_ajax=y", "", str_replace("ajax=y", '', $href->attr('data-endpoint'))), $provider, $url_parser);
             }
 
 

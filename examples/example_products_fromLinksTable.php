@@ -43,13 +43,19 @@ try {
         // sleep(mt_rand(2, 6));
 
         // echo "<br><b>Товар $i</b><br><br>";
-        
+
         // $url_parser = $link['link'];
         // $provider = $link['provider'];
 
         $date_edit = MySQL::get_mysql_datetime();
 
         TechInfo::whichLinkPass($url_parser);
+        if ($provider == 'alpinefloor') {
+            if (Parser::discardInvalideAlpinefloorLink($url_parser)) {
+                echo "Не продукт";
+                continue;
+            }
+        }
 
         // if ($provider == 'dplintus' and $i > 10) continue; //банят если много запросов
 
