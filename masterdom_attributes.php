@@ -26,7 +26,6 @@ if (str_contains($url_parser, 'polotencesushitely/catalog')) {
 
     $category = 'Сантехника';
 } else {
-    var_dump("here");
     //категория
     $category = ParserMasterdom::getCategory($url_parser);
 
@@ -66,7 +65,7 @@ foreach ($api_data as $datum) {
     echo "<br><b>Товар " . $product_ord_num++ . "</b><br><br>";
     $all_product_data = [];
     $all_product_data['provider'] = ['masterdom', 's'];
-
+    $all_product_data['api_parser_link'] = [$url_parser, 's'];
     //ОБЩИЕ ДЛЯ ВСЕХ
 
     //название товара (сантехника - full_name)

@@ -79,7 +79,8 @@ $attributes_classes = [
         ".sproduct-charact__name", //tdgalion
         ".sproduct-info__name", //tdgalion
         ".product-item-detail-properties dt", //dplintus
-        ".item-detail-classes .item-detail-class", //alpinefloor
+        // ".item-detail-classes .item-detail-class", //alpinefloor
+        "td.chars__title", //alpinefloor
         ".tile-card__prop-title", //artkera
         ".dfparams tr .dfplabel", //ampir
         "#atts .q_prop__name", //mosplitka
@@ -95,7 +96,7 @@ $attributes_classes = [
         ".sproduct-charact__name", //tdgalion
         ".sproduct-info__name", //tdgalion
         ".product-item-detail-properties dt", //dplintus
-        ".item-detail-class__title", //alpinefloor
+        // ".item-detail-class__title", //alpinefloor
         ".tile-card__prop-title", //artkera
         ".dfparams tr .dfplabel", //ampir
         "#atts .q_prop__name", //mosplitka
@@ -111,7 +112,7 @@ $attributes_classes = [
         ".sproduct-charact__value", //tdgalion
         ".sproduct-info__value", //tdgalion
         ".product-item-detail-properties dd", //dplintus
-        ".item-detail-class__name", //alpinefloor
+        // ".item-detail-class__name", //alpinefloor
         ".tile-card__prop-desc", //artkera
         ".dfparams tr .dfpval", //ampir
         "#atts .q_prop__value", //mosplitka
@@ -293,7 +294,8 @@ $char_names = $document->find(implode(', ', $attributes_classes['char_name']));
 $char_values = $document->find(implode(', ', $attributes_classes['char_value']));
 $char_double_count = count($document->find(implode(', ', $attributes_classes['char_double_count']))) - 1;
 $char_double = $document->find(implode(', ', $attributes_classes['char_double']));
-var_dump($char_values);
+
+if ($provider == 'dplintus') $characteristics_count++;
 if ($provider == 'lkrn') {
     $char_res = "";
     $html_char_res = "";

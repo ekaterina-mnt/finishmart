@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "/vendor/autoload.php";
+require __DIR__ . "/../vendor/autoload.php";
 
 use DiDom\Document;
 use functions\MySQL;
@@ -13,17 +13,16 @@ use functions\TechInfo;
 use GuzzleHttp\Client as GuzzleClient;
 
 
-//для следующих поставщиков: centerkrasok.ru
+//для следующих поставщиков: centerkrasok.ru, masterdom
 
 
 TechInfo::start();
 
 try {
     for ($i = 1; $i < 51; $i++) {
-
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, check_invalide_links_views, provider FROM all_products WHERE provider='centerkrasok' ORDER BY check_invalide_links_views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, check_invalide_links_views, provider FROM all_products WHERE (provider='centerkrasok' or provider='masterdom') ORDER BY check_invalide_links_views, id LIMIT 1");
 
         if (!$query->num_rows) {
             TechInfo::errorExit("не найдена ссылка по запросу '$query'");
@@ -34,6 +33,8 @@ try {
         //Получаем ссылку
         $url_parser = $res['link'];
         $provider = $res['provider'];
+
+        if ($provider == 'masterdom' and $i > 10) exit;
 
         TechInfo::whichLinkPass($url_parser);
 
@@ -47,10 +48,10 @@ try {
             $document = Connect::guzzleConnect($url_parser, $encoding ?? null);
             MySQL::sql("UPDATE all_products SET status='ok', date_edit='$date_edit' WHERE link='$url_parser'");
         } catch (\Throwable $e) {
+            echo "Итог: ссылка невалидная<br>";
             MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
-            Logs::writeLog1($e,  $provider, $url_parser);
-            TechInfo::errorExit($e);
-            var_dump($e);
+            echo "Успешно обновлен статус ссылки на 'invalide'<br>";
+            TechInfo::errorExit("");
         }
 
         //Получаем все данные со страницы

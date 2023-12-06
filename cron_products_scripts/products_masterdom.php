@@ -25,7 +25,7 @@ try {
         echo "<br><b>Товар $i</b><br><br>";
 
         // Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='" . $script_iteration_provider . "' ORDER BY product_views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, product_views, provider FROM all_links WHERE type='product' and provider='" . $script_iteration_provider . "' and link like '%tile%' ORDER BY product_views, id LIMIT 1");
 
         if (!$query->num_rows) {
             TechInfo::errorExit("не получено ссылки для парсинга");
@@ -77,7 +77,7 @@ try {
             include __DIR__ . "/../artkera_attributes.php";
         } elseif ($provider == 'evroplast') {
             include __DIR__ . "/../evroplast_attributes.php";
-        } elseif ($provider == 'masterdom.php') {
+        } elseif ($provider == 'masterdom') {
             include __DIR__ . "/../masterdom_attributes.php";
         } else {
             $all_product_data = [];

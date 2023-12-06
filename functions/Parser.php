@@ -516,4 +516,106 @@ class Parser
 
         return $variants;
     }
+
+    static function getSurgazCatalogLinks(Document $document, $provider, $url_parser)
+    {
+        $dop_res = $document->find(".left_col nav li a");
+
+        $dop_add = [];
+        foreach ($dop_res as $href) {
+            $link = Parser::generateLink($href->attr('href'), $provider, $url_parser);
+
+            // избавляемся от дублей
+            if (MySQL::sql("SELECT id, link FROM all_links WHERE link='$link'")->num_rows) {
+                echo "$link - ссылка уже есть в БД<br>";
+                continue;
+            }
+
+            //определяем это ссылка на продукт или каталог
+            if (preg_match("#https://surgaz.ru/katalog\/[^\/]+\/#", $link)) {
+                $link_type = "catalog";
+            }
+
+            if (!$link_type) {
+                echo "$link - не определился тип ссылки<br>";
+                continue;
+            }
+
+            echo "$link<br>"; //оставить для вывода
+
+            $res = self::insertLink1($link, $link_type, $provider);
+            if ($res == "success") $dop_add[] = ['link' => $link, 'comment' => $link_type];
+            if ($res == "fail") $dop_add[] = ['link' => $link . ' - не получилось добавить в БД', 'comment' => $link_type];
+        }
+
+        return $dop_add;
+    }
+
+    static function getSurgazProductLinks($document)
+    {
+        $sectionID = $document->find("#wrap-catalogs")[0]->attr('data-section');
+        $apiLink = "https://surgaz.ru/ajax.php?ajax=Y&PAGEN_1=1&SECTION_ID=$sectionID&PAGE_ELEMENT_COUNT=1000&LANGUAGE_ID=ru&act=catalogs";
+        $apiDocument = Connect::guzzleConnect($apiLink, "windows-1251");
+        TechInfo::whichLinkPass($apiLink, 1);
+        $all_res = $apiDocument->find('.catalog a[href*=katalog]');
+
+        return $all_res;
+    }
+
+    static function checkAlpinefloorValideLink()
+    {
+    }
+
+    static function updatePrices($document, $provider)
+    {
+        $search_classes = [
+            // ".catSection-basket__price", //mosplitka
+            ".catSection__item", //mosplitka
+            ".m-product", //mosplitka
+        ];
+
+        $products = $document->find(implode(", ", $search_classes));
+        if (!$products) return false;
+
+
+var_dump(count($products));
+        echo "<b>были обновлены цены:</b><br><br>";
+        $date_edit = MySQL::get_mysql_datetime();
+        foreach ($products as $i => $product) {
+            echo $i + 1 . ") ";
+            try {
+
+                $link_res = $product->find(".catSection__name, .m-plitka-name--label")[0];
+                $link = Parser::generateLink($link_res->attr('href'), $provider);
+
+                if ($no_product = $product->find(".no-product")[0]) {
+                    if (preg_match('#(Скоро в продаже|Снят с производства)#', $no_product->text())) {
+                        echo "$link (неликвидная ссылка) -";
+                        MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$link'");
+                        echo "статус успешно обновлен<br>";
+                    }
+
+                    continue;
+                }
+
+                $price_res = $product->find(".catSection-basket__price, .cost_value");
+                $price = (int) str_replace([",", "₽", " "], '', $price_res[0]->text());
+
+                if ($good = MySQL::sql("SELECT * FROM all_products WHERE link like '$link'")) {
+                    $query = "UPDATE all_products SET price=?, date_edit=? WHERE link='$link'";
+                    $types = "is";
+                    $values = [$price, $date_edit];
+
+                    echo "$link (цена: $price) - ";
+                    MySQL::bind_sql($query, $types, $values);
+                    echo "успешно обновлено<br>";
+                }
+            } catch (\Throwable $e) {
+                var_dump($price_res);
+                var_dump($link);
+                continue;
+            }
+        }
+        echo "<br>";
+    }
 }

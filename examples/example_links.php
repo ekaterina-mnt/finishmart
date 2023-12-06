@@ -21,8 +21,7 @@ $script_iteration_provider = '';
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 6; $i++) {
-
+    for ($i = 1; $i < 11; $i++) {
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
         $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteration_provider . "' ORDER BY views, id LIMIT 1");
@@ -37,6 +36,7 @@ try {
         //Получаем ссылку
         $url_parser = $res['link'];
         $provider = $res['provider'];
+        var_dump($url_parser);
 
         TechInfo::whichLinkPass($url_parser);
 
@@ -45,10 +45,14 @@ try {
         $date_edit = MySQL::get_mysql_datetime();
         MySQL::sql("UPDATE all_links SET views=$views WHERE link='$url_parser'");
 
+        if ($provider != 'mosplitka' and $i > 6) TechInfo::errorExit("");
         if ($provider == 'masterdom') continue; //
 
         //Получаем html у себя
         $document = Connect::guzzleConnect($url_parser);
+
+        //Обновление цен (пока для мосплитки)
+        if ($provider == 'mosplitka') Parser::updatePrices($document, $provider, $url_parser);
 
         //Получаем все данные со страницы
         $search_classes = [
@@ -80,7 +84,7 @@ try {
             ".pagination-nav a", //tdgalion
             ".category-grid a.item", //dplintus
             ".product-grid a.product-item-image-wrapper", //dplintus
-            "#wrap-catalogs .catalog a[href*=katalog]", //surgaz
+            // "#wrap-catalogs .catalog a[href*=katalog]", //surgaz + будет ниже отдельно один класс
             "ul.catalog li a", //centerkrasok
             ".dPagingParent a", //centerkrasok
             ".catalogBox a", //centerkrasok
@@ -95,6 +99,9 @@ try {
 
         $search_classes = implode(", ", $search_classes);
         $all_res = $document->find($search_classes);
+        if ($provider == 'surgaz') {
+            $all_res = Parser::getSurgazProductLinks($document);
+        }
 
         echo "<b>скрипт нашел ссылки (" . count($all_res) . "шт):</b><br>";
 
@@ -132,6 +139,16 @@ try {
             if ($res == "success") $add[] = ['link' => $link, 'comment' => $link_type];
             if ($res == "fail") $add[] = ['link' => $link . ' - не получилось добавить в БД', 'comment' => $link_type];
         }
+
+        ////////////////отдельно часть для сургаза////////////////////////////////
+        if ($provider == 'surgaz') {
+            $dop_add = Parser::getSurgazCatalogLinks($document, $provider, $url_parser);
+            if ($dop_add) {
+            $add = array_merge($add, $dop_add);
+            }
+        }
+        //////////////////////////////////////////////////////////////////////////
+
         sort($add);
         echo "<br><b>из них скрипт добавил (" . count($add) . "шт):</b><br>";
         foreach ($add as $add_key => $add_value) {

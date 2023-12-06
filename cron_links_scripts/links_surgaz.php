@@ -14,7 +14,7 @@ use GuzzleHttp\Client as GuzzleClient;
 
 
 //МЕНЯТЬ ТОЛЬКО ЗДЕСЬ
-$script_iteration_provider = 'mosplitka';
+$script_iteration_provider = 'surgaz';
 //
 
 
@@ -37,7 +37,6 @@ try {
         //Получаем ссылку
         $url_parser = $res['link'];
         $provider = $res['provider'];
-        var_dump($url_parser);
 
         TechInfo::whichLinkPass($url_parser);
 
@@ -50,9 +49,6 @@ try {
 
         //Получаем html у себя
         $document = Connect::guzzleConnect($url_parser);
-
-        //Обновление цен (пока для мосплитки)
-        if ($provider == 'mosplitka') Parser::updatePrices($document, $provider, $url_parser);
 
         //Получаем все данные со страницы
         $search_classes = [
