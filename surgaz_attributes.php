@@ -28,7 +28,9 @@ foreach ($goods as $num => $good) {
     $characteristics = array();
 
     $all_product_data['collection'] = [$collection, 's'];
+    var_dump($collection);
     $characteristics['Коллекция'] = $collection;
+    var_dump($characteristics);
     $all_product_data['producer'] = [$fabric, 's'];
     $characteristics['Производитель'] = $fabric;
     $all_product_data['provider'] = [$provider, 's'];

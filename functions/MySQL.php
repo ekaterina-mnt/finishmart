@@ -29,8 +29,8 @@ class MySQL
     static function getDB()
     {
         if (!self::$db) {
-            self::$db = mysqli_connect('localhost', 'root', '', 'parser');
-            // self::$db = mysqli_connect('localhost', 'penzevrv_2109', 'Q7&ziPyd', 'penzevrv_2109');
+            // self::$db = mysqli_connect('localhost', 'root', '', 'parser');
+            self::$db = mysqli_connect('localhost', 'penzevrv_2109', 'Q7&ziPyd', 'penzevrv_2109');
         }
         return self::$db;
     }

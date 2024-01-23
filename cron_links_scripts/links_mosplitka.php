@@ -21,8 +21,7 @@ $script_iteration_provider = 'mosplitka';
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 6; $i++) {
-
+    for ($i = 1; $i < 11; $i++) {
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
         $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteration_provider . "' ORDER BY views, id LIMIT 1");
@@ -46,6 +45,7 @@ try {
         $date_edit = MySQL::get_mysql_datetime();
         MySQL::sql("UPDATE all_links SET views=$views WHERE link='$url_parser'");
 
+        if ($provider != 'mosplitka' and $i > 6) TechInfo::errorExit("");
         if ($provider == 'masterdom') continue; //
 
         //Получаем html у себя

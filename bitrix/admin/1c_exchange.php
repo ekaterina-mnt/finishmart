@@ -65,5 +65,5 @@ try {
         }
     }
 } catch (Throwable $e) {
-  Logs::writeLog($e, $provider);
+  //Logs::writeLog($e, $provider);
 }

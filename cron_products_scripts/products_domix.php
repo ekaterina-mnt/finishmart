@@ -11,7 +11,7 @@ use functions\ParserMasterdom;
 use functions\ParserMosplitka;
 
 
-//МЕНЯТЬ ТОЛЬКО ЗДЕСЬ 
+//МЕНЯТЬ ТОЛЬКО ЗДЕСЬ
 $script_iteration_provider = 'domix';
 //
 
@@ -21,6 +21,7 @@ TechInfo::start();
 try {
     for ($i = 1; $i < 11; $i++) {
         sleep(mt_rand(2, 6));
+        if ($script_iteration_provider == 'domix' and $i > 5) TechInfo::errorExit("");
 
         echo "<br><b>Товар $i</b><br><br>";
 
@@ -76,8 +77,8 @@ try {
         } elseif ($provider == 'artkera') {
             include __DIR__ . "/../artkera_attributes.php";
         } elseif ($provider == 'evroplast') {
-            include __DIR__ . "/../mosplitka_attributes.php";
-        } elseif ($provider == 'masterdom.php') {
+            include __DIR__ . "/../evroplast_attributes.php";
+        } elseif ($provider == 'masterdom') {
             include __DIR__ . "/../masterdom_attributes.php";
         } else {
             $all_product_data = [];

@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "/../vendor/autoload.php";
+require __DIR__ . "\..\\vendor\autoload.php";
 
 use functions\MySQL;
 use functions\Logs;
@@ -12,16 +12,15 @@ use functions\ParserMosplitka;
 
 
 //МЕНЯТЬ ТОЛЬКО ЗДЕСЬ
-$script_iteration_provider = '';
+$script_iteration_provider = 'domix';
 //
 
 
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 11; $i++) {
+    for ($i = 1; $i < 2; $i++) {
         sleep(mt_rand(2, 6));
-        if ($script_iteration_provider == 'domix' and $i > 8) TechInfo::errorExit("");
 
         echo "<br><b>Товар $i</b><br><br>";
 
@@ -43,19 +42,13 @@ try {
         // sleep(mt_rand(2, 6));
 
         // echo "<br><b>Товар $i</b><br><br>";
-
+        
         // $url_parser = $link['link'];
         // $provider = $link['provider'];
 
         $date_edit = MySQL::get_mysql_datetime();
 
         TechInfo::whichLinkPass($url_parser);
-        if ($provider == 'alpinefloor') {
-            if (Parser::discardInvalideAlpinefloorLink($url_parser)) {
-                echo "Не продукт";
-                continue;
-            }
-        }
 
         // if ($provider == 'dplintus' and $i > 10) continue; //банят если много запросов
 
@@ -76,25 +69,25 @@ try {
         }
 
         if ($provider == 'surgaz') {
-            include __DIR__ . "/../surgaz_attributes.php";
+            include __DIR__ . "\..\surgaz_attributes.php";
             break; //выход из цикла для получения новых ссылок, т.к. выгружает по 100 товаров с 1 ссылки
         } elseif ($provider == 'centerkrasok') {
-            include __DIR__ . "/../centerkrasok_attributes.php";
+            include __DIR__ . "\..\centerkrasok_attributes.php";
         } elseif ($provider == 'artkera') {
-            include __DIR__ . "/../artkera_attributes.php";
+            include __DIR__ . "\..\artkera_attributes.php";
         } elseif ($provider == 'evroplast') {
-            include __DIR__ . "/../evroplast_attributes.php";
-        } elseif ($provider == 'masterdom') {
-            include __DIR__ . "/../masterdom_attributes.php";
+            include __DIR__ . "\..\mosplitka_attributes.php";
+        } elseif ($provider == 'masterdom.php') {
+            include __DIR__ . "\..\masterdom_attributes.php";
         } else {
             $all_product_data = [];
 
             $all_product_data['link'] = [$url_parser, 's'];
             $all_product_data['provider'] = [$provider, 's'];
 
-            include __DIR__ . "/../all_attributes.php";
+            include __DIR__ . "\..\all_attributes.php";
 
-            include __DIR__ . "/../insert_ending.php";
+            include __DIR__ . "\..\insert_ending.php";
         }
     } //конец итерации 1 товара
 

@@ -30,7 +30,6 @@ class Categories
             1 => [ //'Унитазы, писсуары и биде',
                 ($provider == 'laparet' and preg_match("#(Унитаз|Писсуар|Сиденье|Бачок)#", $title)),
                 ($provider == 'mosplitka' and preg_match("#(Унитаз|Биде|Писсуар)#", $title)),
-                ($provider == 'mosplitka' and preg_match("#(Унитазы)#", $providerSubcategory)),
                 ($provider == 'domix' and preg_match("#(Унитаз)#", $title)),
             ],
             2 => [ //'Ванны',

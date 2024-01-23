@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "/../vendor/autoload.php";
+require __DIR__ . "/vendor/autoload.php";
 
 use DiDom\Document;
 use functions\MySQL;
@@ -21,10 +21,11 @@ $script_iteration_provider = '';
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 11; $i++) {
+    for ($i = 1; $i < 6; $i++) {
+
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteration_provider . "' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteraion_provider . "' ORDER BY views, id LIMIT 1");
 
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
@@ -36,7 +37,6 @@ try {
         //Получаем ссылку
         $url_parser = $res['link'];
         $provider = $res['provider'];
-        var_dump($url_parser);
 
         TechInfo::whichLinkPass($url_parser);
 
@@ -45,14 +45,10 @@ try {
         $date_edit = MySQL::get_mysql_datetime();
         MySQL::sql("UPDATE all_links SET views=$views WHERE link='$url_parser'");
 
-        if ($provider != 'mosplitka' and $i > 6) TechInfo::errorExit("");
         if ($provider == 'masterdom') continue; //
 
         //Получаем html у себя
         $document = Connect::guzzleConnect($url_parser);
-
-        //Обновление цен (пока для мосплитки)
-        if ($provider == 'mosplitka') Parser::updatePrices($document, $provider, $url_parser);
 
         //Получаем все данные со страницы
         $search_classes = [
@@ -67,24 +63,24 @@ try {
             ".brand__row a[href*=catalog]", //ampir
             ".pagination-catalog a[href*=catalog]", //ampir
             ".pagination-list a[href*=catalog]", //ampir
-            ".catalog__data a", //laparet
-            ".section-list a", //ntceramic
-            "#content ul li a.hover", //olimpparket
-            ".pagin a", //olimpparket
-            ".pag__list a", //laparet
-            ".pager-list a", //ntceramic
+            ".catalog__data a",
+            ".section-list a",
+            "#content ul li a",
+            ".pagin a",
+            ".pag__list a",
+            ".pager-list a",
             ".product_list a",
             "#content .categories a",
-            "#content .product_list a", //olimpparket
-            ".catalog-tablet-wr a", //domix
-            "article .catalog__category a", //finefloor
-            ".paginations-list li a", //finefloor
+            "#content .product_list a",
+            ".catalog-tablet-wr a",
+            "article .catalog__category a",
+            ".paginations-list li a",
             ".catalog__items__list a",
             "a.product-item__link", //tdgalion
             ".pagination-nav a", //tdgalion
             ".category-grid a.item", //dplintus
             ".product-grid a.product-item-image-wrapper", //dplintus
-            // "#wrap-catalogs .catalog a[href*=katalog]", //surgaz + будет ниже отдельно один класс
+            ".catalog a[href*=katalog]", //surgaz
             "ul.catalog li a", //centerkrasok
             ".dPagingParent a", //centerkrasok
             ".catalogBox a", //centerkrasok
@@ -99,9 +95,6 @@ try {
 
         $search_classes = implode(", ", $search_classes);
         $all_res = $document->find($search_classes);
-        if ($provider == 'surgaz') {
-            $all_res = Parser::getSurgazProductLinks($document);
-        }
 
         echo "<b>скрипт нашел ссылки (" . count($all_res) . "шт):</b><br>";
 
@@ -109,8 +102,7 @@ try {
         foreach ($all_res as $href) {
             $link = Parser::generateLink($href->attr('href'), $provider, $url_parser);
             if ($provider == 'alpinefloor' and $href->attr('data-endpoint')) {
-                // if (preg_match("#https://alpinefloor.su/catalog/.+[^/"]/(is_ajax|ajax)#"
-                $link = Parser::generateLink(str_replace("is_ajax=y", "", str_replace("ajax=y", '', $href->attr('data-endpoint'))), $provider, $url_parser);
+                $link = Parser::generateLink(str_replace(["is_ajax=y&", "ajax=y&"], '', $href->attr('data-endpoint')), $provider, $url_parser);
             }
 
 
@@ -140,16 +132,6 @@ try {
             if ($res == "success") $add[] = ['link' => $link, 'comment' => $link_type];
             if ($res == "fail") $add[] = ['link' => $link . ' - не получилось добавить в БД', 'comment' => $link_type];
         }
-
-        ////////////////отдельно часть для сургаза////////////////////////////////
-        if ($provider == 'surgaz') {
-            $dop_add = Parser::getSurgazCatalogLinks($document, $provider, $url_parser);
-            if ($dop_add) {
-            $add = array_merge($add, $dop_add);
-            }
-        }
-        //////////////////////////////////////////////////////////////////////////
-
         sort($add);
         echo "<br><b>из них скрипт добавил (" . count($add) . "шт):</b><br>";
         foreach ($add as $add_key => $add_value) {

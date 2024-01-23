@@ -76,7 +76,7 @@ try {
         } elseif ($provider == 'artkera') {
             include __DIR__ . "/../artkera_attributes.php";
         } elseif ($provider == 'evroplast') {
-            include __DIR__ . "/../mosplitka_attributes.php";
+            include __DIR__ . "/../evroplast_attributes.php";
         } elseif ($provider == 'masterdom.php') {
             include __DIR__ . "/../masterdom_attributes.php";
         } else {
