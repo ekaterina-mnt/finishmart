@@ -19,7 +19,7 @@ $script_iteration_provider = 'fargo';
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 11; $i++) {
+    for ($i = 1; $i < 2; $i++) {
         sleep(mt_rand(2, 6));
 
         echo "<br><b>Товар $i</b><br><br>";
