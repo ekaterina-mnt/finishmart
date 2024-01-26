@@ -200,7 +200,6 @@ if ($error_res) {
 
 //название товара
 $title_res = $document->find(implode(', ', $attributes_classes['title']));
-var_dump($title_res);
 if ($title_res) {
     $all_product_data['title'] = [$title_res[0]->text(), 's'];
     while (str_contains($all_product_data['title'][0], '  ')) {
@@ -280,11 +279,11 @@ if ($path_res) {
 }
 
 //категории из названия/ссылки товара/провайдера
-if ($provider == 'olimpparket' and isset($all_product_data['title'][0])) {
-    $categories = Categories::getCategoriesByTitle($all_product_data['title'][0], $provider);
-    $all_product_data['category'] = isset($categories['category']) ? [$categories['category'], 's'] : [Parser::getCategoriesList()[1], 's'];
-    $all_product_data['subcategory'] = isset($categories['subcategory']) ? [$categories['subcategory'], 's'] : [Parser::getSubcategoriesList()[26], 's'];
-}
+// if ($provider == 'olimpparket' and isset($all_product_data['title'][0])) {
+//     $categories = Categories::getCategoriesByTitle($all_product_data['title'][0], $provider);
+//     $all_product_data['category'] = isset($categories['category']) ? [$categories['category'], 's'] : [Parser::getCategoriesList()[1], 's'];
+//     $all_product_data['subcategory'] = isset($categories['subcategory']) ? [$categories['subcategory'], 's'] : [Parser::getSubcategoriesList()[26], 's'];
+// }
 
 //категория
 if ($provider == 'lkrn') {
@@ -310,6 +309,9 @@ $char_names = $document->find(implode(', ', $attributes_classes['char_name']));
 $char_values = $document->find(implode(', ', $attributes_classes['char_value']));
 $char_double_count = count($document->find(implode(', ', $attributes_classes['char_double_count']))) - 1;
 $char_double = $document->find(implode(', ', $attributes_classes['char_double']));
+
+echo "<br>chars<br>";
+var_dump($char_values);
 
 if ($provider == 'dplintus') $characteristics_count++;
 if ($provider == 'lkrn') {
