@@ -618,7 +618,7 @@ if ($images_res) {
 
 echo "alles gut";
 
-} catch (Throwable $e) { //конец глобального try
+} catch (Exception $e) { //конец глобального try
     Logs::writeLog1($e,  $provider, $url_parser);
     TechInfo::errorExit($e);
     var_dump($e);
