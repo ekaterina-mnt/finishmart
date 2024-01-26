@@ -486,7 +486,7 @@ class Parser
             ],
             "olimp" => [
                 "attr" => "data-src",
-                "start" => "",
+                "start" => "https://olimp-parketa.ru",
             ],
         ];
 

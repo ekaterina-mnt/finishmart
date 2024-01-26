@@ -170,7 +170,7 @@ $attributes_classes = [
         ".error404__number", //alpinefloor
     ],
 
-    "in_one_pack" => [
+    "in_pack" => [
         ".prod__in-block", //olimp
     ]
 ];
@@ -610,6 +610,12 @@ if ($images_res) {
     $all_product_data['images'] = [$images, 's'];
 }
 // }
+
+//в одной упаковке
+$in_pack_res = $document->find(implode(', ', $attributes_classes['in_pack']));
+if ($in_pack_res) {
+    $all_product_data['in_pack'] = [$in_pack, 's'];
+}
 
 } catch (Exception $e) { //конец глобального try
     Logs::writeLog1($e,  $provider, $url_parser);
