@@ -19,7 +19,7 @@ $script_iteration_provider = 'domix';
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 2; $i++) {
+    for ($i = 1; $i < 11; $i++) {
         sleep(mt_rand(2, 6));
 
         echo "<br><b>Товар $i</b><br><br>";
