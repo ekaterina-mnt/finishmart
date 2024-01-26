@@ -240,8 +240,9 @@ try {
         } elseif ($provider == 'fargo') {
             echo "yeah, here";
             foreach ($price_res as $meta) {
-                if ($meta->attr("itemprop") == 'price') var_dump($meta->attr("itemprop"));
-                echo "<br>";
+                if ($meta->attr("itemprop") == 'price') {
+                    $all_product_data['price'] = [(int) str_replace(' ', '', $meta->attr("itemprop")), 'i'];
+                }
             }
         } else {
             $all_product_data['price'] = [(int) str_replace(' ', '', $price_res[0]->text()), 'i'];
