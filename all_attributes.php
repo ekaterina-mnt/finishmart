@@ -240,7 +240,7 @@ try {
         } elseif ($provider == 'fargo') {
             echo "yeah, here";
             foreach ($price_res as $meta) {
-                if ($meta->attr("itemprop")) var_dump($meta->attr("itemprop"));
+                if ($meta->attr("itemprop") == 'price') var_dump($meta->attr("itemprop"));
                 echo "<br>";
             }
         } else {
