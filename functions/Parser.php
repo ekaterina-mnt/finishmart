@@ -392,7 +392,7 @@ class Parser
                 preg_match("#https://lkrn.ru/product\/.+#", $link),
                 preg_match("#https://artkera.ru/collections/.+#", $link),
                 preg_match("#https://evroplast.ru\/[^\/]+\/[^\/]+\/#", $link),
-                preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/[^\/]PAGEN_+\/#", $link),
+                preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/[^\/PAGEN_]+\/#", $link),
 
             ],
             'catalog' => [
