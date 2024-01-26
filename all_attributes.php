@@ -44,7 +44,8 @@ try {
             ".single-product___main-info--price span", //mosplitka
             ".tile-shop__price", //mosplitka
             ".total_price", //olimp
-            ".catalog-element-price-discount", //fargo
+            // ".catalog-element-price-discount", //fargo
+            "meta", //fargo
         ],
 
         "stock" => [
@@ -220,6 +221,7 @@ try {
 
     //цена
     $price_res = $document->find(implode(', ', $attributes_classes['price']));
+    var_dump($price_res);
 
     if ($price_res) {
         //форматирование цены
