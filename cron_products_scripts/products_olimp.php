@@ -85,6 +85,7 @@ try {
             $all_product_data['link'] = [$url_parser, 's'];
             $all_product_data['provider'] = [$provider, 's'];
 
+            echo "here";
             include __DIR__ . "\..\all_attributes.php";
 
             include __DIR__ . "\..\insert_ending.php";
