@@ -578,6 +578,9 @@ if ($provider == 'lkrn') {
             $all_product_data['volume'] = [$value, 's'];
         }
     }
+    echo "<br>chars<br>";
+    var_dump($characteristics);
+    
 
     $characteristics = json_encode($characteristics, JSON_UNESCAPED_UNICODE);
     $all_product_data['characteristics'] = [$characteristics, 's'];
