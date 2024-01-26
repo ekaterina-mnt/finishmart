@@ -88,6 +88,8 @@ try {
             $all_product_data['provider'] = [$provider, 's'];
 
             echo "here 3";
+            var_dump(__DIR__);
+            var_dump(file_exists("\..\all_attributes.php"));
             include __DIR__ . "\..\all_attributes.php";
             echo "here4";
 
