@@ -44,7 +44,7 @@ try {
             ".single-product___main-info--price span", //mosplitka
             ".tile-shop__price", //mosplitka
             ".total_price", //olimp
-            ".catalog-element-price-discount intec-grid-item-auto", //fargo
+            ".catalog-element-price-discount", //fargo
         ],
 
         "stock" => [
