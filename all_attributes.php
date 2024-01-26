@@ -156,7 +156,7 @@ $attributes_classes = [
     ],
 
     "good_id_from_provider" => [
-        ".prod__article", //olimp
+        // ".prod__article", //olimp есть в характеристиках
     ],
 
     "category" => [
@@ -356,7 +356,6 @@ if ($provider == 'lkrn') {
             $name = $char_names[$charact]->text();
             $value = $char_values[$charact]->text();
         }
-        echo "<br>$name - $value<br>";
 
         //для значений в массиве (mosplitka)
         $arr_value = $char_values[$charact]->find('.tile-prop-tabs__value-name .tile-prop-tabs__row');
@@ -579,17 +578,12 @@ if ($provider == 'lkrn') {
             $all_product_data['volume'] = [$value, 's'];
         }
     }
-    echo "<br>chars<br>";
-    var_dump($characteristics);
     
 
     $characteristics = json_encode($characteristics, JSON_UNESCAPED_UNICODE);
     $all_product_data['characteristics'] = [$characteristics, 's'];
 }
 //
-
-echo "<br>chars<br>";
-var_dump($characteristics);
 
 //форматирование подкатегории
 foreach ($all_product_data as $data_key => $data_value) {
@@ -616,8 +610,6 @@ if ($images_res) {
     $all_product_data['images'] = [$images, 's'];
 }
 // }
-
-echo "alles gut";
 
 } catch (Exception $e) { //конец глобального try
     Logs::writeLog1($e,  $provider, $url_parser);
