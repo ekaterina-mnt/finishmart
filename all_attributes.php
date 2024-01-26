@@ -95,7 +95,7 @@ $attributes_classes = [
     "char_name" => [
         ".good-char__title", //ntceramic
         ".properties__itemName", //laparet
-        "th", //olimpparket
+        // "th", //olimpparket
         ".sinle-character div", //domix
         ".specifications__table__name", //finefloor
         ".sproduct-charact__name", //tdgalion
@@ -112,7 +112,7 @@ $attributes_classes = [
     "char_value" => [
         ".good-char__value", //ntceramic
         ".properties__itemDesc", //laparet
-        ".product-params td", //olimpparket
+        // ".product-params td", //olimpparket
         ".sinle-character div", //domix
         ".specifications__table__value", //finefloor
         ".sproduct-charact__value", //tdgalion
