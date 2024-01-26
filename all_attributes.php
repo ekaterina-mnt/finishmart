@@ -193,6 +193,8 @@ if ($provider == 'ampir') {
 //     $all_product_data = ParserMosplitka::getComplectData($document, $url_parser);
 // } else {
 
+    var_dump($document);
+
 //ошибка
 $error_res = $document->find(implode(', ', $attributes_classes['error']));
 if ($error_res) {
