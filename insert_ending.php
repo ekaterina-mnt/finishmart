@@ -15,7 +15,9 @@ if (!preg_match("#(Подъем и выгрузка)#", $all_product_data['title
 foreach ($all_product_data as $key => $val) {
     $print_result[$key] = $val[0];
 }
+var_dump($preArray);
 TechInfo::preArray($print_result);
+exit;
 
 //Для передачи в MySQL
 
