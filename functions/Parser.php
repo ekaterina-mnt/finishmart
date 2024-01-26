@@ -190,7 +190,7 @@ class Parser
         $starts = [
             'laparet' => 'https://laparet.ru',
             'ntceramic' => 'https://ntceramic.ru',
-            'olimpparket' => 'https://olimpparket.ru',
+            // 'olimpparket' => 'https://olimpparket.ru',
             'domix' => 'https://moscow.domix-club.ru',
             'finefloor' => "https://finefloor.ru",
             'tdgalion' => "https://www.tdgalion.ru",
@@ -201,11 +201,12 @@ class Parser
             'artkera' => "https://artkera.ru",
             'evroplast' => "https://evroplast.ru",
             'mosplitka' => "https://mosplitka.ru",
+            'olimp' => "https://olimp-parketa.ru",
         ];
 
-        if ($url_parser == 'https://olimpparket.ru/catalog/plintusa_i_porogi/' and !str_contains($href, "/catalog")) {
-            return $url_parser . $href;
-        }
+        // if ($url_parser == 'https://olimpparket.ru/catalog/plintusa_i_porogi/' and !str_contains($href, "/catalog")) {
+        //     return $url_parser . $href;
+        // }
 
         if (in_array($provider, ['lkrn', 'ampir'])) return $href;
 
@@ -391,6 +392,7 @@ class Parser
                 preg_match("#https://lkrn.ru/product\/.+#", $link),
                 preg_match("#https://artkera.ru/collections/.+#", $link),
                 preg_match("#https://evroplast.ru\/[^\/]+\/[^\/]+\/#", $link),
+                preg_match("#https://olimp-parketa.ru/catalog/\/[^\/]+\/[^\/]+\/#", $link),
 
             ],
             'catalog' => [
@@ -408,6 +410,7 @@ class Parser
                 preg_match("#https://lkrn.ru/product-category/.+#", $link),
                 preg_match("#https://evroplast.ru/collection/.+#", $link),
                 preg_match("#https://evroplast.ru/collection\/[^\/]+\/\#[a-zA-Z]+#", $link),
+                preg_match("#https://olimp-parketa.ru/catalog/\/[^\/]+\#", $link),
             ],
         ];
 

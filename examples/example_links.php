@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . "\..\\vendor\autoload.php";
+require __DIR__ . "/../vendor/autoload.php";
 
 use DiDom\Document;
 use functions\MySQL;
@@ -25,7 +25,7 @@ try {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteraion_provider . "' ORDER BY views, id LIMIT 1");
+        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteration_provider . "' ORDER BY views, id LIMIT 1");
 
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
