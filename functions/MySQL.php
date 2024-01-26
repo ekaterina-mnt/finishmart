@@ -140,10 +140,10 @@ class MySQL
                 "catalog",
                 'ntceramic',
             ],
-            "https://www.olimpparket.ru/catalog/" => [
-                "catalog",
-                'olimpparket',
-            ],
+            // "https://www.olimpparket.ru/catalog/" => [
+            //     "catalog",
+            //     'olimpparket',
+            // ],
             "https://moscow.domix-club.ru/catalog/laminat/?PAGEN_1=1" => [
                 "catalog",
                 'domix',
@@ -272,6 +272,10 @@ class MySQL
                 "product",
                 "evroplast",
             ],
+            "https://olimp-parketa.ru" => [
+                "catalog",
+                "olimp",
+            ]
         ];
 
         foreach ($add_links as $link => $data) {
