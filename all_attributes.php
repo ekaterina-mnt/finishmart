@@ -651,6 +651,12 @@ try {
     if ($description_res) {
 
         var_dump($description_res);
+        echo "<br><br>";
+        var_dump($description_res->text());
+        echo "<br><br>";
+        var_dump($description_res[0]->text());
+        echo "<br><br>";
+        var_dump($description_res[1]->text());
 
         // $all_product_data['in_pack'] = [$in_pack, 's'];
     }
