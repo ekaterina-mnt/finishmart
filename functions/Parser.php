@@ -543,10 +543,10 @@ class Parser
                 "attr" => "data-src",
                 "start" => "https://olimp-parketa.ru",
             ],
-            // "fargo" => [
-            //     "attr" => "data-src",
-            //     "start" => "https://olimp-parketa.ru",
-            // ],
+            "fargo" => [
+                "attr" => "href",
+                "start" => "https://moscow.fargospc.ru",
+            ],
         ];
 
         $images = array();

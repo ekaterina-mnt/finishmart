@@ -25,6 +25,7 @@ try {
             ".single-product___page-header__h1", //mosplitka
             ".tile__title", //mosplitka
             ".prod__top", //olimp
+            "h1.intec-header", //fargo
         ],
 
         "price" => [
@@ -43,6 +44,7 @@ try {
             ".single-product___main-info--price span", //mosplitka
             ".tile-shop__price", //mosplitka
             ".total_price", //olimp
+            ".catalog-element-price-discount intec-grid-item-auto", //fargo
         ],
 
         "stock" => [
@@ -90,6 +92,7 @@ try {
             "#atts .q_prop__name", //mosplitka
             ".tile-prop-tabs__name", //mosplitka
             "table.table-band tr", //olimp"
+            ".catalog-element-section-properties .catalog-element-section-property", //fargo
         ],
 
         "char_name" => [
@@ -107,6 +110,7 @@ try {
             "#atts .q_prop__name", //mosplitka
             ".tile-prop-tabs__name", //mosplitka
             "table.table-band th", //olimp"
+            ".catalog-element-section-property-name", //fargo
         ],
 
         "char_value" => [
@@ -124,6 +128,7 @@ try {
             "#atts .q_prop__value", //mosplitka
             ".tile-prop-tabs__value-name", //mosplitka
             "table.table-band td", //olimp"
+            ".catalog-element-section-property-value", //fargo
         ],
 
         "path" => [
@@ -136,6 +141,7 @@ try {
             ".product-breadcrumb a", //mosplitka
             ".breadcrumb_cont a", //mosplitka
             ".bc__list", //olimp
+            ".intec-template-breadcrumb", //fargo
         ],
 
         "images" => [ //маленькие 
@@ -153,6 +159,7 @@ try {
             ".single-product___main-info--thumbnail img", //mosplitka
             "a.fullimgitem", //ampir
             ".prod__slider .slide a", //olimp
+            ".catalog-element-gallery-pictures a", //fargo
         ],
 
         "good_id_from_provider" => [
@@ -172,6 +179,10 @@ try {
 
         "in_pack" => [
             ".prod__in-block", //olimp
+        ],
+
+        "description" => [
+            ".catalog-element-section-description", //fargo
         ]
     ];
 
@@ -295,8 +306,6 @@ try {
         $all_product_data['subcategory'] = [Categories::getSubcategoryAmpir($url_parser, $all_product_data['title'][0], $all_product_data['product_usages'][0] ?? null), 's'];
     }
 
-    //подкатегория
-
     //единица измерения
     if ($all_product_data['category'][0] and $provider == 'mosplitka') {
         $edizm = Parser::getEdizm($all_product_data['category'][0]);
@@ -411,7 +420,8 @@ try {
             //категория
             if ((str_contains(mb_strtolower(html_entity_decode($name)), "категория") and $provider == 'domix') or
                 (str_contains(mb_strtolower($name), "категория") and !isset($all_product_data['subcategory'][0])) or
-                ((str_contains(mb_strtolower(html_entity_decode($name)), "тип товара") and !isset($all_product_data['subcategory'][0]) and $provider == 'tdgalion'))
+                ((str_contains(mb_strtolower(html_entity_decode($name)), "тип товара") and !isset($all_product_data['subcategory'][0]) and $provider == 'tdgalion')) or
+                (mb_strtolower($name) == "тип" and !isset($all_product_data['subcategory'][0]) and $provider == 'fargo')
             ) {
                 if ($provider == 'tdgalion') {
                     $all_product_data['category'] = [$value, 's'];
@@ -625,6 +635,24 @@ try {
         }
 
         $all_product_data['in_pack'] = [$in_pack, 's'];
+    }
+
+    
+    //код 1с
+    if ($provider == 'fargo') {
+        $matches = preg_match('#https://moscow.fargospc.ru/catalog/[^/]+/([^/]+)/$#', $link, $matches);
+        $code_1c = $matches[1];
+        $all_product_data['good_id_from_provider'] = [$code_1c, 's'];
+    }
+
+    
+    //описание
+    $description_res = $document->find(implode(', ', $attributes_classes['description']));
+    if ($description_res) {
+
+        var_dump($description_res);
+
+        // $all_product_data['in_pack'] = [$in_pack, 's'];
     }
 } catch (Exception $e) { //конец глобального try
     Logs::writeLog1($e,  $provider, $url_parser);
