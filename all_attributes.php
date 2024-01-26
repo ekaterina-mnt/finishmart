@@ -652,8 +652,6 @@ try {
 
         var_dump($description_res);
         echo "<br><br>";
-        var_dump($description_res->text());
-        echo "<br><br>";
         var_dump($description_res[0]->text());
         echo "<br><br>";
         var_dump($description_res[1]->text());
