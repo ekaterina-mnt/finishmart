@@ -237,10 +237,14 @@ try {
                     $all_product_data['price'] = [(int) str_replace(' ', '', $price), 'i'];
                 }
             }
-        } else {
+        } elseif ($provider == 'fargo') {
             echo "yeah, here";
-            var_dump(strpos($price_res[0]->text(), "&nbsp;"));
-            $all_product_data['price'] = [(int) str_replace(' ', '', html_entity_decode($price_res[0]->text())), 'i'];
+            foreach ($price_res as $meta) {
+                if ($meta->attr("itemprop")) var_dump($meta->attr("itemprop"));
+                echo "<br>";
+            }
+        } else {
+            $all_product_data['price'] = [(int) str_replace(' ', '', $price_res[0]->text()), 'i'];
         }
     }
 
@@ -638,7 +642,7 @@ try {
         $all_product_data['in_pack'] = [$in_pack, 's'];
     }
 
-    
+
     //код 1с
     if ($provider == 'fargo') {
         preg_match('#https://moscow.fargospc.ru/catalog/[^/]+/([^/]+)/$#', $url_parser, $matches);
@@ -646,7 +650,7 @@ try {
         $all_product_data['good_id_from_provider'] = [$code_1c, 's'];
     }
 
-    
+
     //описание
     $description_res = $document->find(implode(', ', $attributes_classes['description']));
     if ($description_res) {
