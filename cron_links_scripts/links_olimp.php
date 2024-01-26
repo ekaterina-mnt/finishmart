@@ -93,6 +93,7 @@ try {
             // ".col-prod-tab a", //evroplast
             // ".content-wrapper a.collection-see", //evroplast
             ".h-n__menu ul a[href*=/catalog]", //olimp
+            ".content-page__cards-list a[href*=/catalog]", //olimp
         ];
 
         $search_classes = implode(", ", $search_classes);
