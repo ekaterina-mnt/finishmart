@@ -220,7 +220,6 @@ try {
 
     //цена
     $price_res = $document->find(implode(', ', $attributes_classes['price']));
-    var_dump(html_entity_decode($price_res[0]->text()));
 
     if ($price_res) {
         //форматирование цены
@@ -237,7 +236,7 @@ try {
                 }
             }
         } else {
-            $all_product_data['price'] = [(int) str_replace(' ', '', $price_res[0]->text()), 'i'];
+            $all_product_data['price'] = [(int) str_replace(' ', '', html_entity_decode($price_res[0]->text())), 'i'];
         }
     }
 
