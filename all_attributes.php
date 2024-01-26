@@ -602,6 +602,7 @@ if (isset($all_product_data['title']) and isset($all_product_data['subcategory']
     $all_product_data['subcategory'][0] = (mb_strtolower($all_product_data['title'][0]) == mb_strtolower($all_product_data['subcategory'][0])) ? null : $all_product_data['subcategory'][0];
 }
 
+echo "here 55";
 
 //картинки
 $images_res = $document->find(implode(', ', $attributes_classes['images']));
@@ -614,6 +615,7 @@ if ($images_res) {
 }
 // }
 
+echo "here 55\2";
 
 } catch (\Throwable $e) { //конец глобального try
     Logs::writeLog1($e,  $provider, $url_parser);
