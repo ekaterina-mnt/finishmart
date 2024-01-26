@@ -617,7 +617,7 @@ if ($images_res) {
 
 echo "here 55\2";
 
-} catch (\Throwable $e) { //конец глобального try
+} catch (Throwable $e) { //конец глобального try
     Logs::writeLog1($e,  $provider, $url_parser);
     TechInfo::errorExit($e);
     var_dump($e);
