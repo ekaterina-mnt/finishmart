@@ -641,6 +641,7 @@ try {
     //код 1с
     if ($provider == 'fargo') {
         $matches = preg_match('#https://moscow.fargospc.ru/catalog/[^/]+/([^/]+)/$#', $link, $matches);
+        var_dump($matches);
         $code_1c = $matches[1];
         $all_product_data['good_id_from_provider'] = [$code_1c, 's'];
     }
@@ -650,6 +651,9 @@ try {
     $description_res = $document->find(implode(', ', $attributes_classes['description']));
     if ($description_res) {
         $description = $description_res[0]->text();
+        while (str_contains($description, '  ') or str_contains($description, "\t") or str_contains($description, "\n") or str_contains($description, " \/ ")) {
+            $description = str_replace(["  ", "\t", "\n", " \/ "], ' ', $description);
+        }
         $all_product_data['description'] = [$description, 's'];
     }
 } catch (Exception $e) { //конец глобального try
