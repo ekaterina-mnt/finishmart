@@ -26,6 +26,8 @@ foreach ($all_product_data as $key => $n) {
     $values[$key] = $n[0];
 }
 
+exit;
+
 Parser::insertProductData1($types, $values, $all_product_data['link'][0]);
 } else {
     echo "Название товара: " . $all_product_data['title'][0];

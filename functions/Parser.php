@@ -484,6 +484,10 @@ class Parser
                 "attr" => "href",
                 "start" => "",
             ],
+            "olimp" => [
+                "attr" => "data-src",
+                "start" => "",
+            ],
         ];
 
         $images = array();

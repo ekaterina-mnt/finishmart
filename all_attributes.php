@@ -22,6 +22,7 @@ $attributes_classes = [
         ".dititle", //ampir
         ".single-product___page-header__h1", //mosplitka
         ".tile__title", //mosplitka
+        ".prod__top", //olimp
     ],
 
     "price" => [
@@ -39,6 +40,7 @@ $attributes_classes = [
         ".newprice", //ampir
         ".single-product___main-info--price span", //mosplitka
         ".tile-shop__price", //mosplitka
+        ".total_price", //olimp
     ],
 
     "stock" => [
@@ -73,7 +75,7 @@ $attributes_classes = [
     "characteristics_count" => [
         ".good-char__title", //ntceramic
         ".properties__itemName", //laparet
-        "th", //olimpparket
+        // "th", //olimpparket
         ".sinle-character", //domix
         ".specifications__table__name", //finefloor
         ".sproduct-charact__name", //tdgalion
@@ -85,6 +87,7 @@ $attributes_classes = [
         ".dfparams tr .dfplabel", //ampir
         "#atts .q_prop__name", //mosplitka
         ".tile-prop-tabs__name", //mosplitka
+        "table.table-band tr", //olimp"
     ],
 
     "char_name" => [
@@ -101,6 +104,7 @@ $attributes_classes = [
         ".dfparams tr .dfplabel", //ampir
         "#atts .q_prop__name", //mosplitka
         ".tile-prop-tabs__name", //mosplitka
+        "table.table-band th", //olimp"
     ],
 
     "char_value" => [
@@ -117,6 +121,7 @@ $attributes_classes = [
         ".dfparams tr .dfpval", //ampir
         "#atts .q_prop__value", //mosplitka
         ".tile-prop-tabs__value-name", //mosplitka
+        "table.table-band td", //olimp"
     ],
 
     "path" => [
@@ -128,6 +133,7 @@ $attributes_classes = [
         ".breadcrumbs .breadcrumbs__before", //alpinefloor
         ".product-breadcrumb a", //mosplitka
         ".breadcrumb_cont a", //mosplitka
+        ".bc__list", //olimp
     ],
 
     "images" => [ //маленькие 
@@ -144,9 +150,12 @@ $attributes_classes = [
         ".tile-picture-prev li img", //mosplitka
         ".single-product___main-info--thumbnail img", //mosplitka
         "a.fullimgitem", //ampir
+        ".prod__slider .slide a", //olimp
     ],
 
-    "good_id_from_provider" => [],
+    "good_id_from_provider" => [
+        ".prod__article", //olimp
+    ],
 
     "category" => [
         ".sproduct-info__value",
@@ -157,6 +166,10 @@ $attributes_classes = [
         ".b-cat-description", //tdgalion
         ".not-provides", //centerkrasok (в другом скрипте в итоге)
         ".error404__number", //alpinefloor
+    ],
+
+    "in_one_pack" => [
+        ".prod__in-block", //olimp
     ]
 ];
 
@@ -499,6 +512,8 @@ if ($provider == 'lkrn') {
 
         //подкатегория(для плитки, mosplitka)
         if (str_contains($name, 'Категория') and $provider == 'mosplitka' and !isset($all_product_data['subcategory'][0])) {
+            $all_product_data['subcategory'][0] = $all_product_data['subcategory'][0] ? $all_product_data['subcategory'][0] : $value;
+        } elseif (str_contains($name, 'Тип продукции') and $provider == 'olimp' and !isset($all_product_data['subcategory'][0])) {
             $all_product_data['subcategory'][0] = $all_product_data['subcategory'][0] ? $all_product_data['subcategory'][0] : $value;
         }
 
