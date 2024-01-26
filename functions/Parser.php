@@ -303,6 +303,8 @@ class Parser
             echo "<b>товар должен добавиться</b><br><br>";
         }
 
+        exit;
+
         try {
             MySQL::bind_sql($query, $types, array_values($values));
             echo "<b>не возникло ошибок с добавлением продукта в БД</b><br><br>";
