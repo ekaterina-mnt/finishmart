@@ -392,7 +392,7 @@ class Parser
                 preg_match("#https://lkrn.ru/product\/.+#", $link),
                 preg_match("#https://artkera.ru/collections/.+#", $link),
                 preg_match("#https://evroplast.ru\/[^\/]+\/[^\/]+\/#", $link),
-                preg_match('#https://olimp-parketa.ru/catalog/[^/]+/[^/]+/#', $link), // двойные кавычки экранируют, одинарные - нет
+                preg_match('#https://olimp-parketa.ru/catalog/[^/]+/[^/]+/$#', $link), // двойные кавычки экранируют, одинарные - нет, если я хочу, чтобы дальше не было символов - $
 
             ],
             'catalog' => [
