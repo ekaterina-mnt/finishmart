@@ -7,6 +7,10 @@ use functions\Logs;
 use functions\Categories;
 use functions\MySQL;
 
+try {
+
+echo "here 44";
+
 $attributes_classes = [
     "title" => [
         "h1.head", //olimpparket
@@ -609,3 +613,10 @@ if ($images_res) {
     $all_product_data['images'] = [$images, 's'];
 }
 // }
+
+
+} catch (\Throwable $e) { //конец глобального try
+    Logs::writeLog1($e,  $provider, $url_parser);
+    TechInfo::errorExit($e);
+    var_dump($e);
+}

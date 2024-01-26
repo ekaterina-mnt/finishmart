@@ -87,10 +87,10 @@ try {
 
             echo "here 33";
             include __DIR__ . "/../all_attributes.php";
-            echo "here44";
+            echo "here 66";
 
             include __DIR__ . "/../insert_ending.php";
-            echo "here 55";
+            echo "here 77";
         }
     } //конец итерации 1 товара
 
