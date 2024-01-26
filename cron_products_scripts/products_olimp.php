@@ -56,7 +56,6 @@ try {
         $views = $res['product_views'] + 1;
         MySQL::sql("UPDATE all_links SET product_views=$views, date_edit='$date_edit' WHERE link='$url_parser'"); //для FromLinksTable
 
-        echo "here 1";
         //Получаем html страницы
         if ($provider == 'tdgalion' or $provider == 'surgaz') $encoding = "windows-1251";
         try {
@@ -69,7 +68,6 @@ try {
             var_dump($e);
         }
 
-        echo "here 2";
         if ($provider == 'surgaz') {
             include __DIR__ . "/../surgaz_attributes.php";
             break; //выход из цикла для получения новых ссылок, т.к. выгружает по 100 товаров с 1 ссылки
@@ -87,11 +85,12 @@ try {
             $all_product_data['link'] = [$url_parser, 's'];
             $all_product_data['provider'] = [$provider, 's'];
 
-            echo "here 3";
+            echo "here 33";
             include __DIR__ . "/../all_attributes.php";
-            echo "here4";
+            echo "here44";
 
             include __DIR__ . "/../insert_ending.php";
+            echo "here 55";
         }
     } //конец итерации 1 товара
 

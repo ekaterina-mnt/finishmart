@@ -7,8 +7,6 @@ use functions\Logs;
 use functions\Categories;
 use functions\MySQL;
 
-echo "here 5";
-
 $attributes_classes = [
     "title" => [
         "h1.head", //olimpparket
@@ -197,12 +195,10 @@ if ($error_res) {
     MySQL::sql("UPDATE all_products SET status='invalide', date_edit='$date_edit' WHERE link='$url_parser'");
     TechInfo::errorExit("Страница вернула ошибку");
 }
-echo "here 6";
 
 //название товара
 $title_res = $document->find(implode(', ', $attributes_classes['title']));
 if ($title_res) {
-    echo "here 7";
     $all_product_data['title'] = [$title_res[0]->text(), 's'];
     while (str_contains($all_product_data['title'][0], '  ')) {
         $all_product_data['title'][0] = str_replace(["  ", "\t", "\n"], ' ', $all_product_data['title'][0]);
