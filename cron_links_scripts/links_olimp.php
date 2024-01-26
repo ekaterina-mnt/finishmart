@@ -92,8 +92,9 @@ try {
             // ".col-prod-nav a.col-prod-nav-item", //evroplast
             // ".col-prod-tab a", //evroplast
             // ".content-wrapper a.collection-see", //evroplast
-            ".h-n__menu ul a[href*=/catalog]", //olimp
-            ".content-page__cards-list a[href*=/catalog]", //olimp
+            ".h-n__menu .h-n__li-with-drop li a[href*=/catalog]", //olimp
+            // ".content-page__cards-list a[href*=/catalog]", //olimp
+            // ".content-page__pag a[href*=/catalog]", //olimp
         ];
 
         $search_classes = implode(", ", $search_classes);
