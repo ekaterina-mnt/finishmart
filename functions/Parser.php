@@ -414,6 +414,7 @@ class Parser
                 preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/#", $link),
                 preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/(PAGEN_).+", $link),
                 preg_match('#https://moscow.fargospc.ru/catalog/[^/]+/$#', $link),
+                preg_match('#https://moscow.fargospc.ru/catalog/[^/]+/(PAGEN_)#', $link),
             ],
         ];
 
