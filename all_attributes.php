@@ -310,9 +310,6 @@ $char_values = $document->find(implode(', ', $attributes_classes['char_value']))
 $char_double_count = count($document->find(implode(', ', $attributes_classes['char_double_count']))) - 1;
 $char_double = $document->find(implode(', ', $attributes_classes['char_double']));
 
-echo "<br>chars<br>";
-var_dump($char_values);
-
 if ($provider == 'dplintus') $characteristics_count++;
 if ($provider == 'lkrn') {
     $char_res = "";
@@ -587,6 +584,8 @@ if ($provider == 'lkrn') {
 }
 //
 
+echo "<br>chars<br>";
+var_dump($characteristics);
 
 //форматирование подкатегории
 foreach ($all_product_data as $data_key => $data_value) {
