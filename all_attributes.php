@@ -237,7 +237,7 @@ try {
             }
         } else {
             echo "yeah, here";
-            var_dump(strpos($price_res[0], "&nbsp;"));
+            var_dump(strpos($price_res[0]->text(), "&nbsp;"));
             $all_product_data['price'] = [(int) str_replace(' ', '', html_entity_decode($price_res[0]->text())), 'i'];
         }
     }
