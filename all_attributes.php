@@ -614,7 +614,7 @@ if ($images_res) {
 //в одной упаковке
 $in_pack_res = $document->find(implode(', ', $attributes_classes['in_pack']));
 if ($in_pack_res) {
-    $in_pack = str_replace(["  ", "\t", "\n"], ' ', $in_pack_res->text());
+    $in_pack = str_replace(["  ", "\t", "\n"], ' ', $in_pack_res[0]->text());
     $all_product_data['in_pack'] = [$in_pack, 's'];
     var_dump($in_pack);
     echo "<br><br>";
