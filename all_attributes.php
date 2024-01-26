@@ -220,7 +220,6 @@ try {
 
     //цена
     $price_res = $document->find(implode(', ', $attributes_classes['price']));
-    var_dump($price_res);
 
     if ($price_res) {
         //форматирование цены
@@ -229,11 +228,9 @@ try {
             $price = $price_arr['price_m2'] ?? ($price_arr['offers'][0]['price_m2'] ?? ($price_arr['price_pack'] ?? ($price_arr['price_sht'] ?? ($price_arr['price']) ?? null)));
             $all_product_data['price'] = [(int) str_replace(' ', '', $price), 'i'];
         } elseif ($provider == 'lkrn') {
-            // var_dump($price_res[0]);
             $all_product_data['price'] = [(int) str_replace([",", "₽"], '', $price_res[0]->text()), 'i'];
-            // var_dump($price_res);
-            // echo htmlspecialchars($price_res);
         } elseif (is_array($price_res[0])) {
+            var_dump(htmlspecialchars($price_res[0]));
             foreach ($price_res[0] as $price) {
                 if (is_numeric($price)) {
                     $all_product_data['price'] = [(int) str_replace(' ', '', $price), 'i'];
