@@ -640,8 +640,7 @@ try {
     
     //код 1с
     if ($provider == 'fargo') {
-        $matches = preg_match('#https://moscow.fargospc.ru/catalog/[^/]+/([^/]+)/$#', $url_parser, $matches);
-        var_dump($matches);
+        preg_match('#https://moscow.fargospc.ru/catalog/[^/]+/([^/]+)/$#', $url_parser, $matches);
         $code_1c = $matches[1];
         $all_product_data['good_id_from_provider'] = [$code_1c, 's'];
     }
