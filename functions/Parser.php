@@ -411,7 +411,7 @@ class Parser
                 preg_match("#https://evroplast.ru/collection/.+#", $link),
                 preg_match("#https://evroplast.ru/collection\/[^\/]+\/\#[a-zA-Z]+#", $link),
                 preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/#", $link),
-                preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/?PAGEN_.+", $link)
+                preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/?(PAGEN_).+", $link)
             ],
         ];
 
