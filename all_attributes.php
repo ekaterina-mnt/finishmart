@@ -615,15 +615,15 @@ if ($images_res) {
 $in_pack_res = $document->find(implode(', ', $attributes_classes['in_pack']));
 if ($in_pack_res) {
     foreach ($in_pack_res as $pack_info) {
-        if (preg_match("#(В упаковке:)#", $pack_info->text(), $matches)) {
+        if (preg_match("#В упаковке:(.+)#", $pack_info->text(), $matches)) {
             var_dump($matches);
             echo "<br><br>";
+            $in_pack = str_replace(["  ", "\t", "\n"], ' ', $matches[1]);
         }
     }
     TechInfo::preArray($in_pack_res);
     // $in_pack = str_replace(["  ", "\t", "\n"], ' ', $in_pack_res[0]->text());
     // echo "<br><br>$in_pack";
-    exit;
     $all_product_data['in_pack'] = [$in_pack, 's'];
     var_dump($in_pack);
     echo "<br><br>";
