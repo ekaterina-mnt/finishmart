@@ -12,7 +12,7 @@ use functions\ParserMosplitka;
 
 
 //МЕНЯТЬ ТОЛЬКО ЗДЕСЬ
-$script_iteration_provider = 'olimp';
+$script_iteration_provider = 'fargo';
 //
 
 
