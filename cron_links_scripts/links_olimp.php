@@ -99,6 +99,7 @@ try {
 
         echo "<b>скрипт нашел ссылки (" . count($all_res) . "шт):</b><br>";
 
+        exit;
         $add = [];
         foreach ($all_res as $href) {
             $link = Parser::generateLink($href->attr('href'), $provider, $url_parser);
