@@ -220,7 +220,7 @@ try {
 
     //цена
     $price_res = $document->find(implode(', ', $attributes_classes['price']));
-    var_dump(htmlspecialchars($price_res[0]->text()));
+    var_dump(html_entity_decode($price_res[0]->text()));
 
     if ($price_res) {
         //форматирование цены
