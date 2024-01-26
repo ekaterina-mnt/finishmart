@@ -14,7 +14,7 @@ use GuzzleHttp\Client as GuzzleClient;
 
 
 //МЕНЯТЬ ТОЛЬКО ЗДЕСЬ
-$script_iteration_provider = '';
+$script_iteration_provider = 'fargo';
 //
 
 
@@ -25,7 +25,8 @@ try {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
-        $query = MySQL::sql("SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteration_provider . "' ORDER BY views, id LIMIT 1");
+        $query_str = "SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteration_provider . "' ORDER BY views, id LIMIT 1";
+        $query = MySQL::sql($query_str);
 
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
@@ -51,47 +52,7 @@ try {
         $document = Connect::guzzleConnect($url_parser);
 
         //Получаем все данные со страницы
-        $search_classes = [
-            ".catalog_nav_list .cc__hl_inner li a", //mosplitka
-            ".product-list-block a[href*=product]", //mosplitka
-            ".catSection a[href*=product]", //mosplitka
-            ".pagination-catalog a[href*=catalog]", //mosplitka
-            // ".products-count-search__wrap a", //mosplitka
-            ".swiper-wrapper .swiper-slide a[href*=catalog]", //mosplitka
-            ".product-list-block a[href*=product]", //ampir
-            ".catSection a[href*=product]", //ampir
-            ".brand__row a[href*=catalog]", //ampir
-            ".pagination-catalog a[href*=catalog]", //ampir
-            ".pagination-list a[href*=catalog]", //ampir
-            ".catalog__data a",
-            ".section-list a",
-            "#content ul li a",
-            ".pagin a",
-            ".pag__list a",
-            ".pager-list a",
-            ".product_list a",
-            "#content .categories a",
-            "#content .product_list a",
-            ".catalog-tablet-wr a",
-            "article .catalog__category a",
-            ".paginations-list li a",
-            ".catalog__items__list a",
-            "a.product-item__link", //tdgalion
-            ".pagination-nav a", //tdgalion
-            ".category-grid a.item", //dplintus
-            ".product-grid a.product-item-image-wrapper", //dplintus
-            ".catalog a[href*=katalog]", //surgaz
-            "ul.catalog li a", //centerkrasok
-            ".dPagingParent a", //centerkrasok
-            ".catalogBox a", //centerkrasok
-            ".sub_item a", //centerkrasok
-            ".products__items a", //alpinefloor
-            ".catalog-pages button", //alpinefloor
-            ".catalog__grid a.catalog-card", //artkera
-            // ".col-prod-nav a.col-prod-nav-item", //evroplast
-            // ".col-prod-tab a", //evroplast
-            // ".content-wrapper a.collection-see", //evroplast
-        ];
+        $search_classes = Parser::get_links_search_classes();
 
         $search_classes = implode(", ", $search_classes);
         $all_res = $document->find($search_classes);

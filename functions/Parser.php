@@ -202,6 +202,7 @@ class Parser
             'evroplast' => "https://evroplast.ru",
             'mosplitka' => "https://mosplitka.ru",
             'olimp' => "https://olimp-parketa.ru",
+            'fargo' => "https://moscow.fargospc.ru",
         ];
 
         // if ($url_parser == 'https://olimpparket.ru/catalog/plintusa_i_porogi/' and !str_contains($href, "/catalog")) {
@@ -393,7 +394,7 @@ class Parser
                 preg_match("#https://artkera.ru/collections/.+#", $link),
                 preg_match("#https://evroplast.ru\/[^\/]+\/[^\/]+\/#", $link),
                 preg_match('#https://olimp-parketa.ru/catalog/[^/]+/[^/]+/$#', $link), // двойные кавычки экранируют, одинарные - нет, если я хочу, чтобы дальше не было символов - $
-
+                preg_match('#https://moscow.fargospc.ru/catalog/[^/]+/[^/]+/$#', $link),
             ],
             'catalog' => [
                 preg_match("#https://mosplitka.ru/catalog.[^?]+#", $link) and !preg_match("#.php$#", $link),
@@ -411,7 +412,8 @@ class Parser
                 preg_match("#https://evroplast.ru/collection/.+#", $link),
                 preg_match("#https://evroplast.ru/collection\/[^\/]+\/\#[a-zA-Z]+#", $link),
                 preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/#", $link),
-                preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/(PAGEN_).+", $link)
+                preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/(PAGEN_).+", $link),
+                preg_match('#https://moscow.fargospc.ru/catalog/[^/]+/$#', $link),
             ],
         ];
 
@@ -423,6 +425,58 @@ class Parser
             }
         }
         return null;
+    }
+
+    static function get_links_search_classes() {
+        $search_classes = [
+            ".catalog_nav_list .cc__hl_inner li a", //mosplitka
+            ".product-list-block a[href*=product]", //mosplitka
+            ".catSection a[href*=product]", //mosplitka
+            ".pagination-catalog a[href*=catalog]", //mosplitka
+            // ".products-count-search__wrap a", //mosplitka
+            ".swiper-wrapper .swiper-slide a[href*=catalog]", //mosplitka
+            ".product-list-block a[href*=product]", //ampir
+            ".catSection a[href*=product]", //ampir
+            ".brand__row a[href*=catalog]", //ampir
+            ".pagination-catalog a[href*=catalog]", //ampir
+            ".pagination-list a[href*=catalog]", //ampir
+            ".catalog__data a",
+            ".section-list a",
+            "#content ul li a",
+            ".pagin a",
+            ".pag__list a",
+            ".pager-list a",
+            ".product_list a",
+            "#content .categories a",
+            "#content .product_list a",
+            ".catalog-tablet-wr a",
+            "article .catalog__category a",
+            ".paginations-list li a",
+            ".catalog__items__list a",
+            "a.product-item__link", //tdgalion
+            ".pagination-nav a", //tdgalion
+            ".category-grid a.item", //dplintus
+            ".product-grid a.product-item-image-wrapper", //dplintus
+            ".catalog a[href*=katalog]", //surgaz
+            "ul.catalog li a", //centerkrasok
+            ".dPagingParent a", //centerkrasok
+            ".catalogBox a", //centerkrasok
+            ".sub_item a", //centerkrasok
+            ".products__items a", //alpinefloor
+            ".catalog-pages button", //alpinefloor
+            ".catalog__grid a.catalog-card", //artkera
+            // ".col-prod-nav a.col-prod-nav-item", //evroplast
+            // ".col-prod-tab a", //evroplast
+            // ".content-wrapper a.collection-see", //evroplast
+            ".h-n__menu .h-n__li-with-drop li a[href*=/catalog]", //olimp
+            ".content-page__cards-list a[href*=/catalog]", //olimp
+            ".content-page__pag a[href*=/catalog]", //olimp
+            ".menu-column-items a[href*=/catalog]", //fargo
+            ".c-catalog-section a[href*=/catalog]", //fargo
+            ".system-pagenavigation-items a[href*=/catalog]", //fargo
+        ];
+
+        return $search_classes;
     }
 
     static function getImages($images_res, string $provider): string
@@ -488,6 +542,10 @@ class Parser
                 "attr" => "data-src",
                 "start" => "https://olimp-parketa.ru",
             ],
+            // "fargo" => [
+            //     "attr" => "data-src",
+            //     "start" => "https://olimp-parketa.ru",
+            // ],
         ];
 
         $images = array();

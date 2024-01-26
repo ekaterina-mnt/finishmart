@@ -275,6 +275,10 @@ class MySQL
             "https://olimp-parketa.ru" => [
                 "catalog",
                 "olimp",
+            ], 
+            "https://moscow.fargospc.ru" => [
+                "catalog",
+                "fargo",
             ]
         ];
 
