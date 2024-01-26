@@ -36,6 +36,7 @@ try {
 
         $url_parser = $res['link'];
         $provider = $res['provider'];
+        $url_parser = "https://moscow.fargospc.ru/catalog/fargo_classic/3751/";
         
         // $links = MySQL::sql("SELECT link, provider from all_products WHERE provider='" . $script_iteraion_provider . "' and subcategory IS NULL or subcategory='null' ORDER BY date_edit LIMIT 10");
         // foreach ($links as $link) {
