@@ -615,8 +615,7 @@ if ($images_res) {
 $in_pack_res = $document->find(implode(', ', $attributes_classes['in_pack']));
 if ($in_pack_res) {
     foreach ($in_pack_res as $pack_info) {
-        echo $pack_info->text();
-        if (preg_match("#В упаковке:#", strpos($pack_info->text(), $matches))) {
+        if (preg_match("#(В упаковке:)#", strpos($pack_info->text(), $matches))) {
             var_dump($matches);
             echo "<br><br>";
         }
