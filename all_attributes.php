@@ -620,8 +620,6 @@ try {
 
         foreach ($in_pack_res as $pack_info) {
             if (preg_match("#В упаковке:(.+)#", $pack_info->text(), $matches)) {
-                var_dump($matches);
-                echo "<br><br>";
                 $in_pack = str_replace(["  ", "\t", "\n"], ' ', $matches[1]);
             }
         }
