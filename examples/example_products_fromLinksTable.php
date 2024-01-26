@@ -69,25 +69,25 @@ try {
         }
 
         if ($provider == 'surgaz') {
-            include __DIR__ . "\..\surgaz_attributes.php";
+            include __DIR__ . "/../surgaz_attributes.php";
             break; //выход из цикла для получения новых ссылок, т.к. выгружает по 100 товаров с 1 ссылки
         } elseif ($provider == 'centerkrasok') {
-            include __DIR__ . "\..\centerkrasok_attributes.php";
+            include __DIR__ . "/../centerkrasok_attributes.php";
         } elseif ($provider == 'artkera') {
-            include __DIR__ . "\..\artkera_attributes.php";
+            include __DIR__ . "/../artkera_attributes.php";
         } elseif ($provider == 'evroplast') {
-            include __DIR__ . "\..\mosplitka_attributes.php";
+            include __DIR__ . "/../mosplitka_attributes.php";
         } elseif ($provider == 'masterdom.php') {
-            include __DIR__ . "\..\masterdom_attributes.php";
+            include __DIR__ . "/../masterdom_attributes.php";
         } else {
             $all_product_data = [];
 
             $all_product_data['link'] = [$url_parser, 's'];
             $all_product_data['provider'] = [$provider, 's'];
 
-            include __DIR__ . "\..\all_attributes.php";
+            include __DIR__ . "/../all_attributes.php";
 
-            include __DIR__ . "\..\insert_ending.php";
+            include __DIR__ . "/../insert_ending.php";
         }
     } //конец итерации 1 товара
 
