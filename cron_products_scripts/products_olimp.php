@@ -36,8 +36,7 @@ try {
 
         $url_parser = $res['link'];
         $provider = $res['provider'];
-        $url_parser = "https://olimp-parketa.ru/catalog/inzhenernaya-doska/tekhnomassiv-ot-400-do-2000kh160kh18-dub-natur-kayt/";
-
+        
         // $links = MySQL::sql("SELECT link, provider from all_products WHERE provider='" . $script_iteraion_provider . "' and subcategory IS NULL or subcategory='null' ORDER BY date_edit LIMIT 10");
         // foreach ($links as $link) {
         // sleep(mt_rand(2, 6));
