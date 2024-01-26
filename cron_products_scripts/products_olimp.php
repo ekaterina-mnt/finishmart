@@ -89,7 +89,7 @@ try {
 
             echo "here 3";
             var_dump(__DIR__);
-            var_dump(file_exists("\..\all_attributes.php"));
+            var_dump(file_exists(__DIR__ . "\..\all_attributes.php"));
             include __DIR__ . "\..\all_attributes.php";
             echo "here4";
 
