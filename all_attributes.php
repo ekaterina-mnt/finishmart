@@ -348,6 +348,7 @@ if ($provider == 'lkrn') {
 
     $array_key_flag = 0; //позже когда артикул уже второго товара из комплекта будет, начнутся его характеристики
     foreach (range(0, count($char_names) - 1) as $charact) {
+        echo "<br>start<br>";
         if ($provider == 'domix') {
             if ($charact % 2) continue;
             $name = $char_names[$charact]->text();
@@ -370,11 +371,13 @@ if ($provider == 'lkrn') {
 
         $name = str_replace(":", '', trim($name));
         $value = trim($value);
+        echo "<br>chars<br>";
 
         while (str_contains($value, '  ') or str_contains($value, "\t") or str_contains($name, "\n") or str_contains($name, '  ') or str_contains($name, "\t") or str_contains($name, "\n")) {
             $value = str_replace(["  ", "\t", "\n"], ' ', $value);
             $name = str_replace(["  ", "\t", "\n"], ' ', $name);
         }
+        echo "<br>chars<br>";
 
         // and isset($all_product_data['cha']) and !preg_match("#($value)#", $all_product_data['articul'][0])
 
@@ -416,6 +419,8 @@ if ($provider == 'lkrn') {
                 $all_product_data['subcategory'] = [$value, 's'];
             }
         }
+        
+    echo "<br>chars<br>";
 
         //производитель
         if ($name == 'Производитель') {
