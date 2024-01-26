@@ -9,8 +9,6 @@ use functions\MySQL;
 
 try {
 
-echo "here 44";
-
 $attributes_classes = [
     "title" => [
         "h1.head", //olimpparket
@@ -193,8 +191,6 @@ if ($provider == 'ampir') {
 //     $all_product_data = ParserMosplitka::getComplectData($document, $url_parser);
 // } else {
 
-    var_dump($document);
-
 //ошибка
 $error_res = $document->find(implode(', ', $attributes_classes['error']));
 if ($error_res) {
@@ -204,6 +200,7 @@ if ($error_res) {
 
 //название товара
 $title_res = $document->find(implode(', ', $attributes_classes['title']));
+var_dump($title_res);
 if ($title_res) {
     $all_product_data['title'] = [$title_res[0]->text(), 's'];
     while (str_contains($all_product_data['title'][0], '  ')) {
@@ -604,8 +601,6 @@ if (isset($all_product_data['title']) and isset($all_product_data['subcategory']
     $all_product_data['subcategory'][0] = (mb_strtolower($all_product_data['title'][0]) == mb_strtolower($all_product_data['subcategory'][0])) ? null : $all_product_data['subcategory'][0];
 }
 
-echo "here 55";
-
 //картинки
 $images_res = $document->find(implode(', ', $attributes_classes['images']));
 if (!$images_res and $provider == 'laparet') {
@@ -617,7 +612,7 @@ if ($images_res) {
 }
 // }
 
-echo "here 55\2";
+echo "alles gut";
 
 } catch (Throwable $e) { //конец глобального try
     Logs::writeLog1($e,  $provider, $url_parser);

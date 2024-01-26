@@ -85,12 +85,9 @@ try {
             $all_product_data['link'] = [$url_parser, 's'];
             $all_product_data['provider'] = [$provider, 's'];
 
-            echo "here 33";
             include __DIR__ . "/../all_attributes.php";
-            echo "here 66";
 
             include __DIR__ . "/../insert_ending.php";
-            echo "here 77";
         }
     } //конец итерации 1 товара
 
