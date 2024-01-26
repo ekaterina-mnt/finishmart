@@ -27,7 +27,7 @@ try {
         //Получаем ссылку, с которой будем парсить
         $query_str = "SELECT link, views, provider FROM all_links WHERE type='catalog' and provider='" . $script_iteration_provider . "' ORDER BY views, id LIMIT 1";
         $query = MySQL::sql($query_str);
-        
+
         if (!$query->num_rows) {
             MySQL::firstLinksInsert(); //для самого первого запуска
             TechInfo::errorExit("первый запрос, добавлены первичные ссылки для парсинга (или нет ссылок с типом `каталог` у этого провайдера)");
@@ -100,7 +100,6 @@ try {
 
         echo "<b>скрипт нашел ссылки (" . count($all_res) . "шт):</b><br>";
 
-        exit;
         $add = [];
         foreach ($all_res as $href) {
             $link = Parser::generateLink($href->attr('href'), $provider, $url_parser);
