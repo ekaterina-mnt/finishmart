@@ -392,7 +392,7 @@ class Parser
                 preg_match("#https://lkrn.ru/product\/.+#", $link),
                 preg_match("#https://artkera.ru/collections/.+#", $link),
                 preg_match("#https://evroplast.ru\/[^\/]+\/[^\/]+\/#", $link),
-                preg_match("#https://olimp-parketa.ru/catalog/\/[^\/]+\/[^\/]+\/#", $link),
+                preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\/[^\/]+\/#", $link),
 
             ],
             'catalog' => [
@@ -410,7 +410,7 @@ class Parser
                 preg_match("#https://lkrn.ru/product-category/.+#", $link),
                 preg_match("#https://evroplast.ru/collection/.+#", $link),
                 preg_match("#https://evroplast.ru/collection\/[^\/]+\/\#[a-zA-Z]+#", $link),
-                preg_match("#https://olimp-parketa.ru/catalog/\/[^\/]+\#", $link),
+                preg_match("#https://olimp-parketa.ru/catalog\/[^\/]+\#", $link),
             ],
         ];
 
