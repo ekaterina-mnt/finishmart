@@ -18,13 +18,15 @@ echo "<br><br>";
 echo '<a href="http://penzevrv.beget.tech/cron_dop_scripts/masterdomDopData.php">masterdomDopData</a>';
 echo "<br><br>";
 
-$napolnye = ParseCharacteristics::getSubcategoriesNapolnye();
+$categories = Parser::getCategoriesList();
+$napolnye_subcategories = ParseCharacteristics::getSubcategoriesNapolnye();
 
 ?>
 
 <H2>Вставить данные в Гугл таблицы</H2>
 <form action="google_sheets/data/insert.php" , method="POST">
-    <select name="napolnye">
+    <input type="hidden" name="category" value="<?= $categories[1] ?>">
+    <select name=" <?= $categories[1] ?>">
         <?php
         foreach ($napolnye as $subcategory) {
             echo "<option value=$subcategory>$subcategory</option>";
