@@ -29,7 +29,7 @@ $napolnye_subcategories = ParseCharacteristics::getSubcategoriesNapolnye();
     <select name=" <?= $categories[1] ?>">
         <?php
         foreach ($napolnye_subcategories as $subcategory) {
-            echo "<option value=$subcategory>$subcategory</option>";
+            echo "<option name=subcategory value=$subcategory>$subcategory</option>";
         }
         ?>
     </select></p>
