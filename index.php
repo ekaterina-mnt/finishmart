@@ -33,5 +33,3 @@ $napolnye = ParseCharacteristics::getSubcategoriesNapolnye();
     </select></p>
     <p><input type="submit" value="Отправить"></p>
 </form>
-</form>
-echo '<a href="http://penzevrv.beget.tech/google_sheets/data/insert.php"></a>';
