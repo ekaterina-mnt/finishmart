@@ -10,3 +10,5 @@ foreach ($providers as $provider) {
 echo '<a href="http://penzevrv.beget.tech/cron_dop_scripts/check_invalide_links.php">check_invalide_links</a>';
 echo "<br><br>";
 echo '<a href="http://penzevrv.beget.tech/cron_dop_scripts/masterdomDopData.php">masterdomDopData</a>';
+echo "<br><br>";
+echo '<a href="http://penzevrv.beget.tech/google_sheets/data/insert.php">Вставить данные в Гугл таблицы</a>';

@@ -26,12 +26,13 @@ try {
     'status',
     'provider',
     'characteristics',
+    'description',
   ];
 
   $needed_category = "";
   $needed_subcategory = "Инженерная доска";
 
-  $current_cell = 2;
+  $current_cell = 3;
 
 //   $specific_attributes = [];
 
@@ -47,7 +48,7 @@ try {
 
     $characteristics = json_decode($good['characteristics'], 1);
     $s = new ParseCharacteristics($characteristics);
-    $specific_attributes = $s->parse($good['provider']);
+    $specific_attributes = $s->parse($good['provider'], $needed_subcategory);
     
     $values = array_merge($values, $specific_attributes);
     $values = array_map(fn ($value) => $value ?? "-", $values);
