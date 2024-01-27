@@ -10,7 +10,14 @@ use functions\GoogleSheets\ParseCharacteristics;
 
 try {
   echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
+
+var_dump($_POST);
+  if (!isset($_POST['subcategory'])) exit("Нужен параметр 'название листа страницы'");
+$napolnye = ParseCharacteristics::getSubcategoriesNapolnye();
+if (!in_array($_POST['subcategory'], $napolnye)) exit("Неподходящий параметр");
+
   $list_name = 'Инженерная доска';
+  $needed_subcategory = $list_name;
 
   $common_attributes = [
     'id',
@@ -30,7 +37,6 @@ try {
   ];
 
   $needed_category = "";
-  $needed_subcategory = "Инженерная доска";
 
   $current_cell = 3;
 
