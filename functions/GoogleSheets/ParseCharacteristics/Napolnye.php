@@ -9,10 +9,12 @@ use functions\Parser;
 class Napolnye
 {
     public static $characteristics;
+    public static $good;
 
-    public function __construct($characteristics)
+    public function __construct($characteristics, $good)
     {
         self::$characteristics = $characteristics;
+        self::$good = $good;
     }
 
     static function getSubcategoriesNapolnye()
@@ -37,6 +39,7 @@ class Napolnye
     public function parse($provider, $subcategory)
     {
         $chars = self::$characteristics;
+        $good = self::$good;
         $subcategoriesList = Parser::getSubcategoriesList();
 
 
@@ -140,6 +143,84 @@ class Napolnye
             $subcategoriesList[37] => [ //'Кварцвиниловые полы',
             ],
             $subcategoriesList[27] => [ //'Ламинат',
+                "brand" => [
+                    "domix" => $chars["Бренд"],
+                    "olimp" => $chars["Бренд"],
+                    "fargo" => $chars["Бренд"],
+                    "alpinefloor" => "Alpinefloor",	
+                ],
+                "collection" => [
+                    "domix" => $chars["Коллекция"],
+                    "olimp" => $chars["Коллекция"],
+                    "fargo" => $chars["Коллекция"],
+                    "alpinefloor" => "Достать из хлебных крошек",	
+                ],
+                "country" => [
+                    "domix" => $chars["Страна производства"],
+                    "olimp" => $chars["Страна производства"],
+                    "fargo" => $chars["Страна производитель"],
+                    "alpinefloor" => "Россия",	
+                ],
+                "class" => [
+                    "domix" => $chars["Класс"],
+                    "olimp" => $chars["Класс"],
+                    "fargo" => $chars["Класс износостойкости"],
+                    "alpinefloor" => $chars["Класс износостойкости"],
+                ],
+                "color" => [
+                    "domix" => $chars["Цвет"],
+                    "olimp" => $chars["Тон"],
+                    "fargo" => "-",
+                    "alpinefloor" => "-",
+                ],
+                "chamfer" => [ // фаска
+                    "domix" => $chars["Вид фаски"],
+                    "olimp" => $chars["Фаска"],
+                    "fargo" => $chars["Фаска"],
+                    "alpinefloor" => $chars["Фаска"],
+                ],
+                "design" => [
+                    "domix" => $chars["Рисунок"],
+                    "olimp" => $chars["Порода дерева"],
+                    "fargo" => $chars["Дизайн"],
+                    "alpinefloor" => $chars["Фактура"],
+                ],
+                "connection" => [
+                    "domix" => $chars["Тип соединения"],
+                    "olimp" => $chars["Тип соединения"],
+                    "fargo" => $chars["Тип соединения"],
+                    "alpinefloor" => $chars["Тип соединения"],
+                ],
+                "length" => [
+                    "domix" => $chars["Длина, мм"],
+                    "olimp" => $chars["Длина"],
+                    "fargo" => (int) explode("*", $chars["Размер плашки"])[0],
+                    "alpinefloor" => $chars["Длина 1 шт, мм"],
+                ],
+                "width" => [
+                    "domix" => $chars["Ширина, мм"],
+                    "olimp" => $chars["Ширина"],
+                    "fargo" => (int) explode("*", $chars["Размер плашки"])[1],
+                    "alpinefloor" => $chars["Ширина, мм"],
+                ],
+                "thickness" => [
+                    "domix" => $chars["Общая толщина, мм"],
+                    "olimp" => $chars["Толщина"],
+                    "fargo" => $chars["Общая толщина"],
+                    "alpinefloor" => $chars["Толщина, мм"],
+                ],
+                "weight" => [
+                    "domix" => $chars["Вес упаковки, кг"],
+                    "olimp" => "-",
+                    "fargo" => $chars["Вес"],
+                    "alpinefloor" => $chars["Вес упаковки, кг"],
+                ],
+                "in_pack" => [
+                    "domix" => $chars["В одной упаковке, м²"],
+                    "olimp" => $good["in_pack"],
+                    "fargo" => $chars["Площадь упаковки"],
+                    "alpinefloor" => $chars["Площадь упаковки, кв. м."],
+                ],
             ],
         ];
 

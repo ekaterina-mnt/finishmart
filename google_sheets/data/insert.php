@@ -41,18 +41,22 @@ try {
 
   //   $specific_attributes = [];
 
-  $query = "SELECT " . implode(", ", $common_attributes) . " FROM all_products WHERE subcategory like 'Инженерная доска'";
+  $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}'";
+  // " . implode(", ", $common_attributes) . "
   $goods = MySQL::sql($query);
 
   $insert_data = array();
   foreach ($goods as $i => $good) {
 
     echo "<br>$i<br>";
-    $values = array_values($good);
+    $values = array();
+    foreach ($common_attributes as $attr) {
+      $values = $good[$attr];
+    }
     $values = array_merge([MySQL::get_mysql_datetime()], array_slice($values, 0, 1), ["-"], array_slice($values, 1));
 
     $characteristics = json_decode($good['characteristics'], 1);
-    $s = new Napolnye($characteristics);
+    $s = new Napolnye($characteristics, $good);
     $specific_attributes = $s->parse($good['provider'], $needed_subcategory);
 
     $values = array_merge($values, $specific_attributes);
