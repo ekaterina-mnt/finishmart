@@ -44,7 +44,7 @@ try {
       
       echo "<br>$i<br>";
     $values = array_values($good);
-    $values = array_merge(array_slice($values, 0, 1), ["-"], array_slice($values, 1));
+    $values = array_merge([MySQL::get_mysql_datetime()], array_slice($values, 0, 1), ["-"], array_slice($values, 1));
 
     $characteristics = json_decode($good['characteristics'], 1);
     $s = new ParseCharacteristics($characteristics);
