@@ -6,14 +6,14 @@ use functions\MySQL;
 use functions\GoogleSheets\Sheet;
 use functions\TechInfo;
 use functions\GoogleSheets\FormInsertData;
-use functions\GoogleSheets\ParseCharacteristics;
+use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 
 try {
   echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
   var_dump($_POST);
   if (!isset($_POST['category']) or !isset($_POST['subcategory'])) exit("Нужны параметры 'категория' и 'подкатегория'");
-  $napolnye = ParseCharacteristics::getSubcategoriesNapolnye();
+  $napolnye = Napolnye::getSubcategoriesNapolnye();
   if (!in_array($_POST['subcategory'], $napolnye)) exit("Неподходящий параметр");
 
   $needed_category = $_POST['category'];
@@ -52,7 +52,7 @@ try {
     $values = array_merge([MySQL::get_mysql_datetime()], array_slice($values, 0, 1), ["-"], array_slice($values, 1));
 
     $characteristics = json_decode($good['characteristics'], 1);
-    $s = new ParseCharacteristics($characteristics);
+    $s = new Napolnye($characteristics);
     $specific_attributes = $s->parse($good['provider'], $needed_subcategory);
 
     $values = array_merge($values, $specific_attributes);

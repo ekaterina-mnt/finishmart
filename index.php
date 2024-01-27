@@ -2,7 +2,7 @@
 require __DIR__ . "/vendor/autoload.php";
 
 use functions\Parser;
-use functions\GoogleSheets\ParseCharacteristics;
+use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 
 
 $providers = ['alpinefloor', 'ampir', 'artkera', 'centerkrasok', 'domix', 'dplintus', 'evroplast', 'finefloor', 'laparet', 'masterdom', 'mosplitka', 'ntceramic', 'olimp', 'surgaz', 'tdgalion', 'fargo'];
@@ -19,7 +19,7 @@ echo '<a href="http://penzevrv.beget.tech/cron_dop_scripts/masterdomDopData.php"
 echo "<br><br>";
 
 $categories = Parser::getCategoriesList();
-$napolnye_subcategories = ParseCharacteristics::getSubcategoriesNapolnye();
+$napolnye_subcategories = Napolnye::getSubcategoriesNapolnye();
 
 ?>
 
