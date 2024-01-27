@@ -26,10 +26,10 @@ $napolnye_subcategories = ParseCharacteristics::getSubcategoriesNapolnye();
 <H2>Вставить данные в Гугл таблицы</H2>
 <form action="google_sheets/data/insert.php" , method="POST">
     <input type="hidden" name="category" value="<?= $categories[1] ?>">
-    <select name=" <?= $categories[1] ?>">
+    <select name="sucategory">
         <?php
         foreach ($napolnye_subcategories as $subcategory) {
-            echo "<option name=subcategory value=$subcategory>$subcategory</option>";
+            echo "<option value=$subcategory>$subcategory</option>";
         }
         ?>
     </select></p>
