@@ -51,8 +51,9 @@ try {
     echo "<br>$i<br>";
     $values = array();
     foreach ($common_attributes as $attr) {
-      $values = $good[$attr];
+      $values[] = $good[$attr];
     }
+    var_dump(    $values);
     $values = array_merge([MySQL::get_mysql_datetime()], array_slice($values, 0, 1), ["-"], array_slice($values, 1));
 
     $characteristics = json_decode($good['characteristics'], 1);
