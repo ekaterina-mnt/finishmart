@@ -369,9 +369,8 @@ class MySQL
         $query = substr($query, 0, -2);
 
         $query .= " WHERE id=$id";
-        echo $query . "<br>";
 
-        // MySQL::bind_sql($query, $types, $values);
+        MySQL::bind_sql($query, $types, $values);
         echo "<b>товар должен обновиться</b><br><br>";
     }
 }
