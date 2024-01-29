@@ -59,7 +59,7 @@ try {
 
         $types = str_repeat("s", count($chars));
 
-        $query = MySQL::update($types, $chars, "all_products", $good['id'], true);
+        $query = MySQL::update($types, $chars, "all_products", $good['id'], false);
     }
 
 
