@@ -21,6 +21,7 @@ TechInfo::start();
 try {
     for ($i = 1; $i < 11; $i++) {
         sleep(mt_rand(2, 6));
+        if ($script_iteration_provider == 'domix' and $i > 8) TechInfo::errorExit("");
 
         echo "<br><b>Товар $i</b><br><br>";
 
