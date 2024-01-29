@@ -41,9 +41,14 @@ try {
 
         foreach ($chars as $char => $value) {
             if (in_array($char, $columns)) {
-                echo "есть в mysql";
+                echo "есть в mysql<br>";
             } else {
-                echo "нет в mysql";
+                echo "нет в mysql<br>";
+                $query = "ALTER TABLE all_products
+                ADD COLUMN $char VARCHAR(1500);";
+                var_dump($query);
+                echo "добавлена колонка";
+                // MySQL::sql($query);
             }
         }
 
