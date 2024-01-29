@@ -49,7 +49,6 @@ try {
                 var_dump($query);
                 MySQL::sql($query);
                 echo "добавлена колонка";
-                exit;
             }
         }
 
