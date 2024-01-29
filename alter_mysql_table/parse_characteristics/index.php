@@ -47,7 +47,7 @@ try {
                 $add_columns[] = $char;
             }
         }
-
+echo "here";
         $query = "ALTER TABLE all_products";
         foreach ($add_columns as $column) {
             $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
