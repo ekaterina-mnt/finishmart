@@ -369,6 +369,7 @@ class MySQL
         $query = substr($query, 0, -2);
 
         $query .= " WHERE id=$id";
+        $values = array_values($values);
 
         MySQL::bind_sql($query, $types, $values);
         echo "<b>товар должен обновиться</b><br><br>";
