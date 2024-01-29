@@ -12,7 +12,7 @@ use functions\ParserMosplitka;
 
 
 //МЕНЯТЬ ТОЛЬКО ЗДЕСЬ
-$script_iteration_provider = 'fargo';
+$script_iteration_provider = 'alpinefloor';
 //
 
 
@@ -37,25 +37,31 @@ try {
 
         $url_parser = $res['link'];
         $provider = $res['provider'];
-        
+
         // $links = MySQL::sql("SELECT link, provider from all_products WHERE provider='" . $script_iteraion_provider . "' and subcategory IS NULL or subcategory='null' ORDER BY date_edit LIMIT 10");
         // foreach ($links as $link) {
         // sleep(mt_rand(2, 6));
 
         // echo "<br><b>Товар $i</b><br><br>";
-        
+
         // $url_parser = $link['link'];
         // $provider = $link['provider'];
 
         $date_edit = MySQL::get_mysql_datetime();
-
-        TechInfo::whichLinkPass($url_parser);
 
         // if ($provider == 'dplintus' and $i > 10) continue; //банят если много запросов
 
         //Увеличиваем просмотры ссылки
         $views = $res['product_views'] + 1;
         MySQL::sql("UPDATE all_links SET product_views=$views, date_edit='$date_edit' WHERE link='$url_parser'"); //для FromLinksTable
+
+        TechInfo::whichLinkPass($url_parser);
+        if ($provider == 'alpinefloor') {
+            if (Parser::discardInvalideAlpinefloorLink($url_parser)) {
+                echo "Не продукт";
+                continue;
+            }
+        }
 
         //Получаем html страницы
         if ($provider == 'tdgalion' or $provider == 'surgaz') $encoding = "windows-1251";
@@ -77,8 +83,8 @@ try {
         } elseif ($provider == 'artkera') {
             include __DIR__ . "/../artkera_attributes.php";
         } elseif ($provider == 'evroplast') {
-            include __DIR__ . "/../mosplitka_attributes.php";
-        } elseif ($provider == 'masterdom.php') {
+            include __DIR__ . "/../evroplast_attributes.php";
+        } elseif ($provider == 'masterdom') {
             include __DIR__ . "/../masterdom_attributes.php";
         } else {
             $all_product_data = [];

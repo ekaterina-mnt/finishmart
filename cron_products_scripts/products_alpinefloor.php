@@ -49,6 +49,12 @@ try {
 
         $date_edit = MySQL::get_mysql_datetime();
 
+        // if ($provider == 'dplintus' and $i > 10) continue; //банят если много запросов
+
+        //Увеличиваем просмотры ссылки
+        $views = $res['product_views'] + 1;
+        MySQL::sql("UPDATE all_links SET product_views=$views, date_edit='$date_edit' WHERE link='$url_parser'"); //для FromLinksTable
+
         TechInfo::whichLinkPass($url_parser);
         if ($provider == 'alpinefloor') {
             if (Parser::discardInvalideAlpinefloorLink($url_parser)) {
@@ -56,12 +62,6 @@ try {
                 continue;
             }
         }
-
-        // if ($provider == 'dplintus' and $i > 10) continue; //банят если много запросов
-
-        //Увеличиваем просмотры ссылки
-        $views = $res['product_views'] + 1;
-        MySQL::sql("UPDATE all_links SET product_views=$views, date_edit='$date_edit' WHERE link='$url_parser'"); //для FromLinksTable
 
         //Получаем html страницы
         if ($provider == 'tdgalion' or $provider == 'surgaz') $encoding = "windows-1251";
