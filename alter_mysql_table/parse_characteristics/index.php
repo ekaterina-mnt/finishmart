@@ -39,18 +39,23 @@ try {
 
         $chars = json_decode($good['characteristics'], true);
 
+        $add_columns = array();
         foreach ($chars as $char => $value) {
             if (in_array($char, $columns)) {
                 echo "есть в mysql<br>";
             } else {
                 echo "нет в mysql<br>";
-                $query = "ALTER TABLE all_products
-                ADD COLUMN `$char` TEXT(1500) DEFAULT NULL";
-                var_dump($query);
-                MySQL::sql($query);
-                echo "добавлена колонка";
+                $add_columns[] = $char;
             }
         }
+
+        $query = "ALTER TABLE all_products";
+        foreach ($add_columns as $column) {
+            $query .= "ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
+        }
+        $query = substr($query, 0, -1);
+        var_dump($query);
+        MySQL::sql($query);
 
         $types = str_repeat("s", count($chars));
         $values = array_values($chars);
