@@ -48,7 +48,7 @@ try {
                 $add_columns[] = $char;
             }
         }
-var_dump($add_columns);
+
         $query = "ALTER TABLE all_products";
         foreach ($add_columns as $column) {
             $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
@@ -58,9 +58,8 @@ var_dump($add_columns);
         // MySQL::sql($query);
 
         $types = str_repeat("s", count($chars));
-        $values = array_values($chars);
 
-        $query = MySQL::update($types, $values, "all_products", $good['id'], true);
+        $query = MySQL::update($types, $chars, "all_products", $good['id'], true);
     }
 
 
