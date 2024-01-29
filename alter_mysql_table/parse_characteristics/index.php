@@ -37,6 +37,7 @@ try {
         $columns = array_column(mysqli_fetch_all($res, MYSQLI_ASSOC), "columns");
 
         $chars = json_decode($good['characteristics'], true);
+        var_dump($chars);
 
         $add_columns = array();
         foreach ($chars as $char => $value) {
@@ -47,7 +48,7 @@ try {
                 $add_columns[] = $char;
             }
         }
-echo "here";
+var_dump($add_columns);
         $query = "ALTER TABLE all_products";
         foreach ($add_columns as $column) {
             $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
