@@ -17,6 +17,8 @@ echo '<a href="http://penzevrv.beget.tech/cron_dop_scripts/check_invalide_links.
 echo "<br><br>";
 echo '<a href="http://penzevrv.beget.tech/cron_dop_scripts/masterdomDopData.php">masterdomDopData</a>';
 echo "<br><br>";
+echo '<a href="http://penzevrv.beget.tech/alter_mysql_table/parse_characteristics/index.php">Спарсить характеристики в mysql</a>';
+echo "<br><br>";
 
 $categories = Parser::getCategoriesList();
 $napolnye_subcategories = Napolnye::getSubcategoriesNapolnye();
