@@ -21,7 +21,7 @@ try {
     //   $list_name = $needed_subcategory;
 
     $subcategoriesList = implode(", ", $napolnye);
-    $query = "SELECT characteristics FROM all_products WHERE subcategory in $subcategoriesList AND category like '{$needed_category}' ORDER BY char_view LIMIT 1";
+    $query = "SELECT characteristics FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}' ORDER BY char_view LIMIT 1";
     $goods = MySQL::sql($query);
 
     foreach ($goods as $good) {
