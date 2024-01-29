@@ -37,7 +37,6 @@ try {
         $columns = array_column(mysqli_fetch_all($res, MYSQLI_ASSOC), "columns");
 
         $chars = json_decode($good['characteristics'], true);
-        var_dump($chars);
 
         $add_columns = array();
         foreach ($chars as $char => $value) {
