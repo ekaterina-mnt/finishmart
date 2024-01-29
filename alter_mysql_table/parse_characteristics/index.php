@@ -29,13 +29,12 @@ try {
     $goods = MySQL::sql($query);
 
     foreach ($goods as $good) {
-        $query = "SELECT group_concat(COLUMN_NAME) as 'columns'
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_SCHEMA = 'penzevrv_2109' AND TABLE_NAME = 'all_products'";
+        $query = "SELECT COLUMN_NAME as 'columns' 
+                  FROM INFORMATION_SCHEMA.COLUMNS 
+                  WHERE TABLE_SCHEMA = 'penzevrv_2109' AND TABLE_NAME = 'all_products'";
 
         $res = MySQL::sql($query);
-        $columns = mysqli_fetch_assoc($res)['columns'];
-        $columns = explode(",", $columns);
+        $columns = mysqli_fetch_all($res, MYSQLI_ASSOC);
 TechInfo::preArray($columns);
 exit;
         $chars = json_decode($good['characteristics'], true);
