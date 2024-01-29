@@ -48,6 +48,7 @@ try {
                 ADD COLUMN $char VARCHAR(1500);";
                 var_dump($query);
                 echo "добавлена колонка";
+                exit;
                 // MySQL::sql($query);
             }
         }
