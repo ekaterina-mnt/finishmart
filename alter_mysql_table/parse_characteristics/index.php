@@ -36,7 +36,8 @@ try {
         $res = MySQL::sql($query);
         $columns = mysqli_fetch_assoc($res)['columns'];
         $columns = explode(",", $columns);
-
+TechInfo::preArray($columns);
+exit;
         $chars = json_decode($good['characteristics'], true);
 
         $add_columns = array();
@@ -51,11 +52,11 @@ try {
 
         $query = "ALTER TABLE all_products";
         foreach ($add_columns as $column) {
-            $query .= "ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
+            $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
         }
         $query = substr($query, 0, -1);
         var_dump($query);
-        MySQL::sql($query);
+        // MySQL::sql($query);
 
         $types = str_repeat("s", count($chars));
         $values = array_values($chars);
