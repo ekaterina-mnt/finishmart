@@ -45,7 +45,7 @@ try {
             } else {
                 echo "нет в mysql<br>";
                 $query = "ALTER TABLE all_products
-                ADD COLUMN `$char` TEXT(1500)";
+                ADD COLUMN `$char` TEXT(1500) DEFAULT NULL";
                 var_dump($query);
                 MySQL::sql($query);
                 echo "добавлена колонка";
