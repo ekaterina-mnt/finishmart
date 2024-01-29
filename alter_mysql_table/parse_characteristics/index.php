@@ -34,7 +34,7 @@ try {
                   WHERE TABLE_SCHEMA = 'penzevrv_2109' AND TABLE_NAME = 'all_products'";
 
         $res = MySQL::sql($query);
-        $columns = array_values(mysqli_fetch_all($res, MYSQLI_ASSOC));
+        $columns = array_column(mysqli_fetch_all($res, MYSQLI_ASSOC), "columns");
 TechInfo::preArray($columns);
 exit;
         $chars = json_decode($good['characteristics'], true);
