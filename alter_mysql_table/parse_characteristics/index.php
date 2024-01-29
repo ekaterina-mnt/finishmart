@@ -25,7 +25,7 @@ try {
     }
 
     $subcategoriesList = implode(", ", $napolnye);
-    $query = "SELECT id, characteristics FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}' ORDER BY char_views LIMIT 1";
+    $query = "SELECT id, characteristics, char_views FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}' ORDER BY char_views LIMIT 1";
     $goods = MySQL::sql($query);
 
     foreach ($goods as $good) {
@@ -61,6 +61,10 @@ try {
 
         // ДОБАВЛЕНИЕ САМИХ ХАРАКТЕРИСТИК
         $types = str_repeat("s", count($chars));
+        // обновляем char_views
+        $types .= "i";
+        $chars['char_views'] = $good['char_views'] + 1;
+
         $query = MySQL::update($types, $chars, "all_products", $good['id'], false);
     }
 
