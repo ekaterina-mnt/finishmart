@@ -35,8 +35,7 @@ try {
 
         $res = MySQL::sql($query);
         $columns = array_column(mysqli_fetch_all($res, MYSQLI_ASSOC), "columns");
-TechInfo::preArray($columns);
-exit;
+
         $chars = json_decode($good['characteristics'], true);
 
         $add_columns = array();
@@ -61,8 +60,6 @@ exit;
         $values = array_values($chars);
 
         $query = MySQL::update($types, $values, "all_products", $good['id'], true);
-
-
     }
 
 
