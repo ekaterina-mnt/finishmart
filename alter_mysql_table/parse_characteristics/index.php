@@ -48,16 +48,19 @@ try {
             }
         }
 
-        $query = "ALTER TABLE all_products";
-        foreach ($add_columns as $column) {
-            $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
+        // ДОБАВЛЕНИЕ КОЛОНОК
+        if (count($add_columns)) {
+            $query = "ALTER TABLE all_products";
+            foreach ($add_columns as $column) {
+                $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
+            }
+            $query = substr($query, 0, -1);
+            var_dump($query);
+            MySQL::sql($query);
         }
-        $query = substr($query, 0, -1);
-        var_dump($query);
-        // MySQL::sql($query);
 
+        // ДОБАВЛЕНИЕ САМИХ ХАРАКТЕРИСТИК
         $types = str_repeat("s", count($chars));
-
         $query = MySQL::update($types, $chars, "all_products", $good['id'], false);
     }
 
