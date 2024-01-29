@@ -53,6 +53,11 @@ try {
             }
         }
 
+        $types = str_repeat("s", count($chars));
+        $values = array_values($chars);
+
+        $query = MySQL::update($types, $values, "all_products", $good['id'], true);
+
 
     }
 

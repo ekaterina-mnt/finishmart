@@ -275,7 +275,7 @@ class MySQL
             "https://olimp-parketa.ru" => [
                 "catalog",
                 "olimp",
-            ], 
+            ],
             "https://moscow.fargospc.ru" => [
                 "catalog",
                 "fargo",
@@ -306,5 +306,72 @@ class MySQL
         $views = --$views === 0 ? NULL : $views;
         $values = array($views);
         self::bind_sql($query, $types, $values);
+    }
+
+
+    static function bind_insert_data(string $types, array $values, string $table_name)
+    {
+        // Добавляем $date_edit 
+        $date_edit = self::get_mysql_datetime();
+        $types .= 's';
+        $values["date_edit"] = $date_edit;
+
+        // Получаем значения и типы для части INSERT
+        $columns = implode(", ", array_keys($values));
+        $question_marks = str_repeat("?, ", count($values));
+        $question_marks = substr($question_marks, 0, -2);
+
+        // Получаем подстроку для части ON DUPLICATE KEY UPDATE
+        $duplicate_substr = "";
+        foreach ($values as $key => $value) {
+            $duplicate_substr .= "$key=?, ";
+        }
+        $duplicate_substr = substr($duplicate_substr, 0, -2);
+
+        // Дублируем значения и типы, т.к. двойной запрос
+        $values = array_merge(array_values($values), array_values($values));
+        $types .= $types;
+
+        // Формируем запрос
+        $query = "INSERT INTO $table_name ($columns) VALUES ($question_marks) ON DUPLICATE KEY UPDATE $duplicate_substr";
+
+        //////////////////// Для проверки //////////////////////////////////
+        // $count_question_marks = substr_count($query, "?");
+        // $count_values = count($values);
+        // $count_types = strlen($types);
+        // echo "<br><br>?: $count_question_marks, values: $count_values, types: $count_types";
+        ////////////////////////////////////////////////////////////////////
+
+        try {
+            MySQL::bind_sql($query, $types, array_values($values));
+            echo "не возникло ошибок с добавлением/обновлением строки в БД<br><br>";
+        } catch (\Exception $e) {
+            echo "возникла ошибка с добавлением/обновлением строки в БД:<br>" . $e->getMessage() . '<br><br>';
+        }
+    }
+
+    /*
+        bool $data_flag - менять ли колонку date_edit или нет
+    */
+    static function update(string $types, array $values, string $table_name, $id, $date_flag)
+    {
+        if ($date_flag) {
+            // Добавляем $date_edit 
+            $date_edit = self::get_mysql_datetime();
+            $types .= 's';
+            $values["date_edit"] = $date_edit;
+        }
+
+        $query = "UPDATE $table_name SET ";
+        foreach ($values as $key => $value) {
+            $query .= "`" . $key . "`=?, ";
+        }
+        $query = substr($query, 0, -2);
+
+        $query .= " WHERE id=$id";
+        echo $query . "<br>";
+
+        // MySQL::bind_sql($query, $types, $values);
+        echo "<b>товар должен обновиться</b><br><br>";
     }
 }
