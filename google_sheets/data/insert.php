@@ -55,7 +55,7 @@ try {
 
   Sheet::update_data($specific_attributes_cell, $specific_attributes);
 
-  $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}' AND id NOT IN ($filled_ids_str)";
+  $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}' AND category like '{$needed_category}' AND id NOT IN ($filled_ids_str)";
   $goods = MySQL::sql($query);
 
   $insert_data = array();
