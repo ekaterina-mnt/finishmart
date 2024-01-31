@@ -16,21 +16,21 @@ class Sheet
 
     static function get_connect()
     {
-            if (!self::$service) {
-                // Наш ключ доступа к сервисному аккаунту
-                $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/service_key.json';
-                putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
-                // Создаем новый клиент
-                $client = new Google_Client();
-                // Устанавливаем полномочия
-                $client->useApplicationDefaultCredentials();
-                // Добавляем область доступа к чтению, редактированию, созданию и удалению таблиц
-                $client->addScope('https://www.googleapis.com/auth/spreadsheets');
-                $service = new Google_Service_Sheets($client);
-                self::$service = $service;
-            }
+        if (!self::$service) {
+            // Наш ключ доступа к сервисному аккаунту
+            $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/service_key.json';
+            putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
+            // Создаем новый клиент
+            $client = new Google_Client();
+            // Устанавливаем полномочия
+            $client->useApplicationDefaultCredentials();
+            // Добавляем область доступа к чтению, редактированию, созданию и удалению таблиц
+            $client->addScope('https://www.googleapis.com/auth/spreadsheets');
+            $service = new Google_Service_Sheets($client);
+            self::$service = $service;
+        }
 
-            return self::$service;
+        return self::$service;
     }
 
     static function get_sheetID()
@@ -43,25 +43,29 @@ class Sheet
     //Пример $range = 'Лист1!G2:G3'
     static function get_data($range)
     {
-            $service = self::get_connect();
-            $response = $service->spreadsheets_values->get(self::get_sheetID(), $range);
-            return $response;
+        $service = self::get_connect();
+        $response = $service->spreadsheets_values->get(self::get_sheetID(), $range);
+        return $response;
     }
 
     static function update_data($range, $values)
     {
-            $service = self::get_connect();
+        $values = array($values);
 
-            var_dump($values);
-            var_dump($range);
+        // $values = [
+        //     ["Eric", "3", "3", "3", "3"],
+        // ];
 
-            $ValueRange = new Google_Service_Sheets_ValueRange();
-            // $ValueRange->setMajorDimension('COLUMNS'); //по колонкам
-            $ValueRange->setValues($values);
-            $options = ['valueInputOption' => 'USER_ENTERED'];
 
-            $service->spreadsheets_values->update(self::get_sheetID(), $range, $ValueRange, $options);
-            echo "Данные успешно обновлены";
+        $service = self::get_connect();
+
+        $ValueRange = new Google_Service_Sheets_ValueRange();
+        // $ValueRange->setMajorDimension('COLUMNS'); //по колонкам
+        $ValueRange->setValues($values);
+        $options = ['valueInputOption' => 'USER_ENTERED'];
+
+        $service->spreadsheets_values->update(self::get_sheetID(), $range, $ValueRange, $options);
+        echo "Данные успешно обновлены";
     }
 
     static function update_few_data($data)
