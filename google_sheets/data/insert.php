@@ -72,10 +72,7 @@ try {
 
     $specific_values = array();
     foreach ($specific_attributes as $attr) {
-      $specific_values = $good[$attr];
-      echo "<br>";
-      var_dump($good[$attr]);
-      echo "<br>";
+      $specific_values[] = $good[$attr];
     }
 
     var_dump($specific_values);
