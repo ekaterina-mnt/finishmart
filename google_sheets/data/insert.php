@@ -39,7 +39,7 @@ try {
   ];
 
   $cells = Sheet::get_data("$list_name!C3:C10000");
-  var_dump(array_key_last(array_column($cells['values'], 0)));
+  var_dump(array_key_last(array_column($cells['values'], 0)) + 3); // +3, т.к. ячейка C3, а отсчет с нуля
   exit;
 
   $current_cell = 3;
