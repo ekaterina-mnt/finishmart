@@ -38,6 +38,10 @@ try {
     'in_pack'
   ];
 
+  $cells = Sheet::get_data("C2:C10000");
+  TechInfo::preArray($cells);
+  exit;
+
   $current_cell = 3;
   $specific_attributes_cell = "$list_name!S2";
 
@@ -49,7 +53,6 @@ try {
   $specific_attributes = array_column(mysqli_fetch_all(MySQL::sql($query), MYSQLI_ASSOC), "name");
 
   Sheet::update_data($specific_attributes_cell, $specific_attributes);
-  exit;
 
   $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}'";
   $goods = MySQL::sql($query);
@@ -66,10 +69,14 @@ try {
     $values = array_merge([MySQL::get_mysql_datetime()], array_slice($values, 0, 1), ["-"], array_slice($values, 1));
 
     $characteristics = json_decode($good['characteristics'], 1);
-    $s = new Napolnye($characteristics, $good);
-    $specific_attributes = $s->parse($good['provider'], $needed_subcategory);
 
-    $values = array_merge($values, $specific_attributes);
+
+    $specific_values = array();
+    foreach ($specific_attributes as $attr) {
+      $specific_values = $good[$attr];
+    }
+
+    $values = array_merge($values, $specific_values);
     $values = array_map(fn ($value) => $value ?? "-", $values);
     $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
   }
