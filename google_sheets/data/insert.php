@@ -35,14 +35,24 @@ try {
     'provider',
     'characteristics',
     'description',
+    'in_pack'
   ];
 
   $current_cell = 3;
 
-  //   $specific_attributes = [];
+  $char_table_name = [
+    "Напольные покрытия" => "napolnye_characteristics",
+  ][$needed_category];
+
+  $query = "SELECT name FROM $char_table_name";
+  $specific_attributes = mysqli_fetch_all(MySQL::sql($query));
+  $res_4 = array_column(mysqli_fetch_all(MySQL::sql($query), MYSQLI_ASSOC), "name");
+  var_dump($specific_attributes);
+  echo "<br>";
+  var_dump($res_4);
+  exit;
 
   $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}'";
-  // " . implode(", ", $common_attributes) . "
   $goods = MySQL::sql($query);
 
   $insert_data = array();
@@ -53,7 +63,7 @@ try {
     foreach ($common_attributes as $attr) {
       $values[] = $good[$attr];
     }
-    var_dump(    $values);
+    var_dump($values);
     $values = array_merge([MySQL::get_mysql_datetime()], array_slice($values, 0, 1), ["-"], array_slice($values, 1));
 
     $characteristics = json_decode($good['characteristics'], 1);
@@ -66,9 +76,6 @@ try {
   }
   TechInfo::preArray($insert_data);
   Sheet::update_few_data($insert_data);
-  // var_dump($get_data);
-  //Sheet::update_few_data($data);
-  //echo "Данные успешно обновлены";
 
   echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
 } catch (Throwable $e) {
