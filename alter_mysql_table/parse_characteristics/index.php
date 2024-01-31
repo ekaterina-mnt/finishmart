@@ -64,7 +64,6 @@ try {
             $values = $add_columns;
             $types = str_repeat("s", count($values));
             MySQL::multiple_insert("name", $types, $values, "napolnye_characteristics");
-            break;
         }
 
         // ДОБАВЛЕНИЕ САМИХ ХАРАКТЕРИСТИК
