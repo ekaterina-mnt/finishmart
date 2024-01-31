@@ -40,7 +40,7 @@ try {
 
 
   $current_cell = 3;
-  $cells = Sheet::get_data("$list_name!B$current_cell:C10000");
+  $cells = Sheet::get_data("$list_name!C$current_cell:C10000");
 
   if ($cells['values']) {
     $filled_ids = array_column($cells['values'], 0);
@@ -69,7 +69,6 @@ try {
 
   $insert_data = array();
   foreach ($goods as $i => $good) {
-    echo "<br>$i<br>";
     $common_values = array();
     foreach ($common_attributes as $attr) {
       $common_values[] = $good[$attr];
@@ -90,6 +89,7 @@ try {
   }
   echo "<br>Всего строк добавлено:" . count($insert_data);
   Sheet::update_few_data($insert_data);
+  echo "<br>Гугл таблицы успешно обновлены";
 
   echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
 } catch (Throwable $e) {
