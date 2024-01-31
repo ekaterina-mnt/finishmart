@@ -39,10 +39,9 @@ try {
   ];
 
   $cells = Sheet::get_data("$list_name!C3:C10000");
-  var_dump(array_key_last(array_column($cells['values'], 0)) + 3); // +3, т.к. ячейка C3, а отсчет с нуля
-  exit;
+  $last_cell = array_key_last(array_column($cells['values'], 0)) + 3; // +3, т.к. ячейка C3, а отсчет с нуля
 
-  $current_cell = 3;
+  $current_cell = $last_cell + 1;
   $specific_attributes_cell = "$list_name!S2";
 
   $char_table_name = [
@@ -65,7 +64,6 @@ try {
     foreach ($common_attributes as $attr) {
       $values[] = $good[$attr];
     }
-    var_dump($values);
     $values = array_merge([MySQL::get_mysql_datetime()], array_slice($values, 0, 1), ["-"], array_slice($values, 1));
 
     $characteristics = json_decode($good['characteristics'], 1);
