@@ -43,15 +43,11 @@ try {
 
         //Увеличиваем просмотры ссылки
         $views = $res['views'] + 1;
-        echo "here";
         $date_edit = MySQL::get_mysql_datetime();
-        echo "here2";
 
         MySQL::sql("UPDATE all_links SET views=$views WHERE link='$url_parser'");
-        echo "here3";
 
         if ($provider == 'masterdom') continue; //
-        echo "here4";
 
         //Получаем html у себя
         $document = Connect::guzzleConnect($url_parser);

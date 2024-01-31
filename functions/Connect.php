@@ -30,6 +30,7 @@ class Connect
             ],
         );
 
+        var_dump($response);
         $document = self::getHTML($response, $encoding ?? null);
 
         return $document;
