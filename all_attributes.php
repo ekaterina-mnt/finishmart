@@ -44,6 +44,7 @@ try {
             ".single-product___main-info--price span", //mosplitka
             ".tile-shop__price", //mosplitka
             ".total_price", //olimp
+            "meta", //olimp
             // ".catalog-element-price-discount", //fargo
             "meta", //fargo
         ],
@@ -236,7 +237,7 @@ try {
                     $all_product_data['price'] = [(int) str_replace(' ', '', $price), 'i'];
                 }
             }
-        } elseif ($provider == 'fargo') {
+        } elseif ($provider == 'fargo' or $provider == 'olimp') {
             foreach ($price_res as $meta) {
                 if ($meta->attr("itemprop") == 'price') {
                     $all_product_data['price'] = [(int) str_replace(' ', '', $meta->attr("content")), 'i'];
