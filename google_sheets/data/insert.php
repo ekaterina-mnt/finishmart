@@ -10,6 +10,7 @@ use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 
 try {
   echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
+  echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
 
   if (!isset($_POST['category']) or !isset($_POST['subcategory'])) exit("Нужны параметры 'категория' и 'подкатегория'");
   $napolnye = Napolnye::getSubcategoriesNapolnye();
@@ -37,7 +38,7 @@ try {
     'in_pack'
   ];
 
-  $cells = Sheet::get_data("C3:C10000");
+  $cells = Sheet::get_data("$list_name!C3:C10000");
   var_dump(array_key_last(array_column($cells['values'], 0)));
   exit;
 
