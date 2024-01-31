@@ -74,7 +74,9 @@ try {
     $specific_values = array();
     foreach ($specific_attributes as $attr) {
       $specific_values[] = $good[$attr];
+      echo("good[attr] = " . $good[$attr] . "<br>");
     }
+    TechInfo::preArray($specific_values);
 
     $values = array_merge($common_values, $specific_values);
     TechInfo::preArray($values);
