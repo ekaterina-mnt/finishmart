@@ -60,6 +60,11 @@ try {
             $query = substr($query, 0, -1);
             var_dump($query);
             MySQL::sql($query);
+
+            $values = $add_columns;
+            $types = str_repeat("s", count($values));
+            MySQL::multiple_insert("name", $types, $values, "napolnye_characteristics");
+            break;
         }
 
         // ДОБАВЛЕНИЕ САМИХ ХАРАКТЕРИСТИК

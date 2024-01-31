@@ -350,6 +350,23 @@ class MySQL
         }
     }
 
+    static function multiple_insert($column, $types, $values, $table_name)
+    {
+        $date_edit = self::get_mysql_datetime();
+
+        $question_marks = substr(str_repeat("(?), ", count($values)), 0, -2);
+
+        // Формируем запрос
+        $query = "INSERT INTO $table_name ($column) VALUES $question_marks ON DUPLICATE KEY UPDATE date_edit = $date_edit";
+
+        try {
+            MySQL::bind_sql($query, $types, array_values($values));
+            echo "не возникло ошибок с добавлением/обновлением строки в БД<br><br>";
+        } catch (\Exception $e) {
+            echo "возникла ошибка с добавлением/обновлением строки в БД:<br>" . $e->getMessage() . '<br><br>';
+        }
+    }
+
     /*
         bool $data_flag - менять ли колонку date_edit или нет
     */
