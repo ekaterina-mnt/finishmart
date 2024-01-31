@@ -23,12 +23,7 @@ class Connect
 
         try {
             $client->request('GET', $link);
-        } catch (\Throwable $e) {
-            //Access the message or other type of errors and react to them
-            var_dump($e->getMessage());
-            
-        }
-        exit;
+
         $response = $client->request(
             'GET',
             $link,
@@ -40,8 +35,12 @@ class Connect
                 ],
             ],
         );
-
-        var_dump($response);
+    } catch (\Throwable $e) {
+        //Access the message or other type of errors and react to them
+        var_dump($e->getMessage());
+        
+    }
+    exit;
         $document = self::getHTML($response, $encoding ?? null);
 
         return $document;
