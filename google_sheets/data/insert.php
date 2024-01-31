@@ -73,7 +73,9 @@ try {
     $specific_values = array();
     foreach ($specific_attributes as $attr) {
       $specific_values = $good[$attr];
-      echo $attr . PHP_EOL;
+      echo "<br>";
+      var_dump($good[$attr]);
+      echo "<br>";
     }
 
     var_dump($specific_values);
