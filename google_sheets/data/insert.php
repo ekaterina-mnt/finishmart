@@ -60,6 +60,8 @@ try {
 
   $insert_data = array();
   foreach ($goods as $i => $good) {
+    TechInfo::preArray($good);
+    echo "good code 1: " . $good['Код 1'];
 
     echo "<br>$i<br>";
     $common_values = array();
