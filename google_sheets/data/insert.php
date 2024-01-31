@@ -38,8 +38,9 @@ try {
     'in_pack'
   ];
 
-  $cells = Sheet::get_data("$list_name!C3:C10000");
-  $last_cell = array_key_last(array_column($cells['values'], 0)) + 3; // +3, т.к. ячейка C3, а отсчет с нуля
+  $filled_ids = Sheet::get_data("$list_name!C3:C10000");
+  $last_cell = array_key_last(array_column($filled_ids['values'], 0)) + 3; // +3, т.к. ячейка C3, а отсчет с нуля
+  $filled_ids_str = implode(', ', $filled_ids);
 
   $current_cell = $last_cell + 1;
   $specific_attributes_cell = "$list_name!S2";
@@ -53,7 +54,7 @@ try {
 
   Sheet::update_data($specific_attributes_cell, $specific_attributes);
 
-  $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}'";
+  $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}' AND id NOT IN ($filled_ids_str)";
   $goods = MySQL::sql($query);
 
   $insert_data = array();
@@ -75,13 +76,11 @@ try {
       $specific_values[] = $good[$attr];
     }
 
-    var_dump($specific_values);
-
     $values = array_merge($common_values, $specific_values);
     $values = array_map(fn ($value) => $value ?? "-", $values);
     $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
   }
-  TechInfo::preArray($insert_data);
+  echo "<br>Всего строк добавлено:" . count($insert_data);
   Sheet::update_few_data($insert_data);
 
   echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
