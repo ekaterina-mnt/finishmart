@@ -39,12 +39,12 @@ try {
   ];
 
 
-  $current_cell = "C3";
-  $cells = Sheet::get_data("$list_name!$current_cell:C10000");
+  $current_cell = 3;
+  $cells = Sheet::get_data("$list_name!B$current_cell:C10000");
 
   if ($cells['values']) {
     $filled_ids = array_column($cells['values'], 0);
-    $last_cell = array_key_last($filled_ids) + 3; // +3, т.к. ячейка C3, а отсчет с нуля
+    $last_cell = array_key_last($filled_ids) + $current_cell;
     $filled_ids_str = implode(', ', $filled_ids);
     $current_cell = $last_cell + 1;
   }
