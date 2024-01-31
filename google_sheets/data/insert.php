@@ -39,7 +39,7 @@ try {
   ];
 
   $current_cell = 3;
-  $specific_attributes_cell = "S2";
+  $specific_attributes_cell = "$list_name!S2";
 
   $char_table_name = [
     "Напольные покрытия" => "napolnye_characteristics",
