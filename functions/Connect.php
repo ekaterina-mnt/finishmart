@@ -8,6 +8,7 @@ use DiDom\Document;
 use DOMDocument;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Exception\RequestException;
 
 class Connect
 {
@@ -18,7 +19,17 @@ class Connect
             'http://5LIZu3:C8V5mJmxxY@46.8.16.94', //https://ru.dashboard.proxy.market/proxy
         ];
         $client = new GuzzleClient(['verify' => false]);
-        var_dump($client);
+
+        try {
+            $client->request('GET', $link);
+        } catch (RequestException $e) {
+            //Access the message or other type of errors and react to them
+            $e->getMessage();
+            if (! $e->hasResponse()) {
+                //No response from server. Assume the host is offline or server is overloaded.
+            }
+        }
+        exit;
         $response = $client->request(
             'GET',
             $link,
