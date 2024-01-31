@@ -38,8 +38,9 @@ try {
     'in_pack'
   ];
 
-  $filled_ids = Sheet::get_data("$list_name!C3:C10000");
-  $last_cell = array_key_last(array_column($filled_ids['values'], 0)) + 3; // +3, т.к. ячейка C3, а отсчет с нуля
+  $cells = Sheet::get_data("$list_name!C3:C10000");
+  $filled_ids = array_column($filled_ids['values'], 0);
+  $last_cell = array_key_last($filled_ids) + 3; // +3, т.к. ячейка C3, а отсчет с нуля
   $filled_ids_str = implode(', ', $filled_ids);
 
   $current_cell = $last_cell + 1;
@@ -59,7 +60,6 @@ try {
 
   $insert_data = array();
   foreach ($goods as $i => $good) {
-    TechInfo::preArray($good);
 
     echo "<br>$i<br>";
     $common_values = array();
