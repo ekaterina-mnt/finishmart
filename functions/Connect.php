@@ -9,6 +9,7 @@ use DOMDocument;
 use GuzzleHttp\Client as GuzzleClient;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Exception\RequestException;
+use Throwable;
 
 class Connect
 {
@@ -22,12 +23,10 @@ class Connect
 
         try {
             $client->request('GET', $link);
-        } catch (RequestException $e) {
+        } catch (\Throwable $e) {
             //Access the message or other type of errors and react to them
-            $e->getMessage();
-            if (! $e->hasResponse()) {
-                //No response from server. Assume the host is offline or server is overloaded.
-            }
+            var_dump($e->getMessage());
+            
         }
         exit;
         $response = $client->request(
