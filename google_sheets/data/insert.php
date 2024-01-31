@@ -38,7 +38,7 @@ try {
   ];
 
   $cells = Sheet::get_data("C2:C10000");
-  TechInfo::preArray($cells);
+  var_dump($cells['values']);
   exit;
 
   $current_cell = 3;
