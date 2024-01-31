@@ -38,14 +38,17 @@ try {
     'in_pack'
   ];
 
-  
-  $cells = Sheet::get_data("$list_name!C3:C10000");
-  TechInfo::preArray($cells);
-  $filled_ids = array_column($cells['values'], 0);
-  $last_cell = array_key_last($filled_ids) + 3; // +3, т.к. ячейка C3, а отсчет с нуля
-  $filled_ids_str = implode(', ', $filled_ids);
 
-  $current_cell = $last_cell + 1;
+  $current_cell = "C3";
+  $cells = Sheet::get_data("$list_name!$current_cell:C10000");
+
+  if ($cells['values']) {
+    $filled_ids = array_column($cells['values'], 0);
+    $last_cell = array_key_last($filled_ids) + 3; // +3, т.к. ячейка C3, а отсчет с нуля
+    $filled_ids_str = implode(', ', $filled_ids);
+    $current_cell = $last_cell + 1;
+  }
+
   $specific_attributes_cell = "$list_name!S2";
 
   $char_table_name = [
@@ -57,7 +60,11 @@ try {
 
   Sheet::update_data($specific_attributes_cell, $specific_attributes);
 
-  $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}' AND category like '{$needed_category}' AND id NOT IN ($filled_ids_str)";
+  if ($filled_ids_str) {
+    $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}' AND category like '{$needed_category}' AND id NOT IN ($filled_ids_str)";
+  } else {
+    $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}' AND category like '{$needed_category}'";
+  }
   $goods = MySQL::sql($query);
 
   $insert_data = array();
@@ -78,7 +85,7 @@ try {
     $specific_values = array();
     foreach ($specific_attributes as $attr) {
       $specific_values[] = $good[$attr];
-      echo("good[attr] = " . $good[$attr] . "<br>");
+      echo ("good[attr] = " . $good[$attr] . "<br>");
     }
     TechInfo::preArray($specific_values);
 
