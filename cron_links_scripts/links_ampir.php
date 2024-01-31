@@ -21,7 +21,7 @@ $script_iteration_provider = 'ampir';
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 6; $i++) {
+    for ($i = 1; $i < 8; $i++) {
 
         echo "<br><b>Ссылка $i</b><br><br>";
         //Получаем ссылку, с которой будем парсить
