@@ -19,7 +19,7 @@ $script_iteration_provider = 'ampir';
 TechInfo::start();
 
 try {
-    for ($i = 1; $i < 11; $i++) {
+    for ($i = 1; $i < 8; $i++) {
         sleep(mt_rand(2, 6));
         if ($script_iteration_provider == 'domix' and $i > 8) TechInfo::errorExit("");
 
