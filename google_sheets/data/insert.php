@@ -37,8 +37,8 @@ try {
     'in_pack'
   ];
 
-  $cells = Sheet::get_data("C2:C10000");
-  var_dump(array_column($cells['values'], 0));
+  $cells = Sheet::get_data("C3:C10000");
+  var_dump(array_key_last(array_column($cells['values'], 0)));
   exit;
 
   $current_cell = 3;
