@@ -18,6 +18,7 @@ class Connect
             'http://5LIZu3:C8V5mJmxxY@46.8.16.94', //https://ru.dashboard.proxy.market/proxy
         ];
         $client = new GuzzleClient(['verify' => false]);
+        var_dump($client);
         $response = $client->request(
             'GET',
             $link,
