@@ -39,17 +39,16 @@ try {
   ];
 
   $current_cell = 3;
+  $specific_attributes_cell = "S2";
 
   $char_table_name = [
     "Напольные покрытия" => "napolnye_characteristics",
   ][$needed_category];
 
   $query = "SELECT name FROM $char_table_name";
-  $specific_attributes = mysqli_fetch_all(MySQL::sql($query));
-  $res_4 = array_column(mysqli_fetch_all(MySQL::sql($query), MYSQLI_ASSOC), "name");
-  var_dump($specific_attributes);
-  echo "<br>";
-  var_dump($res_4);
+  $specific_attributes = array_column(mysqli_fetch_all(MySQL::sql($query), MYSQLI_ASSOC), "name");
+
+  Sheet::update_data($specific_attributes_cell, $specific_attributes);
   exit;
 
   $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}'";
