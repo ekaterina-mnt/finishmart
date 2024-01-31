@@ -28,7 +28,7 @@ try {
     $query = "SELECT count(id) FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}'";
     var_dump(mysqli_fetch_assoc(MySQL::sql($query)));
 
-    $query = "SELECT id, characteristics, char_views FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}' ORDER BY char_views LIMIT 500";
+    $query = "SELECT id, characteristics, char_views FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}' ORDER BY char_views LIMIT 100";
     $goods = MySQL::sql($query);
 
     foreach ($goods as $good) {
