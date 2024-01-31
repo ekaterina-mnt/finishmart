@@ -39,7 +39,7 @@ try {
   ];
 
   $cells = Sheet::get_data("$list_name!C3:C10000");
-  $filled_ids = array_column($filled_ids['values'], 0);
+  $filled_ids = array_column($cells['values'], 0);
   $last_cell = array_key_last($filled_ids) + 3; // +3, т.к. ячейка C3, а отсчет с нуля
   $filled_ids_str = implode(', ', $filled_ids);
 
