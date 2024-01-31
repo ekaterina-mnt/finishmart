@@ -69,9 +69,6 @@ try {
 
   $insert_data = array();
   foreach ($goods as $i => $good) {
-    TechInfo::preArray($good);
-    echo "good code 1: " . $good['Код 1'];
-
     echo "<br>$i<br>";
     $common_values = array();
     foreach ($common_attributes as $attr) {
@@ -85,12 +82,9 @@ try {
     $specific_values = array();
     foreach ($specific_attributes as $attr) {
       $specific_values[] = $good[$attr];
-      echo ("good[attr] = " . $good[$attr] . "<br>");
     }
-    TechInfo::preArray($specific_values);
 
     $values = array_merge($common_values, $specific_values);
-    TechInfo::preArray($values);
     $values = array_map(fn ($value) => $value ?? "-", $values);
     $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
   }
