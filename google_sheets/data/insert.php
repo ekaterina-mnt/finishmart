@@ -11,7 +11,6 @@ use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 try {
   echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
-  var_dump($_POST);
   if (!isset($_POST['category']) or !isset($_POST['subcategory'])) exit("Нужны параметры 'категория' и 'подкатегория'");
   $napolnye = Napolnye::getSubcategoriesNapolnye();
   if (!in_array($_POST['subcategory'], $napolnye)) exit("Неподходящий параметр");
