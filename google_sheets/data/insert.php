@@ -60,11 +60,11 @@ try {
   foreach ($goods as $i => $good) {
 
     echo "<br>$i<br>";
-    $values = array();
+    $common_values = array();
     foreach ($common_attributes as $attr) {
-      $values[] = $good[$attr];
+      $common_values[] = $good[$attr];
     }
-    $values = array_merge([MySQL::get_mysql_datetime()], array_slice($values, 0, 1), ["-"], array_slice($values, 1));
+    $common_values = array_merge([MySQL::get_mysql_datetime()], array_slice($common_values, 0, 1), ["-"], array_slice($common_values, 1));
 
     $characteristics = json_decode($good['characteristics'], 1);
 
@@ -74,7 +74,9 @@ try {
       $specific_values = $good[$attr];
     }
 
-    $values = array_merge($values, $specific_values);
+    var_dump($specific_values);
+
+    $values = array_merge($common_values, $specific_values);
     $values = array_map(fn ($value) => $value ?? "-", $values);
     $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
   }
