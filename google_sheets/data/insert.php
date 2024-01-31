@@ -38,7 +38,7 @@ try {
   ];
 
   $cells = Sheet::get_data("C2:C10000");
-  var_dump($cells['values']);
+  var_dump(array_column($cells['values'], 0));
   exit;
 
   $current_cell = 3;
