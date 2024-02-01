@@ -31,6 +31,7 @@ class Napolnye
             $subcategoriesList[36], //'Линолеум',
             $subcategoriesList[37], //'Кварцвиниловые полы',
             $subcategoriesList[27], //'Ламинат',
+            $subcategoriesList[30], //'Штучный паркет',
         ];
         return $subcategories;
     }
