@@ -16,7 +16,7 @@ class Sheet
 
     static function get_service_json_title($service_account) {
         if ($service_account == 'napolnye_raw') {
-            $service_json_title = "service_key.json";
+            $service_json_title = "service_key_napolnye_raw.json";
         } elseif ($service_account == 'napolnye_edition') {
             $service_json_title = "service_key_napolnye_edition.json";
         }
