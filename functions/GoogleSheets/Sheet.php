@@ -14,11 +14,22 @@ class Sheet
 {
     private static $service;
 
-    static function get_connect()
+    static function get_service_json_title($service_account) {
+        if ($service_account == 'napolnye_raw') {
+            $service_json_title = "service_key.json";
+        } elseif ($service_account == 'napolnye_edition') {
+            $service_json_title = "service_key_napolnye_edition.json";
+        }
+
+        return $service_json_title;
+    }
+
+    static function get_connect($service_account)
     {
         if (!self::$service) {
+            $service_json_title = self::get_service_json_title($service_account);
             // Наш ключ доступа к сервисному аккаунту
-            $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/service_key.json';
+            $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/' . $service_json_title;
             putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
             // Создаем новый клиент
             $client = new Google_Client();
@@ -33,22 +44,27 @@ class Sheet
         return self::$service;
     }
 
-    static function get_sheetID()
+    static function get_sheetID($service_account)
     {
         // ID таблицы
-        $spreadsheetId = '15BAlc52xS_7RxYYCrM5Jw4g9TEiS7EoeUwcLPYqPdyc';
+        if ($service_account == 'napolnye_raw') {
+            $spreadsheetId = '15BAlc52xS_7RxYYCrM5Jw4g9TEiS7EoeUwcLPYqPdyc';
+        } elseif ($service_account == 'napolnye_edition') {
+            $spreadsheetId = '105JPpIgq0gJGWcDVpYTlZ-r-g_uJ1b1TAEwtkamN0p8';
+        }
+        
         return $spreadsheetId;
     }
 
     //Пример $range = 'Лист1!G2:G3'
-    static function get_data($range)
+    static function get_data($range, $service_account)
     {
-        $service = self::get_connect();
-        $response = $service->spreadsheets_values->get(self::get_sheetID(), $range);
+        $service = self::get_connect($service_account);
+        $response = $service->spreadsheets_values->get(self::get_sheetID($service_account), $range);
         return $response;
     }
 
-    static function update_data($range, $values)
+    static function update_data($range, $values, $service_account)
     {
         $values = array($values);
 
@@ -57,23 +73,23 @@ class Sheet
         // ];
 
 
-        $service = self::get_connect();
+        $service = self::get_connect($service_account);
 
         $ValueRange = new Google_Service_Sheets_ValueRange();
         // $ValueRange->setMajorDimension('COLUMNS'); //по колонкам
         $ValueRange->setValues($values);
         $options = ['valueInputOption' => 'USER_ENTERED'];
 
-        $service->spreadsheets_values->update(self::get_sheetID(), $range, $ValueRange, $options);
+        $service->spreadsheets_values->update(self::get_sheetID($service_account), $range, $ValueRange, $options);
         echo "Данные успешно обновлены";
     }
 
-    static function update_few_data($data)
+    static function update_few_data($data, $service_account)
     {
         // $data = [[   'range'=> 'Sheet1!A4',
         //              'values'=> array(array('1234'))  ]];
 
-        $service = self::get_connect();
+        $service = self::get_connect($service_account);
 
         // Additional ranges to update ...
         $body = new Google_Service_Sheets_BatchUpdateValuesRequest([
@@ -82,16 +98,16 @@ class Sheet
         ]);
 
         //   MyHelpers::pre($data);
-        $service->spreadsheets_values->batchUpdate(self::get_sheetID(), $body);
+        $service->spreadsheets_values->batchUpdate(self::get_sheetID($service_account), $body);
     }
 
-    static function clear_data($range)
+    static function clear_data($range, $service_account)
     {
         // $range = '2020-10!A5:E5'
-        $service = self::get_connect();
+        $service = self::get_connect($service_account);
 
         $clear = new Google_Service_Sheets_ClearValuesRequest();
-        $response = $service->spreadsheets_values->clear(self::get_sheetID(), $range, $clear);
+        $response = $service->spreadsheets_values->clear(self::get_sheetID($service_account), $range, $clear);
     }
 
     static function get_month_columns()

@@ -1,0 +1,13 @@
+{
+    "type": "service_account",
+    "project_id": "finishmarteditionnapolnye",
+    "private_key_id": "5f558dd96c16f75779316867cf03f4ed40e6d6fb",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCmg1lYlTuUKnP1\nCDTzEl+0sLaIuoFs5pDhtlJzzICCQVx2dTotdI7wTghGqvjaF8rgVwJE7xMoZWnH\nnDhWm0cke/ZBTeZ8vwJ+oWrJk8BdZj58h5PTZj4JMQlX8SpiVooyHbRK4tA82KWA\n9Je9tp/bizMiMeXa0CRTB4bTUJ2rQEhNT3BsMbCD52SBDpXlY3vAunnrF72MPZnM\npLUoFp//5ROvwE/DRJRkYrJz5BTZJGYqb6gZIPMGlYDMz/CiYmzpI7s/xuXaz8b0\nD/ZkGc8xSlFSCAN40HGWKW+Mg6KIeEhpPk4OxiuzcdAxcOMKyK6pafQhDB92MPq7\n9D+TtvBrAgMBAAECggEAAlghueLf+TC1Jo38W4UMCTneWAPILrBQTzKHQU9vv7sL\n14nETT+G2PtAQpPFoncTSXVFeD2lbLwrcRP8obuDP5A/N0wmzTrN3i/c667uK7fK\nHsFfOMAHv462gvZyPPra7I8JKsS8CcnttT28T9THtgo6U2ZAcNmH/riXEq01NblR\necYtNuRbCG1O1vHsGGBgp+fTvBoSDry4SEvHHVlwqjGuRsEFsEKNHSaFkkuQkfkr\nORpsP62ow6MDjdTDAVNuXDzmigogYQv+zJYrOJzkIjq1tjhmdMJndnJ8XY5uXq+i\nH34ShI9iGFmJ8pfl8NrEgfNc70i38i8+3lbjsOLbAQKBgQDXDJewrG4JhXVqFy3O\nCTGGo7n8X7udnzkb783MfhOvDSmF4avhjcbpVALITmHIrYlEfjM1SDxFblFMuGLn\n0cNw5Lo3alctBtHi+lniO2foQUgI9EYK7Mo5ny2uKIMJcuANNdYYbfpxGKko5eKZ\ncxXzep8ZHiLjdRoBixLN1QQN6QKBgQDGOKzub2vP1yMDl4ocTx2xtItRin0wuBXH\n8G4CP1BwrgMxMuYQoLUl97CL9FyCIAZz6NHmZRSl1hu7++wQASW6/87ZNuqckmh6\nArDz8SwlVPQ9v/I+4loiRZxFFA8L048gzrqEziQl9kLWPbnK3Qz9NAHqjeuq69t9\nj3fRQJTzMwKBgQC2t9hbIOcN5/tvfOpKWb1e7NYl/SFoN9VKS2LNEYKgBcr2Glz0\ndIZB0kPa9d5XqDstmxzfdNThGW6yhShkV/J7hZxDYXNYqqbC+HxOoLMUwAL4uLSa\nq77XXsxtYbaU3KpKDygt8aQNXCq+uTTjtMk96z4rFVQHd4P1M7lycj/ToQKBgH2m\nWYB/IqFKJ4jUW5jcUd9eqd2TYw4p8qyd7K4CAnSa6a0bLZkmtg2ON9xPlwBpWo3I\n7J0WQANreIMuCxKOF6O1GiK42/lKGW4WHKNVon07n+MwtFdGVopZA9kKAQunHJhY\nUwVyQpnJw85YrFg6zUwH1psfQV9ESQsLkZEUVhbfAoGAUuhHcnTnIBT2jLjLOMa+\nmO/WB8JDu/JHExht5Be1Jc0o6GztvajSYWXZP/1ZC99y1iLPPIM6F7LVxxHU3KZV\nPkgd7zmKjNj/VAZAOalAnn8g+1fFGuVDOqVk43VMdJgDmAOnGThcn9meHPbzB3sn\nHXmEJTKx4T1VUw6Nq40p5Ug=\n-----END PRIVATE KEY-----\n",
+    "client_email": "finishmarteditionnapolnye@finishmarteditionnapolnye.iam.gserviceaccount.com",
+    "client_id": "115019117778783832426",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/finishmarteditionnapolnye%40finishmarteditionnapolnye.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+}

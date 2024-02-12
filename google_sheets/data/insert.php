@@ -37,10 +37,10 @@ try {
     'description',
     'in_pack'
   ];
+  $count_common_attributes = count($common_attributes);
 
-
-  $current_cell = 3;
-  $cells = Sheet::get_data("$list_name!C$current_cell:C10000");
+  $current_cell = 4;
+  $cells = Sheet::get_data("$list_name!C$current_cell:C10000", "napolnye_raw");
 
   if ($cells['values']) {
     $filled_ids = array_column($cells['values'], 0);
@@ -58,7 +58,7 @@ try {
   $query = "SELECT name FROM $char_table_name";
   $specific_attributes = array_column(mysqli_fetch_all(MySQL::sql($query), MYSQLI_ASSOC), "name");
 
-  Sheet::update_data($specific_attributes_cell, $specific_attributes);
+  Sheet::update_data($specific_attributes_cell, $specific_attributes, "napolnye_raw");
 
   if ($filled_ids_str) {
     $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}' AND category like '{$needed_category}' AND id NOT IN ($filled_ids_str) AND (status like 'ok' OR status IS NULL) AND char_views > 0";
@@ -68,6 +68,9 @@ try {
   $goods = MySQL::sql($query);
 
   $insert_data = array();
+
+  // $insert_data[] = FormInsertData::get_i($list_name, "=СЧЁТЗ(AL4:AL)-СЧЁТЕСЛИ(AL4:AL; \"-\")", "B", $current_cell++ -1); "A"++
+
   foreach ($goods as $i => $good) {
     $common_values = array();
     foreach ($common_attributes as $attr) {
@@ -88,7 +91,7 @@ try {
     $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
   }
   echo "<br>Всего строк добавлено:" . count($insert_data);
-  Sheet::update_few_data($insert_data);
+  Sheet::update_few_data($insert_data, "napolnye_raw");
   echo "<br>Гугл таблицы успешно обновлены";
 
   echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
