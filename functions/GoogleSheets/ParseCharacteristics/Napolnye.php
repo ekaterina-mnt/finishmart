@@ -5,6 +5,8 @@ namespace functions\GoogleSheets\ParseCharacteristics;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use functions\Parser;
+use functions\GoogleSheets\Sheet;
+use functions\TechInfo;
 
 class Napolnye
 {
@@ -34,6 +36,13 @@ class Napolnye
             $subcategoriesList[30], //'Штучный паркет',
         ];
         return $subcategories;
+    }
+
+    public function getCharsArray()
+    {
+        $data = Sheet::get_data("B3:D", "napolnye");
+        TechInfo::preArray($data);
+        exit;
     }
 
 
@@ -148,19 +157,19 @@ class Napolnye
                     "domix" => $chars["Бренд"],
                     "olimp" => $chars["Бренд"],
                     "fargo" => $chars["Бренд"],
-                    "alpinefloor" => "Alpinefloor",	
+                    "alpinefloor" => "Alpinefloor",
                 ],
                 "collection" => [
                     "domix" => $chars["Коллекция"],
                     "olimp" => $chars["Коллекция"],
                     "fargo" => $chars["Коллекция"],
-                    "alpinefloor" => "Достать из хлебных крошек",	
+                    "alpinefloor" => "Достать из хлебных крошек",
                 ],
                 "country" => [
                     "domix" => $chars["Страна производства"],
                     "olimp" => $chars["Страна производства"],
                     "fargo" => $chars["Страна производитель"],
-                    "alpinefloor" => "Россия",	
+                    "alpinefloor" => "Россия",
                 ],
                 "class" => [
                     "domix" => $chars["Класс"],

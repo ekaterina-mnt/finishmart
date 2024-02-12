@@ -39,3 +39,16 @@ $napolnye_subcategories = Napolnye::getSubcategoriesNapolnye();
     </select></p>
     <p><input type="submit" value="Отправить"></p>
 </form>
+
+<H2>Вставить данные с объединенными характеристиками в другую таблицу</H2>
+<form action="google_sheets/data/merge_similar_chars.php" , method="POST">
+    <input type="hidden" name="category" value="<?= $categories[1] ?>">
+    <select name="subcategory">
+        <?php
+        foreach ($napolnye_subcategories as $subcategory) {
+            echo '<option value="' . $subcategory . '">' . $subcategory . '</option>';
+        }
+        ?>
+    </select></p>
+    <p><input type="submit" value="Отправить"></p>
+</form>

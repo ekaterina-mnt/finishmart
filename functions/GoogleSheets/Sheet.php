@@ -14,11 +14,14 @@ class Sheet
 {
     private static $service;
 
-    static function get_service_json_title($service_account) {
+    static function get_service_json_title($service_account)
+    {
         if ($service_account == 'napolnye_raw') {
             $service_json_title = "service_key_napolnye_raw.json";
         } elseif ($service_account == 'napolnye_edition') {
             $service_json_title = "service_key_napolnye_edition.json";
+        } else {
+            die("Не найден json файл service account");
         }
 
         return $service_json_title;
@@ -52,7 +55,7 @@ class Sheet
         } elseif ($service_account == 'napolnye_edition') {
             $spreadsheetId = '105JPpIgq0gJGWcDVpYTlZ-r-g_uJ1b1TAEwtkamN0p8';
         }
-        
+
         return $spreadsheetId;
     }
 
