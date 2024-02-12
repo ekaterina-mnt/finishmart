@@ -38,7 +38,7 @@ class Napolnye
         return $subcategories;
     }
 
-    public function getCharsArray()
+    static function getCharsArray()
     {
         $data = Sheet::get_data("B3:D", "napolnye");
         TechInfo::preArray($data);
