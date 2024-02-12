@@ -40,7 +40,7 @@ class Napolnye
 
     static function getCharsArray()
     {
-        $data = Sheet::get_data("B3:D", "napolnye");
+        $data = Sheet::get_data("B3:D", "napolnye_edition");
         TechInfo::preArray($data);
         exit;
     }
