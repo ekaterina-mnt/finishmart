@@ -39,7 +39,8 @@ try {
     $specific_attributes = Napolnye::getMergedCharsArray();
     $all_spec_attrs = Napolnye::getAllAttrs(); // это в будущем для проверки все ли характеристики учтены в нашем списке
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
-    Sheet::update_data($specific_attributes_cell, $insert_specific_attributes, $GoogleSheets_tablename);
+    $insert_attributes = array_merge($common_attributes, $insert_specific_attributes);
+    Sheet::update_data($specific_attributes_cell, $insert_attributes, $GoogleSheets_tablename);
 
 
     // Получаем id уже вставленных товаров и определяем последнюю заполненную строку
@@ -72,7 +73,6 @@ try {
         // Определяем значения для $specific_attributes
         $specific_values = array();
 
-        $characteristics['Тест'] = 'тест';
         foreach ($specific_attributes as $merged_attr => $attrs) {
             foreach ($attrs as $attr) {
                 foreach ($characteristics as $char => $value) {
@@ -94,7 +94,7 @@ try {
     }
 
     echo "<br>Всего строк добавлено:" . count($insert_data);
-    if (count($notCountedChars)) echo "Эти характеристики не учтены в сопоставлении характеристик - " . implode(", ", array_unique($notCountedChars)) . "<br>";
+    if (count($notCountedChars)) echo "<br><br>Эти характеристики не учтены в сопоставлении характеристик - " . implode(", ", array_unique($notCountedChars)) . "<br>";
     Sheet::update_few_data($insert_data, $GoogleSheets_tablename);
     echo "<br>Гугл таблицы успешно обновлены";
 
