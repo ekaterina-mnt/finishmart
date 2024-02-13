@@ -10,7 +10,7 @@ use functions\TechInfo;
 
 class Napolnye
 {
-    public static $allAttrs;
+    public static $allAttrData;
 
     static function getSubcategoriesNapolnye()
     {
@@ -33,7 +33,7 @@ class Napolnye
 
     static function getCharsArray()
     {
-        $data = self::getAllAttrs();
+        $data = self::getAllAttrData();
 
         TechInfo::preArray($data);
         exit;
@@ -59,13 +59,28 @@ class Napolnye
 
     static function getAllAttrs()
     {
-        if (!self::$allAttrs) {
+        $data = self::getAllAttrData();
+
+        $allAttrs = array();
+
+        foreach ($data as $values) {
+            if (!isset($values[2])) {
+                $allAttrs[] = $values[1];
+            }
+        }
+
+        return $allAttrs;
+    }
+
+    static function getAllAttrData()
+    {
+        if (!self::$allAttrData) {
             $data = Sheet::get_data("B3:D", "napolnye_edition");
             $data = $data['values'];
 
-            self::$allAttrs = $data;
+            self::$allAttrData = $data;
         }
 
-        return self::$allAttrs;
+        return self::$allAttrData;
     }
 }

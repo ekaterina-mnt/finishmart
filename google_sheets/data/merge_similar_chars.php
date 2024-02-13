@@ -37,6 +37,11 @@ try {
     $specific_attributes_cell = "$list_name!S" . $current_cell - 1;
 
     $specific_attributes = Napolnye::getCharsArray();
+    $all_specAttrs = Napolnye::getAllAttrs();
+    TechInfo::preArray($specific_attributes);
+    echo "<br><br>";
+    TechInfo::preArray($all_specAttrs);
+    exit;
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
     Sheet::update_data($specific_attributes_cell, $insert_specific_attributes, $GoogleSheets_tablename);
 
@@ -84,8 +89,6 @@ try {
             }
 
         }
-        var_dump($specific_values);
-        TechInfo::preArray($specific_values);
 
         exit;
 
