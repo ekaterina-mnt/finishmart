@@ -31,7 +31,7 @@ class Napolnye
         return $subcategories;
     }
 
-    static function getCharsArray()
+    static function getMergedCharsArray()
     {
         $data = self::getAllAttrData();
 
@@ -61,9 +61,7 @@ class Napolnye
         $allAttrs = array();
 
         foreach ($data as $values) {
-            if (!isset($values[2])) {
-                $allAttrs[] = $values[1];
-            }
+            $allAttrs[] = $values[1];
         }
 
         return $allAttrs;
