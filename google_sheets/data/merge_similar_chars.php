@@ -55,7 +55,7 @@ try {
     $specific_attributes = SpecificChars::getChars($needed_category);
     $spec_attr_list = Napolnye::getCharsArray();
 
-    TechInfo::preArray(array_values($spec_attr_list));
+    TechInfo::preArray(array_unique(array_values($spec_attr_list)));
 
     $final_specific_attributes = array();
     foreach ($specific_attributes as $attr) {
