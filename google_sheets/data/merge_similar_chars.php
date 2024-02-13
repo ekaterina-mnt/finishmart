@@ -72,7 +72,7 @@ try {
 
         foreach ($specific_attributes as $merged_attr => $attrs) {
             foreach ($attrs as $attr) {
-                foreach ($characteristics as $char) {
+                foreach ($characteristics as $char => $value) {
                     echo "$char - $attr <br>";
                     if ($char === $attr) {
                         $specific_values[] = $good[$attr];
