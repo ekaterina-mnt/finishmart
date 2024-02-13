@@ -35,9 +35,6 @@ class Napolnye
     {
         $data = self::getAllAttrData();
 
-        TechInfo::preArray($data);
-        exit;
-
         $charsArray = array();
 
         foreach ($data as $values) {
