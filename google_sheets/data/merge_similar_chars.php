@@ -53,6 +53,8 @@ try {
 
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids_str, $needed_subcategory, $needed_category);
+    var_dump($goods);
+    var_dump($filled_ids_str);
     $insert_data = array();
 
     TechInfo::preArray($specific_attributes);
