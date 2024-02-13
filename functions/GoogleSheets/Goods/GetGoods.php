@@ -1,6 +1,6 @@
 <?php
 
-namespace functions\GoogleSheets\ParseCharacteristics;
+namespace functions\GoogleSheets\Goods;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
