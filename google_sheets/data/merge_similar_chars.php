@@ -56,6 +56,7 @@ try {
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids_str, $needed_subcategory, $needed_category);
     $insert_data = array();
+    $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
 
@@ -78,12 +79,12 @@ try {
                     if ($char === $attr) {
                         $specific_values[$merged_attr] = $good[$attr];
                     }
+                    if (!in_array($char, $all_spec_attrs)) $notCountedChars[] = $char;
                 }
             }
             if (!$specific_values[$merged_attr]) {
                 $specific_values[$merged_attr] = "-";
             }
-            if (!in_array($char, $all_spec_attrs)) echo "Эта характеристика не учтена в сопоставлении характеристик - $char<br>";
         }
 
         // Объединям
@@ -91,7 +92,9 @@ try {
         $values = array_map(fn ($value) => $value ?? "-", $values);
         $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
     }
+
     echo "<br>Всего строк добавлено:" . count($insert_data);
+    if (count($notCountedChars)) echo "Эти характеристики не учтены в сопоставлении характеристик - " . implode(", ", array_unique($notCountedChars)) . "<br>";
     Sheet::update_few_data($insert_data, $GoogleSheets_tablename);
     echo "<br>Гугл таблицы успешно обновлены";
 
