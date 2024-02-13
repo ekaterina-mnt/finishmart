@@ -54,6 +54,7 @@ try {
 
     $specific_attributes = SpecificChars::getChars($needed_category);
     $spec_attr_list = Napolnye::getCharsArray();
+    TechInfo::preArray($spec_attr_list);
 
     foreach ($spec_attr_list as $merged_attr => $good_attrs) {
         foreach ($good_attrs as $good_attr) {
