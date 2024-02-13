@@ -14,21 +14,21 @@ class CommonChars
     static function getChars()
     {
         $chars = [
-            'id',
-            'articul',
-            'title',
-            'link',
-            'category',
-            'subcategory',
-            'good_id_from_provider',
-            'price',
-            'stock',
-            'images',
-            'status',
-            'provider',
-            'characteristics',
-            'description',
-            'in_pack'
+            "id" => 'id',
+            "Артикул" => 'articul',
+            "Название" => 'title',
+            "Ссылка на товар" => 'link',
+            "Категория" => 'category',
+            "Подкатегория" => 'subcategory',
+            "Код товара поставщика" => 'good_id_from_provider',
+            "Цена" => 'price',
+            "Наличие" => 'stock',
+            "Картинки" => 'images',
+            "Актуальный ли товар?" => 'status',
+            "Поставщик" => 'provider',
+            "Характеристики поставщика" => 'characteristics',
+            "Описание" => 'description',
+            "В одной упаковке" => 'in_pack'
         ];
 
         return $chars;
