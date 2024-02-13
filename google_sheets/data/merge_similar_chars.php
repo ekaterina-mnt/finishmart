@@ -58,6 +58,7 @@ try {
     TechInfo::preArray($specific_attributes);
     foreach ($goods as $i => $good) {
 
+        var_dump($good);
         // Определяем значения для $common_attributes
         $common_values = array();
         foreach ($common_attributes as $attr) {
@@ -70,8 +71,8 @@ try {
         // Определяем значения для $specific_attributes
         $specific_values = array();
         foreach ($specific_attributes as $attr => $merged_attr) {
-
             $specific_values[] = $good[$attr];
+            var_dump($good[$attr]);
         }
         TechInfo::preArray($specific_values);
 
