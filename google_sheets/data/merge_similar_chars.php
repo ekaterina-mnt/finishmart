@@ -37,9 +37,10 @@ try {
     $specific_attributes_cell = "$list_name!S" . $current_cell - 1;
 
     $specific_attributes = Napolnye::getCharsArray();
-    $insert_specific_attributes = array(...array_unique(array_values($specific_attributes)));
+    $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
     Sheet::update_data($specific_attributes_cell, $insert_specific_attributes, $GoogleSheets_tablename);
 
+    
     // Получаем id уже вставленных товаров и определяем последнюю заполненную строку
 
     $cells = Sheet::get_data("$list_name!C$current_cell:C10000", $GoogleSheets_tablename);
@@ -53,14 +54,11 @@ try {
 
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids_str, $needed_subcategory, $needed_category);
-    var_dump($goods);
-    var_dump($filled_ids_str);
     $insert_data = array();
 
     TechInfo::preArray($specific_attributes);
     foreach ($goods as $i => $good) {
 
-        var_dump($good);
         // Определяем значения для $common_attributes
         $common_values = array();
         foreach ($common_attributes as $attr) {
@@ -74,7 +72,6 @@ try {
         $specific_values = array();
         foreach ($specific_attributes as $attr => $merged_attr) {
             $specific_values[] = $good[$attr];
-            var_dump($good[$attr]);
         }
         TechInfo::preArray($specific_values);
 
