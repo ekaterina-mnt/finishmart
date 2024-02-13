@@ -7,6 +7,7 @@ use functions\GoogleSheets\Sheet;
 use functions\TechInfo;
 use functions\GoogleSheets\FormInsertData;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
+use functions\GoogleSheets\ParseCharacteristics\SpecificChars;
 
 try {
   echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
@@ -51,13 +52,8 @@ try {
 
   $specific_attributes_cell = "$list_name!S2";
 
-  $char_table_name = [
-    "Напольные покрытия" => "napolnye_characteristics",
-  ][$needed_category];
-
-  $query = "SELECT name FROM $char_table_name";
-  $specific_attributes = array_column(mysqli_fetch_all(MySQL::sql($query), MYSQLI_ASSOC), "name");
-
+$specific_attributes = SpecificChars::getChars($needed_category); // - это чтобы брать первичную выгрузку делать в гугл таблицы (но вообще можно без этого, просто в MySQL брать и все)
+    
   Sheet::update_data($specific_attributes_cell, $specific_attributes, "napolnye_raw");
 
   if ($filled_ids_str) {
