@@ -40,7 +40,7 @@ try {
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
     Sheet::update_data($specific_attributes_cell, $insert_specific_attributes, $GoogleSheets_tablename);
 
-    
+
     // Получаем id уже вставленных товаров и определяем последнюю заполненную строку
 
     $cells = Sheet::get_data("$list_name!C$current_cell:C10000", $GoogleSheets_tablename);
@@ -68,14 +68,18 @@ try {
 
         $characteristics = json_decode($good['characteristics'], 1);
 
-        TechInfo::preArray($characteristics);
-        exit;
-
         // Определяем значения для $specific_attributes
         $specific_values = array();
+
         foreach ($specific_attributes as $merged_attr => $attrs) {
-            // if (in_array())
-            $specific_values[] = $good[$attr];
+            foreach ($attrs as $attr) {
+                foreach ($characteristics as $char) {
+                    if ($char === $attr) {
+                        $specific_values[] = $good[$attr];
+                    }
+                }
+            }
+            
         }
         TechInfo::preArray($specific_values);
 
