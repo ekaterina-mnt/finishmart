@@ -47,7 +47,7 @@ class Napolnye
 
         foreach ($data as $values) {
             if (!isset($values[2])) {
-                $charsArray[$values[0]] = $values[1];
+                $charsArray[$values[0]][] = $values[1];
             }
         }
 

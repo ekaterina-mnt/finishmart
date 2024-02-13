@@ -68,9 +68,13 @@ try {
 
         $characteristics = json_decode($good['characteristics'], 1);
 
+        TechInfo::preArray($characteristics);
+        exit;
+
         // Определяем значения для $specific_attributes
         $specific_values = array();
-        foreach ($specific_attributes as $attr => $merged_attr) {
+        foreach ($specific_attributes as $merged_attr => $attrs) {
+            // if (in_array())
             $specific_values[] = $good[$attr];
         }
         TechInfo::preArray($specific_values);
