@@ -71,10 +71,10 @@ try {
         // Определяем значения для $specific_attributes
         $specific_values = array();
 
+        $characteristics['Тест'] = 'тест';
         foreach ($specific_attributes as $merged_attr => $attrs) {
             foreach ($attrs as $attr) {
                 foreach ($characteristics as $char => $value) {
-                    echo "$char - $attr <br>";
                     if ($char === $attr) {
                         $specific_values[$merged_attr] = $good[$attr];
                     }
@@ -83,12 +83,8 @@ try {
             if (!$specific_values[$merged_attr]) {
                 $specific_values[$merged_attr] = "-";
             }
-            if (!in_array($char, $all_spec_attrs)) echo "Эта характеристика не учтена в сопоставлении характеристик<br>";
+            if (!in_array($char, $all_spec_attrs)) echo "Эта характеристика не учтена в сопоставлении характеристик - $char<br>";
         }
-
-        TechInfo::preArray($specific_values);
-
-        exit;
 
         // Объединям
         $values = array_merge($common_values, $specific_values);
