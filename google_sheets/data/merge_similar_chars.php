@@ -25,6 +25,7 @@ try {
 
     // Первая ячейка, с которой начинается инзерт в Гугл Таблицу
     $current_cell = 4;
+    $start_column = "A";
     // В какую таблицу будет инзерт 
     $GoogleSheets_tablename = "napolnye_edition"; // еще есть napolnye_raw
 
@@ -34,13 +35,13 @@ try {
 
     // Определяем специфические атрибуты и заносим в таблицу
 
-    $specific_attributes_cell = "$list_name!B" . $current_cell - 1;
+    $attributes_cell = "$list_name!" . $start_column . $current_cell - 1;
 
     $specific_attributes = Napolnye::getMergedCharsArray();
     $all_spec_attrs = Napolnye::getAllAttrs(); // это в будущем для проверки все ли характеристики учтены в нашем списке
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
-    $insert_attributes = array_merge($common_attributes, $insert_specific_attributes);
-    Sheet::update_data($specific_attributes_cell, $insert_attributes, $GoogleSheets_tablename);
+    $insert_attributes = array_merge(['id в новой таблице', 'Дата изменения'], $common_attributes, $insert_specific_attributes);
+    Sheet::update_data($attributes_cell, $insert_attributes, $GoogleSheets_tablename);
 
 
     // Получаем id уже вставленных товаров и определяем последнюю заполненную строку
@@ -66,7 +67,7 @@ try {
         foreach ($common_attributes as $attr) {
             $common_values[] = $good[$attr];
         }
-        $common_values = array_merge([MySQL::get_mysql_datetime()], array_slice($common_values, 0, 1), ["-"], array_slice($common_values, 1));
+        $common_values = array_merge([MySQL::get_mysql_datetime()], $common_values);
 
         $characteristics = json_decode($good['characteristics'], 1);
 
