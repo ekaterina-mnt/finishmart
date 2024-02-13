@@ -50,7 +50,7 @@ try {
         $current_cell = $last_cell + 1;
     }
 
-    $specific_attributes_cell = "$list_name!S2";
+    $specific_attributes_cell = "$list_name!S" . $current_cell - 1;
 
     // $specific_attributes = SpecificChars::getChars($needed_category); - это чтобы брать первичную выгрузку делать в гугл таблицы (но вообще можно без этого, просто в MySQL брать и все)
     $specific_attributes = Napolnye::getCharsArray();
