@@ -47,11 +47,19 @@ class Napolnye
 
         foreach ($data as $values) {
             if (!isset($values[2])) {
-                $charsArray[$values[0]][] = $values[1];
+                $charsArray[$values[1]][] = $values[0];
             }
         }
-        TechInfo::preArray($charsArray);
-        exit;
+
+        // [Артикул] => Array // пример ключ-значение $charsArray
+        // (
+        //     [0] => Артикул
+        //     [1] => Штрихкод
+        //     [2] => Код 1
+        //     [3] => Код товара
+        // )
+
+        return $charsArray;
     }
 
 
