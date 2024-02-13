@@ -54,22 +54,25 @@ try {
 
     $specific_attributes = SpecificChars::getChars($needed_category);
     $spec_attr_list = Napolnye::getCharsArray();
-    TechInfo::preArray($spec_attr_list);
 
-    foreach ($spec_attr_list as $merged_attr => $good_attrs) {
+    TechInfo::preArray(array_values($spec_attr_list));
+
+    $final_specific_attributes = array();
+    foreach ($specific_attributes as $attr) {
         foreach ($good_attrs as $good_attr) {
+            
         }
     }
 
 
 
+    Sheet::update_data($specific_attributes_cell, $specific_attributes, "napolnye_raw");
 
 
     exit;
 
 
 
-    Sheet::update_data($specific_attributes_cell, $specific_attributes, "napolnye_raw");
 
     if ($filled_ids_str) {
         $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}' AND category like '{$needed_category}' AND id NOT IN ($filled_ids_str) AND (status like 'ok' OR status IS NULL) AND char_views > 0";

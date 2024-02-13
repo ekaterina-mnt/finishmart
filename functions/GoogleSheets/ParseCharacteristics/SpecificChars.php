@@ -19,5 +19,7 @@ class SpecificChars
 
         $query = "SELECT name FROM $char_table_name";
         $specific_attributes = array_column(mysqli_fetch_all(MySQL::sql($query), MYSQLI_ASSOC), "name");
+
+        return $specific_attributes;
     }
 }
