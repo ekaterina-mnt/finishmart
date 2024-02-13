@@ -56,7 +56,6 @@ try {
     $insert_data = array();
 
     TechInfo::preArray($specific_attributes);
-    exit;
     foreach ($goods as $i => $good) {
 
         // Определяем значения для $common_attributes
@@ -70,10 +69,13 @@ try {
 
         // Определяем значения для $specific_attributes
         $specific_values = array();
-        foreach ($specific_attributes as $attr) {
+        foreach ($specific_attributes as $attr => $merged_attr) {
 
             $specific_values[] = $good[$attr];
         }
+        TechInfo::preArray($specific_values);
+
+        exit;
 
         // Объединям
         $values = array_merge($common_values, $specific_values);
