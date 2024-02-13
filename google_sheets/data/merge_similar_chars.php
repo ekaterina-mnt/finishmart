@@ -52,21 +52,12 @@ try {
 
     $specific_attributes_cell = "$list_name!S2";
 
-    $specific_attributes = SpecificChars::getChars($needed_category);
-    $spec_attr_list = Napolnye::getCharsArray();
+    // $specific_attributes = SpecificChars::getChars($needed_category); - это чтобы брать первичную выгрузку делать в гугл таблицы (но вообще можно без этого, просто в MySQL брать и все)
+    $specific_attributes = Napolnye::getCharsArray();
 
-    TechInfo::preArray(array(...array_unique(array_values($spec_attr_list))));
+    $specific_attributes = array(...array_unique(array_values($spec_attr_list)));
 
-    $final_specific_attributes = array();
-    foreach ($specific_attributes as $attr) {
-        foreach ($good_attrs as $good_attr) {
-            
-        }
-    }
-
-
-
-    Sheet::update_data($specific_attributes_cell, $specific_attributes, "napolnye_raw");
+    Sheet::update_data($specific_attributes_cell, $specific_attributes, "napolnye_edition");
 
 
     exit;
