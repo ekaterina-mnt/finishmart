@@ -56,7 +56,6 @@ try {
     $goods = GetGoods::getGoods($filled_ids_str, $needed_subcategory, $needed_category);
     $insert_data = array();
 
-    TechInfo::preArray($specific_attributes);
     foreach ($goods as $i => $good) {
 
         // Определяем значения для $common_attributes
@@ -74,13 +73,15 @@ try {
         foreach ($specific_attributes as $merged_attr => $attrs) {
             foreach ($attrs as $attr) {
                 foreach ($characteristics as $char) {
+                    echo "$char - $attr <br>";
                     if ($char === $attr) {
                         $specific_values[] = $good[$attr];
                     }
                 }
             }
-            
+
         }
+        var_dump($specific_values);
         TechInfo::preArray($specific_values);
 
         exit;
