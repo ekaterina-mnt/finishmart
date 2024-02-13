@@ -75,9 +75,12 @@ try {
                 foreach ($characteristics as $char => $value) {
                     echo "$char - $attr <br>";
                     if ($char === $attr) {
-                        $specific_values[] = $good[$attr];
+                        $specific_values[$merged_attr] = $good[$attr];
                     }
                 }
+            }
+            if (!$specific_values[$merged_attr]) {
+                $specific_values[$merged_attr] = "-";
             }
 
         }
