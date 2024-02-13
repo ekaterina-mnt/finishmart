@@ -26,6 +26,8 @@ try {
     // Первая ячейка, с которой начинается инзерт в Гугл Таблицу
     $current_cell = 4;
     $start_column = "A";
+    $additional_columns = ['id в новой таблице', 'Дата изменения'];
+    
     // В какую таблицу будет инзерт 
     $GoogleSheets_tablename = "napolnye_edition"; // еще есть napolnye_raw
 
@@ -40,13 +42,13 @@ try {
     $specific_attributes = Napolnye::getMergedCharsArray();
     $all_spec_attrs = Napolnye::getAllAttrs(); // это в будущем для проверки все ли характеристики учтены в нашем списке
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
-    $insert_attributes = array_merge(['id в новой таблице', 'Дата изменения'], $common_attributes, $insert_specific_attributes);
+    $insert_attributes = array_merge($additional_columns, $common_attributes, $insert_specific_attributes);
     Sheet::update_data($attributes_cell, $insert_attributes, $GoogleSheets_tablename);
 
 
     // Получаем id уже вставленных товаров и определяем последнюю заполненную строку
 
-    $cells = Sheet::get_data("$list_name!C$current_cell:C10000", $GoogleSheets_tablename);
+    $cells = Sheet::get_data("$list_name!" . $start_column + count($additional_columns) . "$current_cell:C10000", $GoogleSheets_tablename);
 
     if ($cells['values']) {
         $filled_ids = array_column($cells['values'], 0);
