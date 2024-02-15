@@ -60,7 +60,7 @@ try {
     foreach ($needed_chars_values as $key => $status) {
         if ($status == 'ок') {
             $needed_columns[] = $needed_chars_keys[$key];
-        } elseif (preg_match('#значение: "([^)]+)"', $status, $matches)) {
+        } elseif (preg_match('#значение: "([^)]+)"#', $status, $matches)) {
             TechInfo::preArray($matches);
         }
     }
