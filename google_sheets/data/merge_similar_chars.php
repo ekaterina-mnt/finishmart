@@ -54,11 +54,18 @@ try {
         }
     }
 
-    // foreach ($needed_chars_values as $key => $column) {
+    if (count($needed_chars_values) != count($needed_chars_keys)) die("Не совпадает количество ключей и значений");
 
-    // }
-    TechInfo::preArray($needed_chars_keys);
-    TechInfo::preArray($needed_chars_values);
+    $needed_columns = array();
+    foreach ($needed_chars_values as $key => $status) {
+        if ($status == 'ок') {
+            $needed_columns[] = $needed_chars_keys[$key];
+        } elseif (preg_match('#значение: "(.+)"', $status, $matches)) {
+            TechInfo::preArray($matches);
+        }
+    }
+
+    TechInfo::preArray($needed_columns);
     exit;
 
 
