@@ -17,6 +17,7 @@ try {
 
     foreach ($napolnye as $title) {
         Sheet::create_new_page($title, $GoogleSheets_tablename);
+        echo "добавлен лист $title<br>";
     }
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
