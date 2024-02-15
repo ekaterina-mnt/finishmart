@@ -66,8 +66,8 @@ try {
 
         // Определяем значения для $common_attributes
         $common_values = array();
-        foreach ($common_attributes as $attr) {
-            $common_values[] = $good[$attr];
+        foreach ($common_attributes as $key => $attr) {
+            $common_values[$key] = $good[$attr];
         }
         $common_values = array_merge([MySQL::get_mysql_datetime()], $common_values);
 
@@ -77,6 +77,9 @@ try {
         $specific_values = array();
 
         foreach ($specific_attributes as $merged_attr => $attrs) {
+
+
+
             foreach ($attrs as $attr) {
                 foreach ($characteristics as $char => $value) {
                     if ($char === $attr) {
@@ -85,10 +88,19 @@ try {
                     if (!in_array($char, $all_spec_attrs)) $notCountedChars[] = $char;
                 }
             }
+
+            // if ($merged_attr == "В одной упаковке") {
+            //     $common_values["В одной упаковке"] = $
+            // }
+
             if (!$specific_values[$merged_attr]) {
                 $specific_values[$merged_attr] = "-";
             }
         }
+
+        // Объединяем пересекающиеся поля
+        $common_values["В одной упаковке"] ?? $specific_values["В одной упаковке"];
+        unset($specific_values["В одной упаковке"]);
 
         // Объединям
         $values = array_merge($common_values, $specific_values);
