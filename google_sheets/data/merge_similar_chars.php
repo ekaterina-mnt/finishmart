@@ -34,7 +34,8 @@ try {
 
     // Общие для всех категорий характеристики
     $common_attributes = CommonChars::getChars();
-    $count_common_attributes = count($common_attributes);
+    $insert_common_attributes = array_keys($common_attributes); // плюс добавляем ниже цену для клиента
+    $insert_common_attributes = array_merge(array_slice($insert_common_attributes, 0, array_search("Цена", $insert_common_attributes)), "Цена для клиента", array_slice($insert_common_attributes, 0, array_search("Цена", $insert_common_attributes)));
 
     // Пересекающаяся характеристика (есть и в common, и в specific)
     $cross = "В одной упаковке";
@@ -46,10 +47,8 @@ try {
     $specific_attributes = Napolnye::getMergedCharsArray();
     $all_spec_attrs = Napolnye::getAllAttrs(); // это в будущем для проверки все ли характеристики учтены в нашем списке
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
-    TechInfo::preArray($insert_specific_attributes);
     unset($insert_specific_attributes[array_search($cross, $insert_specific_attributes)]); // удаляем пересекающуюся характеристику, чтобы не дублировалась
-    TechInfo::preArray($insert_specific_attributes);
-    $insert_attributes = array_merge($additional_columns, array_keys($common_attributes), $insert_specific_attributes);
+    $insert_attributes = array_merge($additional_columns, $insert_common_attributes, $insert_specific_attributes);
     Sheet::update_data($attributes_cell, $insert_attributes, $GoogleSheets_tablename);
 
 
@@ -75,6 +74,7 @@ try {
         $common_values = array();
         foreach ($common_attributes as $key => $attr) {
             $common_values[$key] = $good[$attr];
+            if ($key == 'Цена') $common_values['Цена для клиента'] = $good[$attr] * 1.1;
         }
         $common_values = array_merge([MySQL::get_mysql_datetime()], $common_values);
 
@@ -84,8 +84,6 @@ try {
         $specific_values = array();
 
         foreach ($specific_attributes as $merged_attr => $attrs) {
-
-            // if ($merged_attr == $cross) continue;
 
             foreach ($attrs as $attr) {
                 foreach ($characteristics as $char => $value) {
