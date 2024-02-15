@@ -52,3 +52,7 @@ $napolnye_subcategories = Napolnye::getSubcategoriesNapolnye();
     </select></p>
     <p><input type="submit" value="Отправить"></p>
 </form>
+
+<br><br>
+<a href="http://penzevrv.beget.tech/google_sheets/data/create_subcategory_pages.php">Вставить в таблицу пустые листы для каждой подкатегории</a>
+

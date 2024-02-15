@@ -9,6 +9,10 @@ use Google_Service_Sheets;
 use Google_Service_Sheets_ValueRange;
 use Google_Service_Sheets_BatchUpdateValuesRequest;
 use Google_Service_Sheets_ClearValuesRequest;
+use Google_Service_Sheets_SheetProperties;
+use Google_Service_Sheets_AddSheetRequest;
+use Google_Service_Sheets_Request;
+use Google_Service_Sheets_BatchUpdateSpreadsheetRequest;
 
 class Sheet
 {
@@ -111,6 +115,32 @@ class Sheet
 
         $clear = new Google_Service_Sheets_ClearValuesRequest();
         $response = $service->spreadsheets_values->clear(self::get_sheetID($service_account), $range, $clear);
+    }
+
+    static function create_new_page($title, $service_account)
+    {
+        $service = self::get_connect($service_account);
+        $spreadsheetId = self::get_sheetID($service_account);
+
+        //Создаем новый объект с типом свойство листа
+        $SheetProperties = new Google_Service_Sheets_SheetProperties();
+        // Указываем имя листа
+        $SheetProperties->setTitle($title);
+
+        // Объект - запрос на добавление листа
+        $AddSheetRequests = new Google_Service_Sheets_AddSheetRequest();
+        $AddSheetRequests->setProperties($SheetProperties);
+
+        // Объект - запрос
+        $SheetRequests = new Google_Service_Sheets_Request();
+        $SheetRequests->setAddSheet($AddSheetRequests);
+
+        // Объект - запрос на обновление электронной таблицы
+        $requests = new Google_Service_Sheets_BatchUpdateSpreadsheetRequest();
+        $requests->setRequests($SheetRequests);
+
+        // Выполняем запрос на обновление таблицы
+        $response = $service->spreadsheets->BatchUpdate($spreadsheetId, $requests);
     }
 
     static function get_month_columns()
