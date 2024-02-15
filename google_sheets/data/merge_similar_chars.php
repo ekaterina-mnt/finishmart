@@ -11,6 +11,7 @@ use functions\GoogleSheets\ParseCharacteristics\SpecificChars;
 use functions\GoogleSheets\ParseCharacteristics\CommonChars;
 use functions\GoogleSheets\Goods\GetGoods;
 use Google\Service\AuthorizedBuyersMarketplace\Contact;
+use functions\GoogleSheets\ParseCharacteristics\DefineNeededColumns;
 
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
@@ -45,25 +46,7 @@ try {
 
     /////// ОПРЕДЕЛЯЕМ КАКИЕ КОЛОНКИ НАМ НУЖНЫ ДЛЯ КАЖДОЙ ОТДЕЛЬНОЙ ПОДКАТЕГОРИИ ///////
 
-    $needed_chars = Sheet::get_data("$needed_chars_list_name!A1:AV11", $GoogleSheets_tablename);
-    $needed_chars_keys = array_slice($needed_chars['values'][0], 1);
-    foreach ($needed_chars['values'] as $k) {
-        if ($k[0] == $needed_subcategory) {
-            $needed_chars_values = array_slice($k, 1);
-            break;
-        }
-    }
-
-    if (count($needed_chars_values) != count($needed_chars_keys)) die("Не совпадает количество ключей и значений");
-
-    $needed_columns = array();
-    foreach ($needed_chars_values as $key => $status) {
-        if ($status == 'ок') {
-            $needed_columns[$needed_chars_keys[$key]] = null;
-        } elseif (preg_match('#значение: "(.+)"#', $status, $matches)) {
-            $needed_columns[$needed_chars_keys[$key]] = $matches[1];
-        }
-    }
+    $needed_columns = DefineNeededColumns::define($needed_chars_list_name, $GoogleSheets_tablename, $needed_subcategory);
 
     TechInfo::preArray($needed_columns);
     exit;
