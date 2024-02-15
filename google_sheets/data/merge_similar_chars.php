@@ -35,7 +35,7 @@ try {
     // Общие для всех категорий характеристики
     $common_attributes = CommonChars::getChars();
     $insert_common_attributes = array_keys($common_attributes); // плюс добавляем ниже цену для клиента
-    $insert_common_attributes = array_merge(array_slice($insert_common_attributes, 0, array_search("Цена", $insert_common_attributes)), ["Цена для клиента"], array_slice($insert_common_attributes, array_search("Цена", $insert_common_attributes)));
+    $insert_common_attributes = array_merge(array_slice($insert_common_attributes, 0, array_search("Цена", $insert_common_attributes) - 1), ["Цена для клиента"], array_slice($insert_common_attributes, array_search("Цена", $insert_common_attributes) - 1));
 
     // Пересекающаяся характеристика (есть и в common, и в specific)
     $cross = "В одной упаковке";
@@ -74,7 +74,7 @@ try {
         $common_values = array();
         foreach ($common_attributes as $key => $attr) {
             $common_values[$key] = $good[$attr];
-            if ($key == 'Цена') $common_values['Цена для клиента'] = $good[$attr] * 1.1;
+            if ($key == 'Цена') $common_values['Цена для клиента'] = (int) $good[$attr] * 1.1;
         }
         $common_values = array_merge([MySQL::get_mysql_datetime()], $common_values);
 
