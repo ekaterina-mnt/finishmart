@@ -35,13 +35,18 @@ try {
     $common_attributes = CommonChars::getChars();
     $count_common_attributes = count($common_attributes);
 
+    // Пересекающаяся характеристика (есть и в common, и в specific)
+    $cross = "В одной упаковке";
+
     // Определяем специфические атрибуты и заносим в таблицу
 
     $attributes_cell = "$list_name!" . $start_column . $current_cell - 1;
 
     $specific_attributes = Napolnye::getMergedCharsArray();
     $all_spec_attrs = Napolnye::getAllAttrs(); // это в будущем для проверки все ли характеристики учтены в нашем списке
-    $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
+    $insert_specific_attributes = array_keys($specific_attributes);
+    unset($insert_specific_attributes[$cross]); // удаляем пересекающуюся характеристику, чтобы не дублировалась
+    $insert_specific_attributes = array(...array_unique($insert_specific_attributes));
     $insert_attributes = array_merge($additional_columns, array_keys($common_attributes), $insert_specific_attributes);
     Sheet::update_data($attributes_cell, $insert_attributes, $GoogleSheets_tablename);
 
@@ -89,18 +94,14 @@ try {
                 }
             }
 
-            // if ($merged_attr == "В одной упаковке") {
-            //     $common_values["В одной упаковке"] = $
-            // }
-
             if (!$specific_values[$merged_attr]) {
                 $specific_values[$merged_attr] = "-";
             }
         }
 
         // Объединяем пересекающиеся поля
-        $common_values["В одной упаковке"] ?? $specific_values["В одной упаковке"];
-        unset($specific_values["В одной упаковке"]);
+        $common_values[$cross] ?? $specific_values[$cross];
+        unset($specific_values[$cross]);
 
         // Объединям
         $values = array_merge($common_values, $specific_values);
