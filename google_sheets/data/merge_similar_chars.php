@@ -10,6 +10,7 @@ use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 use functions\GoogleSheets\ParseCharacteristics\SpecificChars;
 use functions\GoogleSheets\ParseCharacteristics\CommonChars;
 use functions\GoogleSheets\Goods\GetGoods;
+use Google\Service\AuthorizedBuyersMarketplace\Contact;
 
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
@@ -84,7 +85,7 @@ try {
 
         foreach ($specific_attributes as $merged_attr => $attrs) {
 
-
+            if ($merged_attr == $cross) continue;
 
             foreach ($attrs as $attr) {
                 foreach ($characteristics as $char => $value) {
