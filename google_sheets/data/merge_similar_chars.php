@@ -14,6 +14,12 @@ use Google\Service\AuthorizedBuyersMarketplace\Contact;
 
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
+
+
+
+
+    /////// ОПРЕДЕЛЯЕМ НУЖНЫЕ ПЕРЕМЕННЫЕ ///////
+
     echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
 
     if (!isset($_POST['category']) or !isset($_POST['subcategory'])) exit("Нужны параметры 'категория' и 'подкатегория'");
@@ -23,6 +29,7 @@ try {
     $needed_category = $_POST['category'];
     $needed_subcategory = $_POST['subcategory'];
     $list_name = $needed_subcategory;
+    $needed_chars_list_name = "Сопоставления по подкатегориям";
 
     // Первая ячейка, с которой начинается инзерт в Гугл Таблицу
     $current_cell = 4;
@@ -31,6 +38,22 @@ try {
 
     // В какую таблицу будет инзерт 
     $GoogleSheets_tablename = "napolnye_raw"; // еще есть napolnye_raw
+
+
+
+
+
+    /////// ОПРЕДЕЛЯЕМ КАКИЕ КОЛОНКИ НАМ НУЖНЫ ДЛЯ КАЖДОЙ ОТДЕЛЬНОЙ ПОДКАТЕГОРИИ ///////
+
+    $needed_chars = Sheet::get_data("$needed_chars_list_name!A1:AV11", $GoogleSheets_tablename);
+    TechInfo::preArray($needed_chars);
+    exit;
+
+
+
+
+
+    /////// ВСТАВЛЯЕМ СТРОКУ С ЗАГОЛОВКАМИ ХАРАКТЕРИСТИК ///////
 
     // Общие для всех категорий характеристики
     $common_attributes = CommonChars::getChars();
@@ -62,6 +85,14 @@ try {
         $filled_ids_str = implode(', ', $filled_ids);
         $current_cell = $last_cell + 1;
     }
+
+
+
+
+
+
+
+    /////// ВСТАВЛЯЕМ ЗНАЧЕНИЯ ДЛЯ СТОЛБЦОВ ///////
 
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids_str, $needed_subcategory, $needed_category);
