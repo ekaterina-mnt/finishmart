@@ -46,12 +46,17 @@ try {
     /////// ОПРЕДЕЛЯЕМ КАКИЕ КОЛОНКИ НАМ НУЖНЫ ДЛЯ КАЖДОЙ ОТДЕЛЬНОЙ ПОДКАТЕГОРИИ ///////
 
     $needed_chars = Sheet::get_data("$needed_chars_list_name!A1:AV11", $GoogleSheets_tablename);
-    $needed_chars_keys = $needed_chars['values'][0];
+    $needed_chars_keys = array_slice($needed_chars['values'][0], 1);
     foreach ($needed_chars['values'] as $k) {
         if ($k[0] == $needed_subcategory) {
-            $needed_chars_values = $k;
+            $needed_chars_values = array_slice($k, 1);
+            break;
         }
     }
+
+    // foreach ($needed_chars_values as $key => $column) {
+
+    // }
     TechInfo::preArray($needed_chars_keys);
     TechInfo::preArray($needed_chars_values);
     exit;
