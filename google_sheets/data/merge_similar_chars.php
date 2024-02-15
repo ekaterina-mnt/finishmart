@@ -100,7 +100,7 @@ try {
         }
 
         // Объединяем пересекающиеся поля
-        $common_values[$cross] ?? $specific_values[$cross];
+        $common_values[$cross] = $common_values[$cross] ?? $specific_values[$cross];
         unset($specific_values[$cross]);
 
         // Объединям
