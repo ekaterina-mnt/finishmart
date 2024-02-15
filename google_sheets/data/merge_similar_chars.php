@@ -85,7 +85,7 @@ try {
 
         foreach ($specific_attributes as $merged_attr => $attrs) {
 
-            if ($merged_attr == $cross) continue;
+            // if ($merged_attr == $cross) continue;
 
             foreach ($attrs as $attr) {
                 foreach ($characteristics as $char => $value) {
