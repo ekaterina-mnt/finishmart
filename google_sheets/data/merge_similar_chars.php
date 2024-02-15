@@ -46,7 +46,7 @@ try {
     $all_spec_attrs = Napolnye::getAllAttrs(); // это в будущем для проверки все ли характеристики учтены в нашем списке
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
     TechInfo::preArray($insert_specific_attributes);
-    unset($insert_specific_attributes[$cross]); // удаляем пересекающуюся характеристику, чтобы не дублировалась
+    unset($insert_specific_attributes[array_search($cross, $insert_specific_attributes)]); // удаляем пересекающуюся характеристику, чтобы не дублировалась
     TechInfo::preArray($insert_specific_attributes);
     $insert_attributes = array_merge($additional_columns, array_keys($common_attributes), $insert_specific_attributes);
     Sheet::update_data($attributes_cell, $insert_attributes, $GoogleSheets_tablename);
