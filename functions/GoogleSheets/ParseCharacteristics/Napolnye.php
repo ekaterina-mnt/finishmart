@@ -31,9 +31,9 @@ class Napolnye
         return $subcategories;
     }
 
-    static function getMergedCharsArray()
+    static function getMergedCharsArray($GoogleSheets_tablename)
     {
-        $data = self::getAllAttrData();
+        $data = self::getAllAttrData($GoogleSheets_tablename);
 
         $charsArray = array();
 
@@ -54,9 +54,9 @@ class Napolnye
         return $charsArray;
     }
 
-    static function getAllAttrs()
+    static function getAllAttrs($GoogleSheets_tablename)
     {
-        $data = self::getAllAttrData();
+        $data = self::getAllAttrData($GoogleSheets_tablename);
 
         $allAttrs = array();
 
@@ -67,10 +67,10 @@ class Napolnye
         return $allAttrs;
     }
 
-    static function getAllAttrData()
+    static function getAllAttrData($GoogleSheets_tablename)
     {
         if (!self::$allAttrData) {
-            $data = Sheet::get_data("B3:D", "napolnye_edition");
+            $data = Sheet::get_data("B3:D", $GoogleSheets_tablename);
             $data = $data['values'];
 
             self::$allAttrData = $data;

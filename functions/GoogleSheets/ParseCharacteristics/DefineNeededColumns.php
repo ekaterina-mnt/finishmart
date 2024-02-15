@@ -13,7 +13,7 @@ class DefineNeededColumns
 {
     static function define($list_name, $GoogleSheets_tablename, $needed_subcategory)
     {
-        $needed_chars = Sheet::get_data("$list_name!A1:AV11", $GoogleSheets_tablename);
+        $needed_chars = Sheet::get_data("$list_name!A1:AW11", $GoogleSheets_tablename);
         $needed_chars_keys = array_slice($needed_chars['values'][0], 1);
         foreach ($needed_chars['values'] as $k) {
             if ($k[0] == $needed_subcategory) {

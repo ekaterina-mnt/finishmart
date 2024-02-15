@@ -13,6 +13,11 @@ use functions\GoogleSheets\Goods\GetGoods;
 use Google\Service\AuthorizedBuyersMarketplace\Contact;
 use functions\GoogleSheets\ParseCharacteristics\DefineNeededColumns;
 
+
+// Этот файл используем когда   !!! НЕТ !!!   итоговой сравнительной таблицы со значениями "ок", "удалить", "значение: "...""
+
+
+
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
@@ -44,16 +49,6 @@ try {
 
 
 
-    /////// ОПРЕДЕЛЯЕМ КАКИЕ КОЛОНКИ НАМ НУЖНЫ ДЛЯ КАЖДОЙ ОТДЕЛЬНОЙ ПОДКАТЕГОРИИ ///////
-
-    $needed_columns = DefineNeededColumns::define($needed_chars_list_name, $GoogleSheets_tablename, $needed_subcategory);
-
-    TechInfo::preArray($needed_columns);
-    exit;
-
-
-
-
 
     /////// ВСТАВЛЯЕМ СТРОКУ С ЗАГОЛОВКАМИ ХАРАКТЕРИСТИК ///////
 
@@ -69,11 +64,12 @@ try {
 
     $attributes_cell = "$list_name!" . $start_column . $current_cell - 1;
 
-    $specific_attributes = Napolnye::getMergedCharsArray();
-    $all_spec_attrs = Napolnye::getAllAttrs(); // это в будущем для проверки все ли характеристики учтены в нашем списке
+    $specific_attributes = Napolnye::getMergedCharsArray($GoogleSheets_tablename);
+    $all_spec_attrs = Napolnye::getAllAttrs($GoogleSheets_tablename); // это в будущем для проверки все ли характеристики учтены в нашем списке
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
     unset($insert_specific_attributes[array_search($cross, $insert_specific_attributes)]); // удаляем пересекающуюся характеристику, чтобы не дублировалась
     $insert_attributes = array_merge($additional_columns, $insert_common_attributes, $insert_specific_attributes);
+    $insert_attributes = array_intersect($needed_columns, $insert_attributes);
     Sheet::update_data($attributes_cell, $insert_attributes, $GoogleSheets_tablename);
 
 
