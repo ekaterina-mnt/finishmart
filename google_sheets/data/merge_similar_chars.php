@@ -59,9 +59,9 @@ try {
     $needed_columns = array();
     foreach ($needed_chars_values as $key => $status) {
         if ($status == 'ок') {
-            $needed_columns[] = $needed_chars_keys[$key];
+            $needed_columns[$needed_chars_keys[$key]] = null;
         } elseif (preg_match('#значение: "(.+)"#', $status, $matches)) {
-            TechInfo::preArray($matches);
+            $needed_columns[$needed_chars_keys[$key]] = $matches[1];
         }
     }
 
