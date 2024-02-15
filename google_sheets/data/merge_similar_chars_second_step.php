@@ -41,6 +41,8 @@ try {
     $current_cell = 4;
     $start_column = "A";
     $additional_columns = ['id в новой таблице', 'Дата изменения'];
+    
+    $attributes_cell = "$list_name!" . $start_column . $current_cell - 1;
 
     // В какую таблицу будет инзерт 
     $GoogleSheets_tablename = "napolnye_raw"; // еще есть napolnye_raw
