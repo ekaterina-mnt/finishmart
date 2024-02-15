@@ -46,7 +46,14 @@ try {
     /////// ОПРЕДЕЛЯЕМ КАКИЕ КОЛОНКИ НАМ НУЖНЫ ДЛЯ КАЖДОЙ ОТДЕЛЬНОЙ ПОДКАТЕГОРИИ ///////
 
     $needed_chars = Sheet::get_data("$needed_chars_list_name!A1:AV11", $GoogleSheets_tablename);
-    TechInfo::preArray($needed_chars);
+    $needed_chars_keys = $needed_chars['values'][0];
+    foreach ($needed_chars['values'] as $k) {
+        if ($k[0] == $needed_subcategory) {
+            $needed_chars_values = $k;
+        }
+    }
+    TechInfo::preArray($needed_chars_keys);
+    TechInfo::preArray($needed_chars_values);
     exit;
 
 
