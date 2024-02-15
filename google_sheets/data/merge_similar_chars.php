@@ -35,7 +35,7 @@ try {
     // Общие для всех категорий характеристики
     $common_attributes = CommonChars::getChars();
     $insert_common_attributes = array_keys($common_attributes); // плюс добавляем ниже цену для клиента
-    $insert_common_attributes = array_merge(array_slice($insert_common_attributes, 0, array_search("Цена", $insert_common_attributes) - 1), ["Цена для клиента"], array_slice($insert_common_attributes, array_search("Цена", $insert_common_attributes) - 1));
+    $insert_common_attributes = array_merge(array_slice($insert_common_attributes, 0, array_search("Цена", $insert_common_attributes) + 1), ["Цена для клиента"], array_slice($insert_common_attributes, array_search("Цена", $insert_common_attributes) + 1));
 
     // Пересекающаяся характеристика (есть и в common, и в specific)
     $cross = "В одной упаковке";
