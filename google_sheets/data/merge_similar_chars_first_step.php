@@ -44,7 +44,7 @@ try {
     $additional_columns = ['id в новой таблице', 'Дата изменения'];
 
     // В какую таблицу будет инзерт 
-    $GoogleSheets_tablename = "napolnye_raw"; // еще есть napolnye_raw
+    $GoogleSheets_tablename = "napolnye_edition"; // еще есть napolnye_raw
 
 
 
