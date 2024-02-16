@@ -85,6 +85,7 @@ try {
     $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
+        $good_insert_values = array();
 
         // Определяем значения для колонок
 
@@ -92,14 +93,14 @@ try {
 
             // если у этой колонки одинаковые для всей подкатегории значения
             if ($value) {
-                $insert_values[$column] = $value;
+                $good_insert_values[$column] = $value;
                 continue;
             }
 
             // для общих для всех подкатегорий характеристик
             if (in_array($column, array_keys($common_attributes))) {
-                $insert_values[$column] = $good[$common_attributes[array_search($column, array_keys($common_attributes))]];
-                if ($key == 'Цена') $insert_values['Цена для клиента'] = round($good['price'] * 1.1);
+                $good_insert_values[$column] = $good[$common_attributes[array_search($column, array_keys($common_attributes))]];
+                if ($key == 'Цена') $good_insert_values['Цена для клиента'] = round($good['price'] * 1.1);
                 continue;
             }
 
@@ -109,9 +110,9 @@ try {
                 foreach ($attrs as $attr) {
                     if (in_array($attr, $characteristics)) {
                         if ($column == $cross) {
-                            $insert_values[$column] = $insert_values[$column] ?? $characteristics[$attr];
+                            $good_insert_values[$column] = $good_insert_values[$column] ?? $characteristics[$attr];
                         } else {
-                            $insert_values[$column] = $characteristics[$attr];
+                            $good_insert_values[$column] = $characteristics[$attr];
                         }
                         continue;
                     } else {
@@ -124,8 +125,8 @@ try {
             //     $specific_values[$merged_attr] = "-";
             // }
 
-            $insert_values = array_map(fn ($value) => $value ?? "-", $insert_values);
-            $insert_values[] = FormInsertData::get_i($list_name, $insert_values, "B", $current_cell++);
+            $good_insert_values = array_map(fn ($value) => $value ?? "-", $good_insert_values);
+            $insert_values[] = FormInsertData::get_i($list_name, $good_insert_values, "B", $current_cell++);
         }
     }
 
