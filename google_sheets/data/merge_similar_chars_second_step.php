@@ -121,6 +121,7 @@ try {
                     }
                 }
             }
+        }
 
             // if (!$specific_values[$merged_attr]) {
             //     $specific_values[$merged_attr] = "-";
@@ -134,7 +135,7 @@ try {
 
             TechInfo::preArray($insert_values);
             exit;
-        }
+        
     }
 
 
