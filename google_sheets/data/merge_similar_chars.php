@@ -74,7 +74,8 @@ try {
 
     $letter = "D";
     $str = "=\"UPDATE final_products SET ";
-foreach ($insert_attributes as $attr) {
+foreach ($insert_attributes as $$attr) {
+    if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
     $str .= $attr . '=' . "'\"&$letter" . "4&\"', ";
     $letter++;
 }
