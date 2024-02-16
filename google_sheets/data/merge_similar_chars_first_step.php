@@ -12,6 +12,7 @@ use functions\GoogleSheets\ParseCharacteristics\CommonChars;
 use functions\GoogleSheets\Goods\GetGoods;
 use Google\Service\AuthorizedBuyersMarketplace\Contact;
 use functions\GoogleSheets\ParseCharacteristics\DefineNeededColumns;
+use functions\GoogleSheets\ParseCharacteristics\GetFilledIds;
 
 
 // Этот файл используем когда   !!! НЕТ !!!   итоговой сравнительной таблицы со значениями "ок", "удалить", "значение: "...""
@@ -75,14 +76,10 @@ try {
 
     // Получаем id уже вставленных товаров и определяем последнюю заполненную строку
 
-    $cells = Sheet::get_data("$list_name!C" . "$current_cell:C10000", $GoogleSheets_tablename);
+    $filled_ids_data = GetFilledIds::get($list_name, $current_cell, $GoogleSheets_tablename);
+    $filled_ids =$filled_ids_data['filled_ids'];
+    $current_cell = $filled_ids_data['current_cell'];
 
-    if ($cells['values']) {
-        $filled_ids = array_column($cells['values'], 0);
-        $last_cell = array_key_last($filled_ids) + $current_cell;
-        $filled_ids_str = implode(', ', $filled_ids);
-        $current_cell = $last_cell + 1;
-    }
 
 
 
