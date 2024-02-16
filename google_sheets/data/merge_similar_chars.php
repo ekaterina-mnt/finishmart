@@ -73,13 +73,13 @@ try {
     // $insert_attributes = array_intersect($needed_columns, $insert_attributes);
 
     $letter = "D";
-    $str = "=UPDATE final_products SET ";
+    $str = "=\"UPDATE final_products SET ";
 foreach ($insert_attributes as $attr) {
-    $str .= $attr . '="' . "'&$letter" . '4&", ';
+    $str .= $attr . '=' . "'\"&$letter" . "4&'\", ";
     $letter++;
 }
 $str = substr($str, 0, -2);
-$str .= " WHERE dir_id=C4";
+$str .= " WHERE dir_id=C4\"";
 var_dump($str);
 exit;
     
