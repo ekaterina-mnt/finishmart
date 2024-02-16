@@ -90,10 +90,10 @@ try {
         // Определяем значения для колонок
 
         TechInfo::preArray($needed_columns);
-        foreach ($needed_columns as $column => $value) {
+        foreach (array_keys($needed_columns) as $column) {
 
             // если у этой колонки одинаковые для всей подкатегории значения
-            if ($value) {
+            if ($needed_columns[$column]) {
                 $good_insert_values[$column] = $value;
                 continue;
             }
