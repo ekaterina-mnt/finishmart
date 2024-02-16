@@ -89,8 +89,6 @@ try {
 
         // Определяем значения для колонок
 
-        TechInfo::preArray($needed_columns);
-        TechInfo::preArray($common_attributes);
         foreach (array_keys($needed_columns) as $column) {
 
             // если у этой колонки одинаковые для всей подкатегории значения
@@ -101,15 +99,20 @@ try {
 
             // для общих для всех подкатегорий характеристик
             if (in_array($column, array_keys($common_attributes))) {
-                var_dump($common_attributes[$column]);
                 $good_insert_values[$column] = $good[$common_attributes[$column]];
-                if ($key == 'Цена') $good_insert_values['Цена для клиента'] = round($good['price'] * 1.1);
+                continue;
+            }
+
+            // отдельно высчитываем цену для клиента
+            if ($key == 'Цена') {
+                $good_insert_values['Цена для клиента'] = round($good['price'] * 1.1);
                 continue;
             }
 
             // для специфичных характеристик из сводной таблицы
             $characteristics = json_decode($good['characteristics'], 1);
             foreach ($specific_attributes[$column] as $merged_attr => $attrs) {
+                TechInfo::preArray($merged_attr);
                 foreach ($attrs as $attr) {
                     if (in_array($attr, $characteristics)) {
                         if ($column == $cross) {
@@ -125,19 +128,18 @@ try {
             }
         }
 
-            // if (!$specific_values[$merged_attr]) {
-            //     $specific_values[$merged_attr] = "-";
-            // }
+        // if (!$specific_values[$merged_attr]) {
+        //     $specific_values[$merged_attr] = "-";
+        // }
 
-            // $good_insert_values = array_map(fn ($value) => $value ?? "-", $good_insert_values);
-            TechInfo::preArray($good_insert_values);
+        // $good_insert_values = array_map(fn ($value) => $value ?? "-", $good_insert_values);
+        TechInfo::preArray($good_insert_values);
 
-        
-            $insert_values[] = FormInsertData::get_i($list_name, $good_insert_values, "B", $current_cell++);
 
-            TechInfo::preArray($insert_values);
-            exit;
-        
+        $insert_values[] = FormInsertData::get_i($list_name, $good_insert_values, "B", $current_cell++);
+
+        TechInfo::preArray($insert_values);
+        exit;
     }
 
 
