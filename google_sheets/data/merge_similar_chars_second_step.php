@@ -130,6 +130,9 @@ try {
         }
     }
 
+    TechInfo::preArray($insert_values);
+    
+
     echo "<br>Всего строк добавлено:" . count($insert_values);
     if (count($notCountedChars)) echo "<br><br>Эти характеристики не учтены в сопоставлении характеристик - " . implode(", ", array_unique($notCountedChars)) . "<br>";
     Sheet::update_few_data($insert_values, $GoogleSheets_tablename);
