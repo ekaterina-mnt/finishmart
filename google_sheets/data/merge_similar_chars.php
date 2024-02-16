@@ -35,7 +35,7 @@ try {
 
     $needed_category = $_POST['category'];
     $needed_subcategory = $_POST['subcategory'];
-    $list_name = $needed_subcategory;
+    $list_name = "Товары";
     // $needed_chars_list_name = "Сопоставления по подкатегориям";
 
     // Первая ячейка, с которой начинается инзерт в Гугл Таблицу
@@ -44,7 +44,7 @@ try {
     $additional_columns = ['id в новой таблице', 'Дата изменения'];
 
     // В какую таблицу будет инзерт 
-    $GoogleSheets_tablename = "napolnye_edition"; // еще есть napolnye_raw
+    $GoogleSheets_tablename = "napolnye_raw"; // еще есть napolnye_raw
 
 
 
