@@ -112,7 +112,7 @@ try {
             // для специфичных характеристик из сводной таблицы
             $characteristics = json_decode($good['characteristics'], 1);
             foreach ($specific_attributes[$column] as $attrs) {
-                TechInfo::preArray($attrs);
+                var_dump($attrs);
                 foreach ($attrs as $attr) {
                     if (in_array($attr, $characteristics)) {
                         if ($column == $cross) {
