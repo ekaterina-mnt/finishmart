@@ -95,7 +95,7 @@ try {
 
             // если у этой колонки одинаковые для всей подкатегории значения
             if ($needed_columns[$column]) {
-                $good_insert_values[$column] = $value;
+                $good_insert_values[$column] = $needed_columns[$column];
                 continue;
             }
 
@@ -128,7 +128,7 @@ try {
             //     $specific_values[$merged_attr] = "-";
             // }
 
-            $good_insert_values = array_map(fn ($value) => $value ?? "-", $good_insert_values);
+            // $good_insert_values = array_map(fn ($value) => $value ?? "-", $good_insert_values);
             TechInfo::preArray($good_insert_values);
 
         
