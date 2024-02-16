@@ -81,11 +81,11 @@ try {
     $goods = GetGoods::getGoods($filled_ids_str, $needed_subcategory, $needed_category);
 
     $insert_values = array();
-    $insert_values[] = MySQL::get_mysql_datetime();
     $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
         $good_insert_values = array();
+        $good_insert_values[] = MySQL::get_mysql_datetime();
 
         // Определяем значения для колонок
 
@@ -126,12 +126,16 @@ try {
             // }
 
             $good_insert_values = array_map(fn ($value) => $value ?? "-", $good_insert_values);
+            TechInfo::preArray($good_insert_values);
+
+        
             $insert_values[] = FormInsertData::get_i($list_name, $good_insert_values, "B", $current_cell++);
+
+            TechInfo::preArray($insert_values);
+            exit;
         }
     }
 
-    TechInfo::preArray($insert_values);
-    
 
     echo "<br>Всего строк добавлено:" . count($insert_values);
     if (count($notCountedChars)) echo "<br><br>Эти характеристики не учтены в сопоставлении характеристик - " . implode(", ", array_unique($notCountedChars)) . "<br>";
