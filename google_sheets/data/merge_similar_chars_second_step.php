@@ -111,19 +111,16 @@ try {
 
             // для специфичных характеристик из сводной таблицы
             $characteristics = json_decode($good['characteristics'], 1);
-            foreach ($specific_attributes[$column] as $attrs) {
-                var_dump($attrs);
-                foreach ($attrs as $attr) {
-                    if (in_array($attr, $characteristics)) {
-                        if ($column == $cross) {
-                            $good_insert_values[$column] = $good_insert_values[$column] ?? $characteristics[$attr];
-                        } else {
-                            $good_insert_values[$column] = $characteristics[$attr];
-                        }
-                        continue;
+            foreach ($specific_attributes[$column] as $attr) {
+                if (in_array($attr, $characteristics)) {
+                    if ($column == $cross) {
+                        $good_insert_values[$column] = $good_insert_values[$column] ?? $characteristics[$attr];
                     } else {
-                        $notCountedChars[] = $char;
+                        $good_insert_values[$column] = $characteristics[$attr];
                     }
+                    continue;
+                } else {
+                    $notCountedChars[] = $char;
                 }
             }
         }
