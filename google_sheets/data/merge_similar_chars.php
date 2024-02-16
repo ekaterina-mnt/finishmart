@@ -71,6 +71,17 @@ try {
     unset($insert_specific_attributes[array_search($cross, $insert_specific_attributes)]); // удаляем пересекающуюся характеристику, чтобы не дублировалась
     $insert_attributes = array_merge($additional_columns, $insert_common_attributes, $insert_specific_attributes);
     // $insert_attributes = array_intersect($needed_columns, $insert_attributes);
+
+    $letter = "D";
+    $str = "=UPDATE final_products SET ";
+foreach ($insert_attributes as $attr) {
+    $str .= $attr . '=' . "'" . "&$letter" . "4&" . "'";
+    $letter++;
+}
+$str .= " WHERE dir_id=C4";
+var_dump($str);
+exit;
+    
     Sheet::update_data($attributes_cell, $insert_attributes, $GoogleSheets_tablename);
 
 
