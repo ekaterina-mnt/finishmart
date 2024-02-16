@@ -90,7 +90,7 @@ try {
         // Определяем значения для колонок
 
         TechInfo::preArray($needed_columns);
-        TechInfo::preArray($specific_attributes);
+        TechInfo::preArray($common_attributes);
         foreach (array_keys($needed_columns) as $column) {
 
             // если у этой колонки одинаковые для всей подкатегории значения
@@ -101,6 +101,7 @@ try {
 
             // для общих для всех подкатегорий характеристик
             if (in_array($column, array_keys($common_attributes))) {
+                var_dump(array_search($column, array_keys($common_attributes)));
                 $good_insert_values[$column] = $good[$common_attributes[array_search($column, array_keys($common_attributes))]];
                 if ($key == 'Цена') $good_insert_values['Цена для клиента'] = round($good['price'] * 1.1);
                 continue;
