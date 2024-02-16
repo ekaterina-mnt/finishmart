@@ -82,8 +82,21 @@ try {
     }
     $str = substr($str, 0, -2);
     $str .= " WHERE id=\"C4\"\";";
-    
-    echo $str;
+    echo $str . "<br><br>";
+
+
+    // Создать тест insert-запроса
+    $letter = "D";
+    $str = "=\"INSERT INTO final_products (";
+    $str .= implode(", ", array_slice($insert_attributes, 3));
+    $str .= ") VALUES (";
+    foreach ($insert_attributes as $attr) {
+        if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
+        $str .= "'\"&$letter" . "4&\"', ";
+        $letter++;
+    }
+    echo $str . "<br><br>";
+
     exit;
 
     

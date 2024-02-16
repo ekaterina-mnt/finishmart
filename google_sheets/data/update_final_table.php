@@ -31,17 +31,20 @@ try {
     }
     $str = substr($str, 0, -2);
     $str .= " WHERE id=\"C4\"\";";
+    echo $str . "<br><br>";
 
 
     // Создать тест insert-запроса
-    $letter = "=\"INSERT INTO final_products (";
-    $ins_val = "(";
+    $letter = "D";
+    $str = "=\"INSERT INTO final_products (";
+    $str .= implode(", ", array_slice($insert_attributes, 3));
+    $str .= ") VALUES (";
     foreach ($insert_attributes as $attr) {
         if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
-        $str .= $attr . '=' . "'\"&$letter" . "4&\"', ";
-        $ins_val .= "\"&$letter" . "4&\", ";
+        $str .= "'\"&$letter" . "4&\"', ";
         $letter++;
     }
+    echo $str . "<br><br>";
 
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
