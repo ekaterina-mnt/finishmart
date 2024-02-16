@@ -79,15 +79,14 @@ try {
 
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids_str, $needed_subcategory, $needed_category);
-    $insert_data = array();
+
+    $insert_values = array();
+    $insert_values[] = MySQL::get_mysql_datetime();
     $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
 
         // Определяем значения для колонок
-
-        $insert_values = array();
-        $insert_values[] = MySQL::get_mysql_datetime();
 
         foreach ($needed_columns as $column => $value) {
 
@@ -126,13 +125,13 @@ try {
             // }
 
             $insert_values = array_map(fn ($value) => $value ?? "-", $insert_values);
-            $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
+            $insert_values[] = FormInsertData::get_i($list_name, $insert_values, "B", $current_cell++);
         }
     }
 
-    echo "<br>Всего строк добавлено:" . count($insert_data);
+    echo "<br>Всего строк добавлено:" . count($insert_values);
     if (count($notCountedChars)) echo "<br><br>Эти характеристики не учтены в сопоставлении характеристик - " . implode(", ", array_unique($notCountedChars)) . "<br>";
-    Sheet::update_few_data($insert_data, $GoogleSheets_tablename);
+    Sheet::update_few_data($insert_values, $GoogleSheets_tablename);
     echo "<br>Гугл таблицы успешно обновлены";
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
