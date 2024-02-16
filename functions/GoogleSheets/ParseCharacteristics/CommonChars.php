@@ -20,7 +20,7 @@ class CommonChars
             "Ссылка на товар" => 'link',
             "Категория" => 'category',
             "Подкатегория" => 'subcategory',
-            "Код товара поставщика" => 'good_id_from_provider',
+            // "Код товара поставщика" => 'good_id_from_provider',
             "Цена" => 'price',
             "Наличие" => 'stock',
             "Картинки" => 'images',

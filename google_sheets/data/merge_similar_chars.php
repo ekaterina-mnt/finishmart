@@ -72,15 +72,19 @@ try {
     $insert_attributes = array_merge($additional_columns, $insert_common_attributes, $insert_specific_attributes);
     // $insert_attributes = array_intersect($needed_columns, $insert_attributes);
 
-//     $letter = "D";
-//     $str = "=\"UPDATE final_products SET ";
-// foreach ($insert_attributes as $attr) {
-//     if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
-//     $str .= $attr . '=' . "'\"&$letter" . "4&\"', ";
-//     $letter++;
-// }
-// $str = substr($str, 0, -2);
-// $str .= " WHERE id=\"C4\"\";";
+    // Создать текст update-запроса
+    $letter = "D";
+    $str = "=\"UPDATE final_products SET ";
+    foreach ($insert_attributes as $attr) {
+        if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
+        $str .= $attr . '=' . "'\"&$letter" . "4&\"', ";
+        $letter++;
+    }
+    $str = substr($str, 0, -2);
+    $str .= " WHERE id=\"C4\"\";";
+    
+    echo $str;
+    exit;
 
     
     Sheet::update_data($attributes_cell, $insert_attributes, $GoogleSheets_tablename);
