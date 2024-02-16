@@ -101,8 +101,8 @@ try {
 
             // для общих для всех подкатегорий характеристик
             if (in_array($column, array_keys($common_attributes))) {
-                var_dump(array_flip($common_attributes)[$column]);
-                $good_insert_values[$column] = $good[$common_attributes[array_search($column, array_keys($common_attributes))]];
+                var_dump($common_attributes[$column]);
+                $good_insert_values[$column] = $good[$common_attributes[$column]];
                 if ($key == 'Цена') $good_insert_values['Цена для клиента'] = round($good['price'] * 1.1);
                 continue;
             }
