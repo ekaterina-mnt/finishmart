@@ -90,6 +90,7 @@ try {
         // Определяем значения для колонок
 
         TechInfo::preArray($needed_columns);
+        TechInfo::preArray($specific_attributes);
         foreach (array_keys($needed_columns) as $column) {
 
             // если у этой колонки одинаковые для всей подкатегории значения
