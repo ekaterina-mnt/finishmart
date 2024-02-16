@@ -36,7 +36,7 @@ try {
     $needed_category = $_POST['category'];
     $needed_subcategory = $_POST['subcategory'];
     $list_name = $needed_subcategory;
-    $needed_chars_list_name = "Сопоставления по подкатегориям";
+    // $needed_chars_list_name = "Сопоставления по подкатегориям";
 
     // Первая ячейка, с которой начинается инзерт в Гугл Таблицу
     $current_cell = 4;
@@ -70,7 +70,7 @@ try {
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
     unset($insert_specific_attributes[array_search($cross, $insert_specific_attributes)]); // удаляем пересекающуюся характеристику, чтобы не дублировалась
     $insert_attributes = array_merge($additional_columns, $insert_common_attributes, $insert_specific_attributes);
-    $insert_attributes = array_intersect($needed_columns, $insert_attributes);
+    // $insert_attributes = array_intersect($needed_columns, $insert_attributes);
     Sheet::update_data($attributes_cell, $insert_attributes, $GoogleSheets_tablename);
 
 
