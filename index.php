@@ -41,7 +41,7 @@ $napolnye_subcategories = Napolnye::getSubcategoriesNapolnye();
 </form>
 
 <H2>Вставить данные с объединенными характеристиками в другую таблицу (первый шаг - ДО создания сравнительной таблицы (со значениями "ок", "удалить"))</H2>
-<form action="google_sheets/data/merge_similar_chars_first_step.php" , method="POST">
+<form action="google_sheets/data/merge_similar_chars.php" , method="POST">
     <input type="hidden" name="category" value="<?= $categories[1] ?>">
     <select name="subcategory">
         <?php
@@ -56,7 +56,7 @@ $napolnye_subcategories = Napolnye::getSubcategoriesNapolnye();
 
 <br><br>
 <H2>Вставить данные с объединенными характеристиками в другую таблицу (второй шаг - ПОСЛЕ создания сравнительной таблицы (со значениями "ок", "удалить"))</H2>
-<form action="google_sheets/data/merge_similar_chars_second_step.php" , method="POST">
+<form action="google_sheets/data/merg..e_similar_chars_second_step.php" , method="POST">
     <input type="hidden" name="category" value="<?= $categories[1] ?>">
     <select name="subcategory">
         <?php
