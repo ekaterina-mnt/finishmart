@@ -75,7 +75,7 @@ try {
     $letter = "D";
     $str = "=UPDATE final_products SET ";
 foreach ($insert_attributes as $attr) {
-    $str .= $attr . '=' . "'" . "&$letter" . "4&" . "', ";
+    $str .= $attr . '="' . "'&$letter" . '4&", ';
     $letter++;
 }
 $str = substr($str, 0, -2);
