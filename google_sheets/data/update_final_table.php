@@ -37,16 +37,22 @@ try {
     $letter = "D";
     $str = "=\"INSERT INTO final_products (";
     $str_vals = "";
+    $str_dubl = "";
     // $str .= implode(", ", array_slice($insert_attributes, 3));
     foreach ($columns_excel as $attr) {
         if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
         $str .= "'$attr', ";
         $str_vals .= "'\"&$letter" . "4&\"', ";
+        $str_dubl .= "'$attr'=" . "'\"&$letter" . "4&\"', ";
         $letter++;
     }
-    var_dump($str);
-    $str = substr($str, 0, -1);
+    $str = substr($str, 0, -2);
+    $str_vals = substr($str, -2);
+    $str_dubl = substr($str, -2);
     $str .= ") VALUES (" . $str_vals . ")";
+    var_dump($str);
+
+    $str .= "ON DUPLICATE KEY UPDATE " . $str_dubl;
     echo $str . "<br><br>";
     exit;
 
@@ -55,7 +61,6 @@ try {
     $str = "=\"UPDATE final_products SET ";
     foreach ($insert_attributes as $attr) {
         if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
-        $str .= "'$attr'" . '=' . "'\"&$letter" . "4&\"', ";
         $letter++;
     }
     $str = substr($str, 0, -2);
