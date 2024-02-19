@@ -38,7 +38,7 @@ try {
         $insert_array = array();
         $types = "";
         foreach ($values_i as $key => $value) {
-            $insert_array[$columns[$key]] = $values;
+            $insert_array[$columns[$key]] = $value;
             if (in_array($columns[$key], $integer_type)) {
                 $types .= "i";
             } else {
