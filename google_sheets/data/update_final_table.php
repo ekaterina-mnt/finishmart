@@ -32,7 +32,7 @@ try {
     // while (str_contains($query, "'-'")) {
     //     str_replace("'-'", "''", $query);
     // }
-    $queries = $queries['values'];
+    $queries = array_column($queries['values'], 0);
 
     TechInfo::preArray($queries);
     
