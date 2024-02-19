@@ -45,12 +45,8 @@ try {
                 $types .= "s";
             }
         }
-        var_dump($types);
-        echo "<br>";
-        var_dump($insert_array);
-        echo "<br>";
-        exit;
         $query = MySQL::bind_insert_data($types, $insert_array, $tablename);
+        exit;
     }
 
 
