@@ -21,7 +21,7 @@ try {
 
     $GoogleSheets_tablename = "napolnye_raw";
     $mysql_tablename = "final_products";
-    $columns_excel_range = "Товары!D3:AU3";
+    $columns_excel_range = "Товары!C3:AU3";
 
     $columns_excel = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
     $columns_excel = $columns_excel['values'][0];
@@ -33,16 +33,17 @@ try {
     $res = MySQL::sql($query);
     $columns_mysql = array_column(mysqli_fetch_all($res, MYSQLI_ASSOC), "columns");
 
-    $insert_columns = array_diff($columns_mysql, $columns_excel);
-    TechInfo::preArray($insert_columns);
+
+    $insert_columns = array();
+
+    foreach ($columns_excel as $column) {
+        if (!in_array($column, $columns_mysql)) $insert_columns[] = $insert_columns;
+    }
+
     foreach (array_intersect($columns_excel, $columns_mysql) as $column) {
         echo "Уже есть колонка $column<br>";
     }
 
-    TechInfo::preArray($columns_excel);
-    TechInfo::preArray($columns_mysql);
-    TechInfo::preArray($insert_columns);
-    exit;
     $query = "ALTER TABLE $mysql_tablename";
     foreach ($insert_columns as $column) {
         $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
