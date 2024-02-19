@@ -45,9 +45,7 @@ try {
                 $types .= "s";
             }
         }
-        TechInfo::preArray($insert_array);
         $query = MySQL::bind_insert_data($types, $insert_array, $tablename);
-        exit;
     }
 
 
