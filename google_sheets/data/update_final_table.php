@@ -47,8 +47,8 @@ try {
         $letter++;
     }
     $str = substr($str, 0, -2);
-    $str_vals = substr($str, -2);
-    $str_dubl = substr($str, -2);
+    $str_vals = substr($str_vals, -2);
+    $str_dubl = substr($str_dubl, -2);
     $str .= ") VALUES (" . $str_vals . ")";
     var_dump($str);
 
