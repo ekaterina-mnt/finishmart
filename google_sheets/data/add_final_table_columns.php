@@ -46,10 +46,10 @@ try {
 
     $query = "ALTER TABLE $mysql_tablename";
     foreach ($insert_columns as $column) {
-        $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
+        $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL, ";
         echo "Добавится колонка $column<br>";
     }
-    $query = substr($query, 0, -1);
+    $query = substr($query, 0, -2);
     MySQL::sql($query);
     echo "Все добавлено<br>";
 
