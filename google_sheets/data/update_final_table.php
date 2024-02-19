@@ -32,6 +32,7 @@ try {
     // Создать тест insert-запроса
     $letter = "D";
     $str = "=\"INSERT INTO final_products (";
+    $str_vals = "";
     // $str .= implode(", ", array_slice($insert_attributes, 3));
     foreach ($insert_attributes as $attr) {
         if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
