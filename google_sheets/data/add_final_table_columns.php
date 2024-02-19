@@ -50,7 +50,7 @@ try {
         echo "Добавится колонка $column<br>";
     }
     MySQL::sql($query);
-    echo "Все добавлено";
+    echo "Все добавлено<br>";
 
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
