@@ -29,6 +29,7 @@ try {
     // SqlQuery::getInsertQuery($columns_excel_range, $letter, $GoogleSheets_tablename); // создать тест insert-запроса
 
     $values = Sheet::get_data("Товары!C4:AV13000", $GoogleSheets_tablename);
+    var_dump($values);
     TechInfo::preArray($values);
     exit;
     $queries = array_column($queries['values'], 0);
