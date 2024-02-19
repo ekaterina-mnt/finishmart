@@ -34,12 +34,11 @@ try {
     foreach ($queries as $query) {
         $query = str_replace("'-'", "''", $query);
 
-        $query .= "`date_edit`='" . MySQL::get_mysql_datetime() . "'";
+        $query .= ", `date_edit`='" . MySQL::get_mysql_datetime() . "'";
         preg_match("#`all_links_id`='(\d+)'#", $query, $matches);
-        TechInfo::preArray($matches);
         $id = $matches[1];
         MySQL::sql($query);
-        echo "Добавлен товар<br>";
+        echo "Добавлен товар с all_links_id = $id<br>";
         exit;
     }
 
