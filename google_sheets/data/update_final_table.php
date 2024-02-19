@@ -40,9 +40,11 @@ try {
         $str_vals .= "'\"&$letter" . "4&\"', ";
         $letter++;
     }
+    var_dump($str);
     $str = substr($str, 0, -1);
     $str .= ") VALUES (" . $str_vals . ")";
     echo $str . "<br><br>";
+    exit;
 
     // Создать текст update-запроса
     $letter = "D";
