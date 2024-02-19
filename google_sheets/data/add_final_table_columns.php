@@ -24,6 +24,9 @@ try {
 
     $columns_excel = Sheet::get_data("D3:AU3", $GoogleSheets_tablename);
 
+    TechInfo::preArray($columns_excel);
+    exit;
+
     $query = "SELECT COLUMN_NAME as 'columns' 
     FROM INFORMATION_SCHEMA.COLUMNS 
     WHERE TABLE_SCHEMA = 'penzevrv_2109' AND TABLE_NAME = '$mysql_tablename'";
