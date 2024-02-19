@@ -49,25 +49,16 @@ try {
     }
 
 
-    TechInfo::preArray($values);
-    var_dump($values);
-    exit;
-    $values = $values['values'];
-    TechInfo::preArray($values);
-    exit;
-    $queries = array_column($queries['values'], 0);
-    $i = 1;
+    // foreach ($queries as $query) {
+    //     $query = str_replace("'-'", "''", $query);
 
-    foreach ($queries as $query) {
-        $query = str_replace("'-'", "''", $query);
-
-        $query .= ", `date_edit`='" . MySQL::get_mysql_datetime() . "'";
-        preg_match("#`all_links_id`='(\d+)'#", $query, $matches);
-        $id = $matches[1];
-        MySQL::sql($query);
-        echo $i++ . ") Добавлен/обновлен товар с all_links_id = $id<br>";
-    }
-
+    //     $query .= ", `date_edit`='" . MySQL::get_mysql_datetime() . "'";
+    //     preg_match("#`all_links_id`='(\d+)'#", $query, $matches);
+    //     $id = $matches[1];
+    //     MySQL::sql($query);
+        // echo $i++ . ") Добавлен/обновлен товар с all_links_id = $id<br>";
+    // }
+// 
 
 
 
