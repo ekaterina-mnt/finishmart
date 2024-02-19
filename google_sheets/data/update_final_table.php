@@ -31,6 +31,8 @@ try {
 
     $columns = Sheet::get_data("Товары!C3:AU3", $GoogleSheets_tablename);
     $columns = $columns['values'];
+    TechInfo::preArray($columns);
+    exit;
     $values = Sheet::get_data("Товары!C4:AU13000", $GoogleSheets_tablename);
     $values = $values['values'];
 
