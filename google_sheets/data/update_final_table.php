@@ -29,14 +29,14 @@ try {
     // SqlQuery::getInsertQuery($columns_excel_range, $letter, $GoogleSheets_tablename); // создать тест insert-запроса
 
     $queries = Sheet::get_data("Товары!AV4:AV", $GoogleSheets_tablename);
-    $queries = $queries['values'][0];
+    // while (str_contains($query, "'-'")) {
+    //     str_replace("'-'", "''", $query);
+    // }
+    $queries = $queries['values'];
 
     TechInfo::preArray($queries);
     
 
-
-
-    var_dump($str);
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
 } catch (Throwable $e) {
