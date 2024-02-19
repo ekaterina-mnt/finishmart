@@ -21,7 +21,7 @@ try {
 
     $GoogleSheets_tablename = "napolnye_raw";
     $mysql_tablename = "final_products";
-    $columns_excel_range = "D3:AU3!Товары";
+    $columns_excel_range = "Товары!D3:AU3";
 
     $columns_excel = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
 
