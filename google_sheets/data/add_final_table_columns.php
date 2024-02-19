@@ -24,9 +24,7 @@ try {
     $columns_excel_range = "Товары!D3:AU3";
 
     $columns_excel = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
-
-    TechInfo::preArray($columns_excel);
-    exit;
+    $columns_excel = $columns_excel['values'][0];
 
     $query = "SELECT COLUMN_NAME as 'columns' 
     FROM INFORMATION_SCHEMA.COLUMNS 
