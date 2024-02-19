@@ -32,9 +32,8 @@ try {
     $queries = array_column($queries['values'], 0);
 
     foreach ($queries as $query) {
-        while (str_contains($query, "'-'")) {
-            str_replace("'-'", "''", $query);
-        }
+        $query = str_replace("'-'", "''", $query);
+
         $query .= "`date_edit`='" . MySQL::get_mysql_datetime() . "'";
         preg_match("#`all_links_id`='(\d+)'#", $query, $matches);
         TechInfo::preArray($matches);
