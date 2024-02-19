@@ -40,7 +40,6 @@ try {
     $str_dubl = "";
     // $str .= implode(", ", array_slice($insert_attributes, 3));
     foreach ($columns_excel as $attr) {
-        if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
         $str .= "`$attr`, ";
         $str_vals .= "'\"&$letter" . "4&\"', ";
         $str_dubl .= "`$attr`=" . "'\"&$letter" . "4&\"', ";
@@ -54,17 +53,6 @@ try {
     var_dump($str);
 
     exit;
-
-    // Создать текст update-запроса
-    $letter = "D";
-    $str = "=\"UPDATE final_products SET ";
-    foreach ($insert_attributes as $attr) {
-        if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
-        $letter++;
-    }
-    $str = substr($str, 0, -2);
-    $str .= " WHERE id=\"C4\"\";";
-    echo $str . "<br><br>";
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
 } catch (Throwable $e) {
