@@ -41,16 +41,16 @@ try {
     // $str .= implode(", ", array_slice($insert_attributes, 3));
     foreach ($columns_excel as $attr) {
         if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
-        $str .= "'$attr', ";
+        $str .= "`$attr`, ";
         $str_vals .= "'\"&$letter" . "4&\"', ";
-        $str_dubl .= "'$attr'=" . "'\"&$letter" . "4&\"', ";
+        $str_dubl .= "`$attr`=" . "'\"&$letter" . "4&\"', ";
         $letter++;
     }
     $str = substr($str, 0, -2);
     $str_vals = substr($str_vals, 0, -2);
     $str_dubl = substr($str_dubl, 0, -2);
     $str .= ") VALUES (" . $str_vals . ")";
-    $str .= "ON DUPLICATE KEY UPDATE " . $str_dubl;
+    $str .= " ON DUPLICATE KEY UPDATE " . $str_dubl . '"';
     var_dump($str);
 
     exit;
