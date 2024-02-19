@@ -40,7 +40,8 @@ try {
 
     TechInfo::preArray($columns_excel);
     TechInfo::preArray($columns_mysql);
-
+    TechInfo::preArray($insert_columns);
+    exit;
     $query = "ALTER TABLE $mysql_tablename";
     foreach ($insert_columns as $column) {
         $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
