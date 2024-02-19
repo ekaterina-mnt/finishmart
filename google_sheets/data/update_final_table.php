@@ -22,6 +22,7 @@ try {
     $GoogleSheets_tablename = "napolnye_raw";
     $tablename = "final_products";
     $columns_excel_range = "Товары!C3:AU3";
+    $letter = "C"; // для формулы sql запроса
 
     // $quaries = 
 
@@ -34,7 +35,6 @@ try {
     $columns_excel = $columns_excel['values'][0];
 
     // Создать тест insert-запроса
-    $letter = "D";
     $str = "=\"INSERT INTO final_products (";
     $str_vals = "";
     $str_dubl = "";
