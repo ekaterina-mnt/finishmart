@@ -13,6 +13,7 @@ use functions\GoogleSheets\Goods\GetGoods;
 use Google\Service\AuthorizedBuyersMarketplace\Contact;
 use functions\GoogleSheets\ParseCharacteristics\DefineNeededColumns;
 use functions\GoogleSheets\ParseCharacteristics\GetFilledIds;
+use functions\GoogleSheets\Sql\SqlQuery;
 
 
 
@@ -24,35 +25,18 @@ try {
     $columns_excel_range = "Товары!C3:AU3";
     $letter = "C"; // для формулы sql запроса
 
-    // $quaries = 
-
     // include("add_final_table_columns.php"); // чтобы добавить колонки в mysql 
+    // SqlQuery::getInsertQuery($columns_excel_range, $letter, $GoogleSheets_tablename); // создать тест insert-запроса
 
-    // $queries = Sheet::get_data("AW4:AW", $GoogleSheets_tablename);
+    $queries = Sheet::get_data("AW4:AW", $GoogleSheets_tablename);
+    $queries = $queries['values'][0];
+
+    TechInfo::preArray($queries);
+    
 
 
-    $columns_excel = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
-    $columns_excel = $columns_excel['values'][0];
 
-    // Создать тест insert-запроса
-    $str = "=\"INSERT INTO final_products (";
-    $str_vals = "";
-    $str_dubl = "";
-    // $str .= implode(", ", array_slice($insert_attributes, 3));
-    foreach ($columns_excel as $attr) {
-        $str .= "`$attr`, ";
-        $str_vals .= "'\"&$letter" . "4&\"', ";
-        $str_dubl .= "`$attr`=" . "'\"&$letter" . "4&\"', ";
-        $letter++;
-    }
-    $str = substr($str, 0, -2);
-    $str_vals = substr($str_vals, 0, -2);
-    $str_dubl = substr($str_dubl, 0, -2);
-    $str .= ") VALUES (" . $str_vals . ")";
-    $str .= " ON DUPLICATE KEY UPDATE " . $str_dubl . '"';
     var_dump($str);
-
-    exit;
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
 } catch (Throwable $e) {
