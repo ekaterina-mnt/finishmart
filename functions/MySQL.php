@@ -323,7 +323,7 @@ class MySQL
             $columns .= "`$column`, ";
         }
         $columns = substr($columns, 0, -2);
-        
+
         $question_marks = str_repeat("?, ", count($values));
         $question_marks = substr($question_marks, 0, -2);
 
@@ -353,6 +353,7 @@ class MySQL
             echo "не возникло ошибок с добавлением/обновлением строки в БД<br><br>";
         } catch (\Exception $e) {
             echo "возникла ошибка с добавлением/обновлением строки в БД:<br>" . $e->getMessage() . '<br><br>';
+            TechInfo::preArray($values);
         }
     }
 
