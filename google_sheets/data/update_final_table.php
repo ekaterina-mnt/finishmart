@@ -45,6 +45,8 @@ try {
         $str_vals .= "'\"&$letter" . "4&\"', ";
         $str_dubl .= "'$attr'=" . "'\"&$letter" . "4&\"', ";
         $letter++;
+        var_dump($str_vals . "<br>");
+        var_dump($str_dubl . "<br>");
     }
     $str = substr($str, 0, -2);
     $str_vals = substr($str_vals, -2);
