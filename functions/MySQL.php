@@ -317,14 +317,20 @@ class MySQL
         $values["date_edit"] = $date_edit;
 
         // Получаем значения и типы для части INSERT
-        $columns = implode(", ", array_keys($values));
+        $columns_list = array_keys($values);
+        $columns = "";
+        foreach ($columns_list as $column) {
+            $columns .= "`$column`, ";
+        }
+        $columns = substr($columns, 0, -2);
+        
         $question_marks = str_repeat("?, ", count($values));
         $question_marks = substr($question_marks, 0, -2);
 
         // Получаем подстроку для части ON DUPLICATE KEY UPDATE
         $duplicate_substr = "";
         foreach ($values as $key => $value) {
-            $duplicate_substr .= "$key=?, ";
+            $duplicate_substr .= "`$key`=?, ";
         }
         $duplicate_substr = substr($duplicate_substr, 0, -2);
 
