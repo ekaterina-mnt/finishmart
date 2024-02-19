@@ -23,14 +23,37 @@ try {
     $GoogleSheets_tablename = "napolnye_raw";
     $tablename = "final_products";
     $columns_excel_range = "Товары!C3:AU3";
-    $letter = "C"; // для формулы sql запроса
+    $integer_type = ["all_links_id", "Цена", "Цена для клиента"];
 
+    // $letter = "C"; // для формулы sql запроса
     // include("add_final_table_columns.php"); // чтобы добавить колонки в mysql 
     // SqlQuery::getInsertQuery($columns_excel_range, $letter, $GoogleSheets_tablename); // создать тест insert-запроса
 
     $columns = Sheet::get_data("Товары!C3:AU3", $GoogleSheets_tablename);
-    TechInfo::preArray($columns);
-    $values = Sheet::get_data("Товары!C4:AU4", $GoogleSheets_tablename);
+    $columns = $columns['values'];
+    $values = Sheet::get_data("Товары!C4:AU13000", $GoogleSheets_tablename);
+    $values = $values['values'];
+
+    foreach ($values as $values_i) {
+        $insert_array = array();
+        $types = "";
+        foreach ($values_i as $key => $value) {
+            $insert_array[$columns[$key]] = $values;
+            if (in_array($columns[$key], $integer_type)) {
+                $types .= "i";
+            } else {
+                $types .= "s";
+            }
+        }
+        var_dump($types);
+        echo "<br>";
+        var_dump($insert_array);
+        echo "<br>";
+        exit;
+        $query = MySQL::bind_insert_data($types, $insert_array, $tablename);
+    }
+
+
     TechInfo::preArray($values);
     var_dump($values);
     exit;

@@ -11,10 +11,15 @@ use functions\MySQL;
 
 class SqlQuery
 {
+    static function getPreparedInsertQuery($columns, $values)
+    {
+        
+    }
+
     static function getInsertQuery($columns_range, $letter, $GoogleSheets_tablename)
     {
         $columns = self::getColumns($columns_range, $GoogleSheets_tablename);
-        
+
         $str = "=\"INSERT INTO final_products (";
         $str_vals = "";
         $str_dubl = "";
