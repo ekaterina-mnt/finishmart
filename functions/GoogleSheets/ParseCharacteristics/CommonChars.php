@@ -24,7 +24,7 @@ class CommonChars
             "Цена" => 'price',
             "Наличие" => 'stock',
             "Картинки" => 'images',
-            "Актуальный ли товар?" => 'status',
+            "Актуальный ли товар" => 'status',
             "Поставщик" => 'provider',
             "Характеристики поставщика" => 'characteristics',
             "Описание" => 'description',
