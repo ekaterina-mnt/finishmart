@@ -29,13 +29,23 @@ try {
     // SqlQuery::getInsertQuery($columns_excel_range, $letter, $GoogleSheets_tablename); // создать тест insert-запроса
 
     $queries = Sheet::get_data("Товары!AV4:AV", $GoogleSheets_tablename);
-    // while (str_contains($query, "'-'")) {
-    //     str_replace("'-'", "''", $query);
-    // }
     $queries = array_column($queries['values'], 0);
 
+    foreach ($queries as $query) {
+        while (str_contains($query, "'-'")) {
+            str_replace("'-'", "''", $query);
+        }
+        $query .= "`date_edit`='" . MySQL::get_mysql_datetime() . "'";
+        preg_match("#`all_links_id`='(\d+)'#", $query, $matches);
+        TechInfo::preArray($matches);
+        $id = $matches[1];
+        MySQL::sql($query);
+        echo "Добавлен товар<br>";
+        exit;
+    }
+
     TechInfo::preArray($queries);
-    
+
 
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
