@@ -21,6 +21,8 @@ try {
 
     $GoogleSheets_tablename = "napolnye_raw";
     $tablename = "final_products";
+    $columns_excel_range = "Товары!C3:AU3";
+
     // $quaries = 
 
     // include("add_final_table_columns.php"); // чтобы добавить колонки в mysql 
@@ -28,13 +30,15 @@ try {
     // $queries = Sheet::get_data("AW4:AW", $GoogleSheets_tablename);
 
 
+    $columns_excel = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
+    $columns_excel = $columns_excel['values'][0];
 
     // Создать тест insert-запроса
     $letter = "D";
     $str = "=\"INSERT INTO final_products (";
     $str_vals = "";
     // $str .= implode(", ", array_slice($insert_attributes, 3));
-    foreach ($insert_attributes as $attr) {
+    foreach ($columns_excel as $attr) {
         if (in_array($attr, ["id в новой таблице", "id", "Дата изменения"])) continue;
         $str .= "'$attr', ";
         $str_vals .= "'\"&$letter" . "4&\"', ";
