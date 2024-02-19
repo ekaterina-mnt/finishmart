@@ -49,6 +49,7 @@ try {
         $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
         echo "Добавится колонка $column<br>";
     }
+    $query = substr($query, 0, -1);
     MySQL::sql($query);
     echo "Все добавлено<br>";
 
