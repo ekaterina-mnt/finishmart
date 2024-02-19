@@ -48,20 +48,6 @@ try {
         $query = MySQL::bind_insert_data($types, $insert_array, $tablename);
     }
 
-
-    // foreach ($queries as $query) {
-    //     $query = str_replace("'-'", "''", $query);
-
-    //     $query .= ", `date_edit`='" . MySQL::get_mysql_datetime() . "'";
-    //     preg_match("#`all_links_id`='(\d+)'#", $query, $matches);
-    //     $id = $matches[1];
-    //     MySQL::sql($query);
-        // echo $i++ . ") Добавлен/обновлен товар с all_links_id = $id<br>";
-    // }
-// 
-
-
-
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
 } catch (Throwable $e) {
     var_dump($e);
