@@ -47,6 +47,7 @@ try {
     $query = "ALTER TABLE $mysql_tablename";
     foreach ($insert_columns as $column) {
         $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
+        MySQL::sql($query);
         echo "Добавлена колонка $column<br>";
     }
 
