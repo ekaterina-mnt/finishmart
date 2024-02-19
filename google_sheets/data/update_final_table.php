@@ -30,6 +30,7 @@ try {
 
     $queries = Sheet::get_data("Товары!AV4:AV", $GoogleSheets_tablename);
     $queries = array_column($queries['values'], 0);
+    $i = 1;
 
     foreach ($queries as $query) {
         $query = str_replace("'-'", "''", $query);
@@ -38,7 +39,7 @@ try {
         preg_match("#`all_links_id`='(\d+)'#", $query, $matches);
         $id = $matches[1];
         MySQL::sql($query);
-        echo "Добавлен/обновлен товар с all_links_id = $id<br>";
+        echo $i++ . ") Добавлен/обновлен товар с all_links_id = $id<br>";
     }
 
 
