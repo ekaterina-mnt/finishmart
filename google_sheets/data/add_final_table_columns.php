@@ -34,6 +34,7 @@ try {
     $columns_mysql = array_column(mysqli_fetch_all($res, MYSQLI_ASSOC), "columns");
 
     $insert_columns = array_diff($columns_mysql, $columns_excel);
+    TechInfo::preArray($insert_columns);
     foreach (array_intersect($columns_excel, $columns_mysql) as $column) {
         echo "Уже есть колонка $column<br>";
     }
