@@ -47,9 +47,10 @@ try {
     $query = "ALTER TABLE $mysql_tablename";
     foreach ($insert_columns as $column) {
         $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
-        MySQL::sql($query);
-        echo "Добавлена колонка $column<br>";
+        echo "Добавится колонка $column<br>";
     }
+    MySQL::sql($query);
+    echo "Все добавлено";
 
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
