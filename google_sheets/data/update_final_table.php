@@ -28,7 +28,7 @@ try {
     // include("add_final_table_columns.php"); // чтобы добавить колонки в mysql 
     // SqlQuery::getInsertQuery($columns_excel_range, $letter, $GoogleSheets_tablename); // создать тест insert-запроса
 
-    $queries = Sheet::get_data("AV4:AV13702", $GoogleSheets_tablename);
+    $queries = Sheet::get_data("Товары!AV4:AV13702", $GoogleSheets_tablename);
     $queries = $queries['values'][0];
 
     TechInfo::preArray($queries);
