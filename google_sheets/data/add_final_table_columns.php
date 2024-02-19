@@ -36,8 +36,10 @@ try {
     $insert_columns = array_diff($columns_mysql, $columns_excel);
     foreach (array_intersect($columns_excel, $columns_mysql) as $column) {
         echo "Уже есть колонка $column<br>";
-
     }
+
+    TechInfo::preArray($columns_excel);
+    TechInfo::preArray($columns_mysql);
 
     $query = "ALTER TABLE $mysql_tablename";
     foreach ($insert_columns as $column) {
