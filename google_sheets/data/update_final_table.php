@@ -45,17 +45,14 @@ try {
         $str_vals .= "'\"&$letter" . "4&\"', ";
         $str_dubl .= "'$attr'=" . "'\"&$letter" . "4&\"', ";
         $letter++;
-        var_dump($str_vals . "<br>");
-        var_dump($str_dubl . "<br>");
     }
     $str = substr($str, 0, -2);
-    $str_vals = substr($str_vals, -2);
-    $str_dubl = substr($str_dubl, -2);
+    $str_vals = substr($str_vals, 0, -2);
+    $str_dubl = substr($str_dubl, 0, -2);
     $str .= ") VALUES (" . $str_vals . ")";
+    $str .= "ON DUPLICATE KEY UPDATE " . $str_dubl;
     var_dump($str);
 
-    $str .= "ON DUPLICATE KEY UPDATE " . $str_dubl;
-    echo $str . "<br><br>";
     exit;
 
     // Создать текст update-запроса
