@@ -38,11 +38,9 @@ try {
         preg_match("#`all_links_id`='(\d+)'#", $query, $matches);
         $id = $matches[1];
         MySQL::sql($query);
-        echo "Добавлен товар с all_links_id = $id<br>";
-        exit;
+        echo "Добавлен/обновлен товар с all_links_id = $id<br>";
     }
 
-    TechInfo::preArray($queries);
 
 
 
