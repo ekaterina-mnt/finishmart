@@ -37,7 +37,7 @@ try {
     $insert_columns = array();
 
     foreach ($columns_excel as $column) {
-        if (!in_array($column, $columns_mysql)) $insert_columns[] = $insert_columns;
+        if (!in_array($column, $columns_mysql)) $insert_columns[] = $column;
     }
 
     foreach (array_intersect($columns_excel, $columns_mysql) as $column) {
