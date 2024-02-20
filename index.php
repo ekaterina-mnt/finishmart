@@ -58,7 +58,7 @@ $napolnye_subcategories = Napolnye::getSubcategoriesNapolnye();
 <br><br>
 
 <H2>Спарсить характеристики товаров в таблицу characteristics</H2>
-<form action="google_sheets/alter_mysql_table/parse_characteristics/index.php" , method="POST">
+<form action="/alter_mysql_table/parse_characteristics/index.php" , method="POST">
     <select name="category">
         <?php
         foreach ($categories as $category) {
