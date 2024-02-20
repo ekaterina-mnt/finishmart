@@ -12,16 +12,17 @@ use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
-    var_dump($_GET);
-    echo "<br><br>";
-    var_dump($_POST);
-    echo "</br><br>";
     $needed_category = $_POST['category'] ?? $_GET['category'];
+    $categories = Parser::getCategoriesList();
+    if (!$needed_category) {
+        $needed_category = $categories[2];
+        echo "Категория не была передана в качестве параметра, определяется категория по умолчанию<br>";
+    }
+
     echo "Категория: {$needed_category}<br><br>";
 
-    if (!isset($needed_category)) exit("Нужен параметр 'категория'");
-    $categories = Parser::getCategoriesList();
-    if (!in_array($needed_category, $categories)) exit("Неподходящий параметр");
+    // if (!isset($needed_category)) exit("Нужен параметр 'категория'");
+    // if (!in_array($needed_category, $categories)) exit("Неподходящий параметр");
 
 
     // foreach ($napolnye as $i => $sub) {
@@ -55,13 +56,13 @@ try {
 
         // ДОБАВЛЕНИЕ КОЛОНОК
         if (count($add_chars)) {
-        //     $query = "INSERT INTO final_products (`{$needed_category}`) VALUES ";
-        //     foreach ($add_chars as $add_char) {
-        //         $query .= "('$add_char'), ";
-        //     }
-        //     $query = substr($query, 0, -2);
-        //     var_dump($query);
-        //     MySQL::sql($query);
+            //     $query = "INSERT INTO final_products (`{$needed_category}`) VALUES ";
+            //     foreach ($add_chars as $add_char) {
+            //         $query .= "('$add_char'), ";
+            //     }
+            //     $query = substr($query, 0, -2);
+            //     var_dump($query);
+            //     MySQL::sql($query);
 
             $values = $add_chars;
             $types = str_repeat("s", count($values));
@@ -73,7 +74,7 @@ try {
         // обновляем char_views
         // $chars['char_views'] = $good['char_views'] + 1;
         $char_views = $good['char_views'] + 1;
-        
+
         $query = "UPDATE all_products SET char_views = $char_views WHERE id = {$good['id']}";
         MySQL::sql($query);
         echo "<br>";
