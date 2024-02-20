@@ -364,7 +364,7 @@ class MySQL
         $question_marks = substr(str_repeat("(?), ", count($values)), 0, -2);
 
         // Формируем запрос
-        $query = "INSERT INTO $table_name ($column) VALUES $question_marks ON DUPLICATE KEY UPDATE date_edit = '$date_edit'";
+        $query = "INSERT INTO $table_name (`$column`) VALUES $question_marks ON DUPLICATE KEY UPDATE date_edit = '$date_edit'";
 
         try {
             MySQL::bind_sql($query, $types, array_values($values));

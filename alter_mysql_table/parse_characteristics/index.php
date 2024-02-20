@@ -68,11 +68,10 @@ try {
         // $types = str_repeat("s", count($chars));
         // обновляем char_views
         // $chars['char_views'] = $good['char_views'] + 1;
-        $values = $good['char_views'] + 1;
-        $types = "i";
+        $char_views = $good['char_views'] + 1;
         
-
-        $query = MySQL::update($types, $values, "all_products", $good['id'], false);
+        $query = "UPDATE all_products SET char_views = $char_views WHERE id = {$good['id']}";
+        MySQL::sql($query);
     }
 
 
