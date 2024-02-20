@@ -32,6 +32,7 @@ try {
     $goods = MySQL::sql($query);
 
     foreach ($goods as $good) {
+        echo "<h3>{$good['title']}</h3><br>";
         $query = "SELECT `{$needed_category}` from characteristics";
 
         $res = MySQL::sql($query);
@@ -72,6 +73,7 @@ try {
         
         $query = "UPDATE all_products SET char_views = $char_views WHERE id = {$good['id']}";
         MySQL::sql($query);
+        echo "<br>";
     }
 
 
