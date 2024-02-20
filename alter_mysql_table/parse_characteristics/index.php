@@ -28,7 +28,7 @@ try {
 
 
     // $query = "SELECT id, characteristics, char_views FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}' ORDER BY char_views LIMIT 100";
-    $query = "SELECT id, characteristics, char_views FROM all_products WHERE category like '{$needed_category}' ORDER BY char_views LIMIT 100";
+    $query = "SELECT id, title, characteristics, char_views FROM all_products WHERE category like '{$needed_category}' ORDER BY char_views LIMIT 100";
     $goods = MySQL::sql($query);
 
     foreach ($goods as $good) {
