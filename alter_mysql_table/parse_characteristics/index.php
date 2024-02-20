@@ -43,9 +43,9 @@ try {
         $add_chars = array();
         foreach ($chars as $char => $value) {
             if (in_array($char, $columns)) {
-                echo "$char - есть в mysql<br>";
+                echo "есть в mysql - $char<br>";
             } else {
-                echo "$char - нет в mysql<br>";
+                echo "нет в mysql - $char<br>";
                 $add_chars[] = $char;
             }
         }
