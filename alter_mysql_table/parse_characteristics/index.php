@@ -16,8 +16,7 @@ try {
 
     if (!isset($_POST['category'])) exit("Нужен параметр 'категория'");
     $categories = Parser::getCategoriesList();
-    TechInfo::preArray($categories);
-    if (!in_array($_POST['subcategory'], $categories)) exit("Неподходящий параметр");
+    if (!in_array($_POST['category'], $categories)) exit("Неподходящий параметр");
 
 
     $needed_category = $_POST['category'];
