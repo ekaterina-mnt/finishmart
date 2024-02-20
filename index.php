@@ -53,23 +53,19 @@ $napolnye_subcategories = Napolnye::getSubcategoriesNapolnye();
     <p><input type="submit" value="Отправить"></p>
 </form>
 
-
 <br><br>
-<H2>Вставить данные с объединенными характеристиками в другую таблицу (второй шаг - ПОСЛЕ создания сравнительной таблицы (со значениями "ок", "удалить"))</H2>
-<form action="google_sheets/data/merg..e_similar_chars_second_step.php" , method="POST">
-    <input type="hidden" name="category" value="<?= $categories[1] ?>">
-    <select name="subcategory">
+<a href="http://penzevrv.beget.tech/google_sheets/data/create_subcategory_pages.php">Вставить в таблицу пустые листы для каждой подкатегории</a>
+<br><br>
+
+<H2>Спарсить характеристики товаров в таблицу characteristics</H2>
+<form action="google_sheets/alter_mysql_table/parse_characteristics/index.php" , method="POST">
+    <select name="category">
         <?php
-        foreach ($napolnye_subcategories as $subcategory) {
-            echo '<option value="' . $subcategory . '">' . $subcategory . '</option>';
+        foreach ($categories as $category) {
+            echo '<option value="' . $category . '">' . $category . '</option>';
         }
         ?>
     </select></p>
     <p><input type="submit" value="Отправить"></p>
 </form>
-
-
-<br><br>
-<a href="http://penzevrv.beget.tech/google_sheets/data/create_subcategory_pages.php">Вставить в таблицу пустые листы для каждой подкатегории</a>
-<br><br>
 

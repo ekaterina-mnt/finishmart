@@ -5,69 +5,74 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use functions\MySQL;
 use functions\GoogleSheets\Sheet;
 use functions\TechInfo;
+use functions\Parser;
 use functions\GoogleSheets\FormInsertData;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
-    $napolnye = Napolnye::getSubcategoriesNapolnye();
+    echo "Категория: {$_POST['category']}<br><br>";
 
-    $needed_category = "Напольные покрытия";
+    if (!isset($_POST['category'])) exit("Нужен параметр 'категория'");
+    $categories = Parser::getCategoriesList();
+    if (!in_array($_POST['subcategory'], $categories)) exit("Неподходящий параметр");
 
-    foreach ($napolnye as $i => $sub) {
-        $napolnye[$i] = "'{$sub}'";
-    }
-    $subcategoriesList = implode(", ", $napolnye);
 
-    $query = "SELECT count(id) FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}'";
-    var_dump(mysqli_fetch_assoc(MySQL::sql($query)));
+    $needed_category = $_POST['category'];
 
-    $query = "SELECT id, characteristics, char_views FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}' ORDER BY char_views LIMIT 100";
+    // foreach ($napolnye as $i => $sub) {
+    //     $napolnye[$i] = "'{$sub}'";
+    // }
+    // $subcategoriesList = implode(", ", $napolnye);
+
+
+    // $query = "SELECT id, characteristics, char_views FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}' ORDER BY char_views LIMIT 100";
+    $query = "SELECT id, characteristics, char_views FROM all_products WHERE category like '{$needed_category}' ORDER BY char_views LIMIT 100";
     $goods = MySQL::sql($query);
 
     foreach ($goods as $good) {
-        $query = "SELECT COLUMN_NAME as 'columns' 
-                  FROM INFORMATION_SCHEMA.COLUMNS 
-                  WHERE TABLE_SCHEMA = 'penzevrv_2109' AND TABLE_NAME = 'all_products'";
+        $query = "SELECT `{$needed_category}` from characteristics";
 
         $res = MySQL::sql($query);
-        $columns = array_column(mysqli_fetch_all($res, MYSQLI_ASSOC), "columns");
+        $columns = array_column(mysqli_fetch_all($res, MYSQLI_ASSOC), $needed_category);
 
         $chars = json_decode($good['characteristics'], true);
 
-        $add_columns = array();
+        $add_chars = array();
         foreach ($chars as $char => $value) {
             if (in_array($char, $columns)) {
                 echo "есть в mysql<br>";
             } else {
                 echo "нет в mysql<br>";
-                $add_columns[] = $char;
+                $add_chars[] = $char;
             }
         }
 
         // ДОБАВЛЕНИЕ КОЛОНОК
-        if (count($add_columns)) {
-            $query = "ALTER TABLE all_products";
-            foreach ($add_columns as $column) {
-                $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL,";
-            }
-            $query = substr($query, 0, -1);
-            var_dump($query);
-            MySQL::sql($query);
+        if (count($add_chars)) {
+        //     $query = "INSERT INTO final_products (`{$needed_category}`) VALUES ";
+        //     foreach ($add_chars as $add_char) {
+        //         $query .= "('$add_char'), ";
+        //     }
+        //     $query = substr($query, 0, -2);
+        //     var_dump($query);
+        //     MySQL::sql($query);
 
-            $values = $add_columns;
+            $values = $add_chars;
             $types = str_repeat("s", count($values));
-            MySQL::multiple_insert("name", $types, $values, "napolnye_characteristics");
+            MySQL::multiple_insert($needed_category, $types, $values, "characteristics");
         }
 
         // ДОБАВЛЕНИЕ САМИХ ХАРАКТЕРИСТИК
-        $types = str_repeat("s", count($chars));
+        // $types = str_repeat("s", count($chars));
         // обновляем char_views
-        $types .= "i";
-        $chars['char_views'] = $good['char_views'] + 1;
+        // $chars['char_views'] = $good['char_views'] + 1;
+        $values = $good['char_views'] + 1;
+        $types = "i";
+        
 
-        $query = MySQL::update($types, $chars, "all_products", $good['id'], false);
+        $query = MySQL::update($types, $values, "all_products", $good['id'], false);
     }
 
 
