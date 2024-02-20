@@ -12,6 +12,10 @@ use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
+    var_dump($_GET);
+    echo "<br><br>";
+    var_dump($_POST);
+    echo "</br><br>";
     $needed_category = $_POST['category'] ?? $_GET['category'];
     echo "Категория: {$needed_category}<br><br>";
 
