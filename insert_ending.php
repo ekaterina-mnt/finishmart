@@ -12,24 +12,30 @@ $all_product_data['category'] = [Categories::finalCategory($provider, $all_produ
 
 if (!preg_match("#(Подъем и выгрузка)#", $all_product_data['title'][0])) { //иначе пропускаем итерацию, не добавляем товар
     $print_result = [];
-foreach ($all_product_data as $key => $val) {
-    $print_result[$key] = $val[0];
-}
+    foreach ($all_product_data as $key => $val) {
+        $print_result[$key] = $val[0];
+    }
 
-TechInfo::preArray($print_result);
+    TechInfo::preArray($print_result);
 
-//Для передачи в MySQL
+    //Для передачи в MySQL
 
-$types = '';
-$values = array();
-foreach ($all_product_data as $key => $n) {
-    $types .= $n[1];
-    $values[$key] = $n[0];
-}
+    $types = '';
+    $values = array();
+    foreach ($all_product_data as $key => $n) {
+        $types .= $n[1];
+        $values[$key] = $n[0];
+    }
 
-Parser::insertProductData1($types, $values, $all_product_data['link'][0]);
+    if (
+        $all_product_data['category'] == 'Свет'
+        or $all_product_data['subcategory'] == 'Ковровые покрытия'
+        or $all_product_data['subcategory'] == 'Ковры'
+    ) {
+        Parser::insertProductData1($types, $values, $all_product_data['link'][0], "needless_products");
+    } else {
+        Parser::insertProductData1($types, $values, $all_product_data['link'][0], "all_products");
+    }
 } else {
     echo "Название товара: " . $all_product_data['title'][0];
 }
-
-

@@ -263,10 +263,10 @@ class Parser
         }
     }
 
-    static function insertProductData1(string $types, array $values, string $product_link): void
+    static function insertProductData1(string $types, array $values, string $product_link, $tablename): void
     {
         //Получаем товар
-        $product = MySQL::sql("SELECT id FROM all_products WHERE link='$product_link'");
+        $product = MySQL::sql("SELECT id FROM $tablename WHERE link='$product_link'");
 
         $quest = '';
         $colms = "";
@@ -283,7 +283,7 @@ class Parser
             $values["date_edit"] = $date_edit;
             $id = mysqli_fetch_assoc($product)['id'];
 
-            $query = "UPDATE all_products SET ";
+            $query = "UPDATE $tablename SET ";
             foreach ($values as $key => $value) {
                 $query .= "`" . $key . "`=?, ";
             }
@@ -292,7 +292,7 @@ class Parser
             // echo $query . "<br>";
             echo "<b>товар должен обновиться</b><br><br>";
         } else {
-            $query = "INSERT INTO all_products (";
+            $query = "INSERT INTO $tablename (";
             foreach ($values as $key => $value) {
                 $colms .= $key . ", ";
                 $quest .= "?, ";
