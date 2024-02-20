@@ -12,14 +12,13 @@ use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
-    echo "Категория: {$_POST['category']}<br><br>";
+    $needed_category = $_POST['category'] ?? $_GET['category'];
+    echo "Категория: {$needed_category}<br><br>";
 
-    if (!isset($_POST['category'])) exit("Нужен параметр 'категория'");
+    if (!isset($needed_category)) exit("Нужен параметр 'категория'");
     $categories = Parser::getCategoriesList();
-    if (!in_array($_POST['category'], $categories)) exit("Неподходящий параметр");
+    if (!in_array($needed_category, $categories)) exit("Неподходящий параметр");
 
-
-    $needed_category = $_POST['category'];
 
     // foreach ($napolnye as $i => $sub) {
     //     $napolnye[$i] = "'{$sub}'";
