@@ -15,23 +15,13 @@ try {
     $needed_category = $_POST['category'] ?? $_GET['category'];
     $categories = Parser::getCategoriesList();
     if (!$needed_category) {
-        $needed_category = $categories[2];
+        $needed_category = $categories[0];
         echo "Категория не была передана в качестве параметра, определяется категория по умолчанию<br>";
     }
 
     echo "Категория: {$needed_category}<br><br>";
 
-    // if (!isset($needed_category)) exit("Нужен параметр 'категория'");
-    // if (!in_array($needed_category, $categories)) exit("Неподходящий параметр");
 
-
-    // foreach ($napolnye as $i => $sub) {
-    //     $napolnye[$i] = "'{$sub}'";
-    // }
-    // $subcategoriesList = implode(", ", $napolnye);
-
-
-    // $query = "SELECT id, characteristics, char_views FROM all_products WHERE subcategory in ($subcategoriesList) AND category like '{$needed_category}' ORDER BY char_views LIMIT 100";
     $query = "SELECT id, title, characteristics, char_views FROM all_products WHERE category like '{$needed_category}' ORDER BY char_views LIMIT 100";
     $goods = MySQL::sql($query);
 
