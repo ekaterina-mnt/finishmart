@@ -30,8 +30,7 @@ try {
     $GoogleSheets_tablename = 'plitka_raw';
     echo "Будут вставлены в таблицу '$GoogleSheets_tablename'";
 
-
-    foreach ($subcategories as $title) {
+    foreach ($needed_subcategories as $title) {
         Sheet::create_new_page($title, $GoogleSheets_tablename);
         echo "добавлен лист $title<br>";
     }
