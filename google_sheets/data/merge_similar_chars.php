@@ -32,6 +32,8 @@ try {
     if (!isset($_POST['category']) or !isset($_POST['subcategory'])) exit("Нужны параметры 'категория' и 'подкатегория'");
   
     $subcategories = ConnectedSubcategories::getList();
+    TechInfo::preArray($subcategories);
+    var_dump($subcategories);
     
     if (!in_array($_POST['category'], array_keys($subcategories))) exit("Неподходящий параметр");
     
