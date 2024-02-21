@@ -103,7 +103,7 @@ class Categories
             ],
             15 => [ //'Ступени и клинкер',
             ],
-            16 => [ //'SPC-плитка',
+            16 => [ //'SPC-плитка', это кварцвиниловые полы
             ],
             17 => [ //'Фотообои и фрески',
                 ($provider == 'domix' and preg_match("#(фотообои)#", $providerCategory)),
@@ -322,6 +322,7 @@ class Categories
                 ($provider == 'dplintus' and preg_match("#(Плинтус)#", $providerCategory)),
                 ($provider == 'olimp' and preg_match("#(Ламинат|ламинат|Инженерная доска|Массивная доска|паркет|Паркет|Плинтус|Подложка|Пробковый пол|Фанера пиленная)#", $providerSubcategory) and !preg_match("#(для паркета)#", $providerSubcategory)),
                 ($provider == 'fargo' and preg_match("#(Плинтус|Подложка|Кварцевый ламинат)#", $providerCategory)),
+                ($provider == 'mosplitka' and preg_match("#SPC-плитка", $title)),
             ],
             2 => [ //'Плитка и керамогранит',
                 ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
