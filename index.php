@@ -5,9 +5,9 @@ use functions\Parser;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 use functions\GoogleSheets\ParseCharacteristics\Plitka;
 use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
-use functions\TechInfo;
 
 try {
+
     $providers = [
         'alpinefloor', 'ampir', 'artkera', 'centerkrasok', 'domix', 'dplintus', 'evroplast', 'finefloor',
         'laparet', 'masterdom', 'mosplitka', 'ntceramic', 'olimp', 'surgaz', 'tdgalion', 'fargo'
@@ -33,20 +33,21 @@ try {
 ?>
 
     <?php
-    TechInfo::preArray($subcategories);
-    var_dump($subcategories);
     foreach ($subcategories as $category => $subcategoriesList) {
-
-        echo '<H2>Вставить данные в Гугл таблицы</H2>
-<form action="google_sheets/data/insert.php" , method="POST">
-    <input type="hidden" name="category" value="<?= ' . $category . '?>">
-    <select name="subcategory">';
-        foreach ($subcategoriesList as $subcategory) {
-            echo '<option value="' . $subcategory . '">' . $subcategory . '</option>';
-        }
-        echo '</select></p>
-    <p><input type="submit" value="Отправить"></p>
-</form>';
+    ?>
+        <H2>Вставить данные в Гугл таблицы</H2>
+        <form action="google_sheets/data/insert.php" , method="POST">
+            <input type="hidden" name="category" value="<?= $category ?>">
+            <select name="subcategory">
+                <?php
+                foreach ($subcategoriesList as $subcategory) {
+                    echo '<option value="' . $subcategory . '">' . $subcategory . '</option>';
+                }
+                ?>
+            </select></p>
+            <p><input type="submit" value="Отправить"></p>
+        </form>
+    <?php
     }
     ?>
 

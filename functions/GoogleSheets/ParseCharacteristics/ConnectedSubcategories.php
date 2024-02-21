@@ -2,7 +2,7 @@
 
 namespace functions\GoogleSheets\ParseCharacteristics;
 
-require __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use DiDom\Document;
 use DOMDocument;
