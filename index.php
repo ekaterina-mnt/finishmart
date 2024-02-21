@@ -4,6 +4,7 @@ require __DIR__ . "/vendor/autoload.php";
 use functions\Parser;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 use functions\GoogleSheets\ParseCharacteristics\Plitka;
+use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
 
 
 $providers = [
@@ -24,25 +25,30 @@ echo '<a href="http://penzevrv.beget.tech/cron_dop_scripts/masterdomDopData.php"
 echo "<br><br>";
 
 $categories = Parser::getCategoriesList();
+$subcategories = ConnectedSubcategories::getList();
 $napolnye_subcategories = Napolnye::getSubcategories();
 $plitka_subcategories = Plitka::getSubcategories();
 
 ?>
 
-
+<?php 
+foreach ($subcategories as $category => $subcategoriesList) {
+?>
 <H2>Вставить данные в Гугл таблицы</H2>
 <form action="google_sheets/data/insert.php" , method="POST">
-    <input type="hidden" name="category" value="<?= $categories[1] ?>">
+    <input type="hidden" name="category" value="<?= $category ?>">
     <select name="subcategory">
         <?php
-        foreach ($napolnye_subcategories as $subcategory) {
+        foreach ($subcategoriesList as $subcategory) {
             echo '<option value="' . $subcategory . '">' . $subcategory . '</option>';
         }
         ?>
     </select></p>
     <p><input type="submit" value="Отправить"></p>
 </form>
-
+<?php
+}
+?>
 
 
 <H2>Вставить данные с объединенными характеристиками в другую таблицу</H2>

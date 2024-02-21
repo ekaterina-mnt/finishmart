@@ -9,19 +9,17 @@ use functions\GoogleSheets\FormInsertData;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 use functions\GoogleSheets\ParseCharacteristics\Plitka;
 use functions\GoogleSheets\ParseCharacteristics\SpecificChars;
+use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
 
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
     echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
   
-    $subcategories = [
-        'Напольные покрытия' => Napolnye::getSubcategories(),
-        'Плитка и керамогранит' => Plitka::getSubcategories(),
-    ];
-
 
     if (!isset($_POST['category'])) exit("Нужны параметры 'категория'");
   
+    $subcategories = ConnectedSubcategories::getList();
+    
     if (!in_array($_POST['category'], array_keys($subcategories))) exit("Неподходящий параметр");
 
     $needed_category = $_POST['category'];
