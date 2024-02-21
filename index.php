@@ -31,22 +31,19 @@ $plitka_subcategories = Plitka::getSubcategories();
 
 ?>
 
-<?php 
-foreach ($subcategories as $category => $subcategoriesList) {
-?>
-<H2>Вставить данные в Гугл таблицы</H2>
-<form action="google_sheets/data/insert.php" , method="POST">
-    <input type="hidden" name="category" value="<?= $category ?>">
-    <select name="subcategory">
-        <?php
-        foreach ($subcategoriesList as $subcategory) {
-            echo '<option value="' . $subcategory . '">' . $subcategory . '</option>';
-        }
-        ?>
-    </select></p>
-    <p><input type="submit" value="Отправить"></p>
-</form>
 <?php
+foreach ($subcategories as $category => $subcategoriesList) {
+
+    echo '<H2>Вставить данные в Гугл таблицы</H2>
+<form action="google_sheets/data/insert.php" , method="POST">
+    <input type="hidden" name="category" value="<?= ' . $category . '?>">
+    <select name="subcategory">';
+    foreach ($subcategoriesList as $subcategory) {
+        echo '<option value="' . $subcategory . '">' . $subcategory . '</option>';
+    }
+    echo '</select></p>
+    <p><input type="submit" value="Отправить"></p>
+</form>';
 }
 ?>
 
