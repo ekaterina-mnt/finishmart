@@ -72,22 +72,8 @@ $plitka_subcategories = Plitka::getSubcategories();
     </select>
     <p><input type="submit" value="Отправить"></p>
 </form>
-<a href="http://penzevrv.beget.tech/">Вставить в таблицу пустые листы для каждой подкатегории</a>
 <br><br>
 
-
-
-<H2>Спарсить характеристики товаров в таблицу characteristics</H2>
-<form action="/alter_mysql_table/parse_characteristics/index.php" , method="POST">
-    <select name="category">
-        <?php
-        foreach ($categories as $category) {
-            echo '<option value="' . $category . '">' . $category . '</option>';
-        }
-        ?>
-    </select></p>
-    <p><input type="submit" value="Отправить"></p>
-</form>
 
 
 <H2>Спарсить характеристики товаров в таблицу characteristics</H2>

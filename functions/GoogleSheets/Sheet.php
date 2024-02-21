@@ -38,7 +38,7 @@ class Sheet
         if (!self::$service) {
             $service_json_title = self::get_service_json_title($service_account);
             // Наш ключ доступа к сервисному аккаунту
-            $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/' . $service_json_title;
+            $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/service_keys/' . $service_json_title;
             putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
             // Создаем новый клиент
             $client = new Google_Client();
