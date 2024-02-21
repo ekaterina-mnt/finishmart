@@ -310,7 +310,7 @@ class Categories
             0 => [ //'Обои и настенные покрытия'
                 ($provider == 'domix' and preg_match("#(Обои|фотообои)#", $providerCategory)),
                 ($provider == 'domix' and preg_match("#(Плитка настенная|Декор настенный|Панно)#", $title)),
-                ($provider == 'artkera' and preg_match("#(Настенная)#", $providerSubcategory)),
+                ($provider == 'artkera' and preg_match("#(Настенная|Декор|Панно|Бордюр)#", $providerSubcategory)),
                 ($provider == 'alpinefloor' and preg_match("#(Кварц-виниловые самоклеящиеся стеновые панели)#", $providerCategory)),
                 ($provider == 'olimp' and preg_match("#(Стеновые панели)#", $providerSubcategory)),
 
@@ -318,7 +318,6 @@ class Categories
             1 => [ //'Напольные покрытия',
                 ($provider == 'domix' and preg_match("#(Инженерная доска|Плитнус|Кварц-винил|Линолеум|Ламинат|Ковровые|Ковры|Паркет|Подложка)#", $providerCategory)),
                 ($provider == 'alpinefloor' and (preg_match("#(Инженерная доска|Кварцвинил|spc-ламинат|Ламинат)#", $providerCategory) or preg_match("#(Подложка|плинтус)#", $providerSubcategory) or preg_match("#(ламинат)#", $title))),
-                ($provider == 'artkera' and preg_match("#(Декор|Панно|Бордюр)#", $providerSubcategory)),
                 ($provider == 'finefloor' and !preg_match("#(Уборка|Клеевые|Подложк)#", $providerSubcategory)),
                 ($provider == 'dplintus' and preg_match("#(Плинтус)#", $providerCategory)),
                 ($provider == 'olimp' and preg_match("#(Ламинат|ламинат|Инженерная доска|Массивная доска|паркет|Паркет|Плинтус|Подложка|Пробковый пол|Фанера пиленная)#", $providerSubcategory) and !preg_match("#(для паркета)#", $providerSubcategory)),

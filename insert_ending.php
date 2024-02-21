@@ -31,6 +31,7 @@ if (!preg_match("#(Подъем и выгрузка)#", $all_product_data['title
         $all_product_data['category'] == 'Свет'
         or $all_product_data['subcategory'] == 'Ковровые покрытия'
         or $all_product_data['subcategory'] == 'Ковры'
+        or $all_product_data['provider_subcategory'] == "Фанера пиленная"
     ) {
         Parser::insertProductData1($types, $values, $all_product_data['link'][0], "needless_products");
     } else {
