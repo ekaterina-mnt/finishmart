@@ -262,7 +262,7 @@ class Categories
             ],
             52 => [ //'Настенная плитка',
                 ($provider == 'artkera' and preg_match("#(Настенная|Декор|Панно|Бордюр)#", $providerSubcategory)),
-                ($provider == 'domix' and preg_match("#(Плитка настенная|Декор настенный|Панно)#", $title)),
+                ($provider == 'domix' and (preg_match("#(Плитка настенная|Декор настенный|Панно)#", $title) or (preg_match("#(Бордюр для обоев)#", $providerSubcategory)))),
             ],
             53 => [ //'Кронштейны, ниши',
                 ($provider == 'evroplast' and preg_match("#(кронштейн)#", $providerCategory)),
@@ -309,7 +309,7 @@ class Categories
         $keys = [
             0 => [ //'Обои и настенные покрытия'
                 ($provider == 'domix' and preg_match("#(Обои|фотообои)#", $providerCategory)),
-                ($provider == 'domix' and preg_match("#(Плитка настенная|Декор настенный|Панно)#", $title)),
+                ($provider == 'domix' and (preg_match("#(Плитка настенная|Декор настенный|Панно)#", $title) or (preg_match("#(Бордюр для обоев)#", $providerSubcategory)))),
                 ($provider == 'artkera' and preg_match("#(Настенная|Декор|Панно|Бордюр)#", $providerSubcategory)),
                 ($provider == 'alpinefloor' and preg_match("#(Кварц-виниловые самоклеящиеся стеновые панели)#", $providerCategory)),
                 ($provider == 'olimp' and preg_match("#(Стеновые панели)#", $providerSubcategory)),
