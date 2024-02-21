@@ -5,7 +5,7 @@ use functions\Parser;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 use functions\GoogleSheets\ParseCharacteristics\Plitka;
 use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
-
+use functions\TechInfo;
 
 $providers = [
     'alpinefloor', 'ampir', 'artkera', 'centerkrasok', 'domix', 'dplintus', 'evroplast', 'finefloor',
@@ -32,6 +32,8 @@ $plitka_subcategories = Plitka::getSubcategories();
 ?>
 
 <?php
+TechInfo::preArray($subcategories);
+var_dump($subcategories);
 foreach ($subcategories as $category => $subcategoriesList) {
 
     echo '<H2>Вставить данные в Гугл таблицы</H2>
