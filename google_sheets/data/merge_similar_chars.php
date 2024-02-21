@@ -14,6 +14,7 @@ use Google\Service\AuthorizedBuyersMarketplace\Contact;
 use functions\GoogleSheets\ParseCharacteristics\DefineNeededColumns;
 use functions\GoogleSheets\ParseCharacteristics\GetFilledIds;
 use functions\GoogleSheets\ParseCharacteristics\MergedChars;
+use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
 
 
 
@@ -26,13 +27,19 @@ try {
     /////// ОПРЕДЕЛЯЕМ НУЖНЫЕ ПЕРЕМЕННЫЕ ///////
 
     echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
+  
 
     if (!isset($_POST['category']) or !isset($_POST['subcategory'])) exit("Нужны параметры 'категория' и 'подкатегория'");
-    $napolnye = Napolnye::getSubcategories();
-    if (!in_array($_POST['subcategory'], $napolnye)) exit("Неподходящий параметр");
+  
+    $subcategories = ConnectedSubcategories::getList();
+    
+    if (!in_array($_POST['category'], array_keys($subcategories))) exit("Неподходящий параметр");
+    
+    $needed_subcategories = $subcategories[$_POST['category']];
+
+    if (!in_array($_POST['subcategory'], $needed_subcategories)) exit("Неподходящий параметр");
 
     $needed_category = $_POST['category'];
-    $needed_subcategory = $_POST['subcategory'];
     // $list_name = "Товары";
     $list_name = $needed_subcategory;
 
