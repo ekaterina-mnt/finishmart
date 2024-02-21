@@ -13,7 +13,7 @@ use functions\GoogleSheets\Goods\GetGoods;
 use Google\Service\AuthorizedBuyersMarketplace\Contact;
 use functions\GoogleSheets\ParseCharacteristics\DefineNeededColumns;
 use functions\GoogleSheets\ParseCharacteristics\GetFilledIds;
-
+use functions\GoogleSheets\ParseCharacteristics\MergedChars;
 
 // Этот файл используем когда уже есть итоговая сравнительная таблица со значениями "ок", "удалить", "значение: "...""
 
@@ -30,7 +30,7 @@ try {
     echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
 
     if (!isset($_POST['category']) or !isset($_POST['subcategory'])) exit("Нужны параметры 'категория' и 'подкатегория'");
-    $napolnye = Napolnye::getSubcategoriesNapolnye();
+    $napolnye = Napolnye::getSubcategories();
     if (!in_array($_POST['subcategory'], $napolnye)) exit("Неподходящий параметр");
 
     $needed_category = $_POST['category'];
@@ -53,7 +53,7 @@ try {
 
     // 
     $common_attributes = CommonChars::getChars(); // чтобы потом брать значения из $good
-    $specific_attributes = Napolnye::getMergedCharsArray($GoogleSheets_tablename);
+    $specific_attributes = MergedChars::getMergedCharsArray($GoogleSheets_tablename);
 
 
 

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "plitkafinishmart",
+  "private_key_id": "7d093de38fdee1d609fff778f8c86507135deaf2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCWF++4nUrfg0y7\nEEeCrqE2knWRY6Dw/GtkIckOlCgsqXTlVjim73K+um9SMPdTdMLHq5siNei1COhd\nczAKbUcMVP3CrP6TuuJkjt1fBftE6adgd0Lo/mpRZ2I3BgQ2TzHM1FeoLphIiao+\nf9AP5dpthRjlevHvhA7IekLGHj2V4i6GbT04T9spGD63e9RIgYhkNtaz3q1s3BHX\nx1pXVPGGVikwIAgfby1Il0CLmwUDaAij2A57AzTb8g9KRClPifFLlXoSMk1hg6YZ\nkSnODAOcLvcmhlanKjl+2D2cjppwlOa+nfSKqwi9h8mYm11VnJfp61xmhnL8fH1k\nn1sz2idnAgMBAAECggEAEDNxOrovtMSVabOuJFr5J8zTR+g7HQgCB4LmEt7HH1sD\nNSYDY3GBLzksfvCuIaH+zFKnoh+ziKb3fe7LBrUY8CnUYkkOCaAog7YwCuu4XY3i\n9TSqUj/z9el03n+VwM73jyZ0d8DfyySg7bIaIT0sQJoXP93vc20Ls3QO9Reaiiz/\ne4e3wm57IATT/tAInwb9uC9IR311hHRh9o5hHNGa0XnwsI4N3tseRQFUMY8MRePG\n/ANqweBp+T/ViBfB7yLikLKqKQb2F3+jcQ7upmDqRca6YIRRx7zMK0fCAWQuXSuJ\nx/sSeTenz9G0fthb3MXYmIIIEDBot5loKzIyFZv88QKBgQDO74edFJIGVA9GMR55\nd0LQDpRJAQUzMo4txJEKvHGlMWTVUUumZhlhEk1Kozhlz8BM2YSURSu7+S7Kak5k\nHV87v96io569FAPLlEgDoK0bxBGKRT7ZNXlVrXTBDAroT9nfvUf4kNhVfNSpzVrV\nVPhtbT64P33WLRstKJMrnao6HQKBgQC5rjtGKzAPORAQNJOolcO5KRYfupp47ZZl\n9YZfaZKcMpuy4mvs35ZRYfJ8IuTV4qmn92ci4D+zmKeqNM/894LgQ4JWLS3Clq7d\ndoHU2YAtAyS6265T+DhiZ1ufjcHgi6LRm51CiJ6flcLRmymP2cj06ii/k12yKUTO\nE91iL42QUwKBgBUiJ0JmiGc3DHxJpegXwu4GnyQ5g3NwFU8dRQbIqf6J5ddXPxeW\nU78zJEucEbVsGyJ+EGkoC0heMWYgpzLYQRKUDMOlXB/JPH38/cHJFgTA6F2rprh+\nGo8icMsKVM7W4NRVu1TqTf2lCv7wZvdkfx6FyqL8cPh/kMfy3dzVdD4NAoGAKXG+\nQTc6jutJrpRNsP9cpGOLUKGyAPPm8fMPfxRtaPfS0ObA+CofvyKBoTuYoDTrcVZD\nawFqtoeIRPFsyyXjzHLFEL8cy6YeecgNypiRh3qAJEUMcCmjTDONu9tEPv5r5SU6\nwLMF1ND0nxxm9njB5git97TI4Q9dEDJW46eBjYkCgYAN7h+HsDinvJCVmqJnYsEo\n1e8i0F8jqcPknHpAgV3eBJDSgPEm5+BmM/+Le5FFFitr2cEavkKZxCeOy74Bzpo4\ngqBq+ho27s1qjaZOAwRJrBA4cTsxma0lqkxXxJ9borARkK4y+OXZW1qb2+/RF8Vm\nvIUED/ViOMMmM9ZtLg8mxQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "plitkafinishmart@plitkafinishmart.iam.gserviceaccount.com",
+  "client_id": "111221598117943790796",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/plitkafinishmart%40plitkafinishmart.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

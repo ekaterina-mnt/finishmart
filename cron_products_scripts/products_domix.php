@@ -36,7 +36,6 @@ try {
         // Получаем ссылку
 
         $url_parser = $res['link'];
-        $url_parser = "https://moscow.domix-club.ru/catalog/kovry/kaplanser-super-paula-5121a-l-beige-1-2x1-7m/";
         $provider = $res['provider'];
 
         // $links = MySQL::sql("SELECT link, provider from all_products WHERE provider='" . $script_iteraion_provider . "' and subcategory IS NULL or subcategory='null' ORDER BY date_edit LIMIT 10");

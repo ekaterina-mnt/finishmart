@@ -8,7 +8,7 @@ use functions\Parser;
 use functions\GoogleSheets\Sheet;
 use functions\TechInfo;
 
-class Napolnye
+class Plitka
 {
     static function getSubcategories()
     {

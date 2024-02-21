@@ -23,7 +23,7 @@ echo '<a href="http://penzevrv.beget.tech/alter_mysql_table/parse_characteristic
 echo "<br><br>";
 
 $categories = Parser::getCategoriesList();
-$napolnye_subcategories = Napolnye::getSubcategoriesNapolnye();
+$napolnye_subcategories = Napolnye::getSubcategories();
 
 ?>
 

@@ -14,7 +14,7 @@ try {
   echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
 
   if (!isset($_POST['category']) or !isset($_POST['subcategory'])) exit("Нужны параметры 'категория' и 'подкатегория'");
-  $napolnye = Napolnye::getSubcategoriesNapolnye();
+  $napolnye = Napolnye::getSubcategories();
   if (!in_array($_POST['subcategory'], $napolnye)) exit("Неподходящий параметр");
 
   $needed_category = $_POST['category'];

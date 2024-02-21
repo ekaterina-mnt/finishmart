@@ -28,7 +28,7 @@ class CommonChars
             "Поставщик" => 'provider',
             "Характеристики поставщика" => 'characteristics',
             "Описание" => 'description',
-            "В одной упаковке" => 'in_pack'
+            // "В одной упаковке" => 'in_pack'
         ];
 
         return $chars;

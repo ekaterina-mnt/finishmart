@@ -13,7 +13,7 @@ try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
     $GoogleSheets_tablename = 'napolnye_raw';
-    $napolnye = Napolnye::getSubcategoriesNapolnye();
+    $napolnye = Napolnye::getSubcategories();
 
     foreach ($napolnye as $title) {
         Sheet::create_new_page($title, $GoogleSheets_tablename);
