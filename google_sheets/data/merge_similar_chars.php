@@ -35,11 +35,13 @@ try {
     
     if (!in_array($_POST['category'], array_keys($subcategories))) exit("Неподходящий параметр");
     
-    $needed_subcategories = $subcategories[$_POST['category']];
-
-    if (!in_array($_POST['subcategory'], $needed_subcategories)) exit("Неподходящий параметр");
-
     $needed_category = $_POST['category'];
+    $needed_subcategories = $subcategories[$needed_category];
+
+    TechInfo::preArray($needed_subcategories);
+
+    if (!in_array($needed_category, $needed_subcategories)) exit("Неподходящий параметр");
+
     // $list_name = "Товары";
     $list_name = $needed_subcategory;
 

@@ -35,7 +35,7 @@ try {
     <?php
     foreach ($subcategories as $category => $subcategoriesList) {
     ?>
-        <H2>Вставить данные в Гугл таблицы</H2>
+        <H2>Вставить данные в Гугл таблицы - <?= $category ?></H2>
         <form action="google_sheets/data/insert.php" , method="POST">
             <input type="hidden" name="category" value="<?= $category ?>">
             <select name="subcategory">
