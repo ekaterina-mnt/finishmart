@@ -15,16 +15,14 @@ class Plitka
         $subcategoriesList = Parser::getSubcategoriesList();
 
         $subcategories = [
-            $subcategoriesList[28], //'Инженерная доска',
-            $subcategoriesList[29], //'Паркетная доска',
-            $subcategoriesList[32], //'Подложка под напольные покрытия',
-            $subcategoriesList[33], //'Плинтус',
-            $subcategoriesList[34], //'Массивная доска',
-            $subcategoriesList[35], //'Пробковое покрытие',
-            $subcategoriesList[36], //'Линолеум',
-            $subcategoriesList[37], //'Кварцвиниловые полы',
-            $subcategoriesList[27], //'Ламинат',
-            $subcategoriesList[30], //'Штучный паркет',
+            $subcategoriesList[10], //'Керамогранит',
+            $subcategoriesList[13], //'Мозаика',
+            $subcategoriesList[44], //'Панели',
+            $subcategoriesList[56], //'Декоративное покрытие',
+            $subcategoriesList[11], //'Керамическая плитка',
+            $subcategoriesList[26], //'Другое',
+            $subcategoriesList[12], //'Натуральный камень',
+
         ];
         return $subcategories;
     }

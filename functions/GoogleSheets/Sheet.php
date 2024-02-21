@@ -24,6 +24,8 @@ class Sheet
             $service_json_title = "service_key_napolnye_raw.json";
         } elseif ($service_account == 'napolnye_edition') {
             $service_json_title = "service_key_napolnye_edition.json";
+        } elseif ($service_account == 'plitka_raw') {
+            $service_json_title = 'plitka_raw.json';
         } else {
             die("Не найден json файл service account");
         }
@@ -54,10 +56,12 @@ class Sheet
     static function get_sheetID($service_account)
     {
         // ID таблицы
-        if ($service_account == 'napolnye_raw') {
+        if ($service_account == 'napolnye_raw') { // для Напольные Итог
             $spreadsheetId = '15BAlc52xS_7RxYYCrM5Jw4g9TEiS7EoeUwcLPYqPdyc';
-        } elseif ($service_account == 'napolnye_edition') {
+        } elseif ($service_account == 'napolnye_edition') { // для Редакция Напольные
             $spreadsheetId = '105JPpIgq0gJGWcDVpYTlZ-r-g_uJ1b1TAEwtkamN0p8';
+        } elseif ($service_account == 'plitka_raw') {
+            $spreadsheetId = '1AOoMtVpA2SP6gR5UEjZWOqk-BuzP0YXxos2UoPj1qBw';
         }
 
         return $spreadsheetId;

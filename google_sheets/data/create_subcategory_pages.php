@@ -7,15 +7,31 @@ use functions\GoogleSheets\Sheet;
 use functions\TechInfo;
 use functions\GoogleSheets\FormInsertData;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
+use functions\GoogleSheets\ParseCharacteristics\Plitka;
 use functions\GoogleSheets\ParseCharacteristics\SpecificChars;
 
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
+    echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
+  
+    $subcategories = [
+        'Напольные покрытия' => Napolnye::getSubcategories(),
+        'Плитка и керамогранит' => Plitka::getSubcategories(),
+    ];
 
-    $GoogleSheets_tablename = 'napolnye_raw';
-    $napolnye = Napolnye::getSubcategories();
 
-    foreach ($napolnye as $title) {
+    if (!isset($_POST['category'])) exit("Нужны параметры 'категория'");
+  
+    if (!in_array($_POST['category'], array_keys($subcategories))) exit("Неподходящий параметр");
+
+    $needed_category = $_POST['category'];
+    $needed_subcategories = $subcategories[$_POST['category']];
+
+    $GoogleSheets_tablename = 'plitka_raw';
+    echo "Будут вставлены в таблицу '$GoogleSheets_tablename'";
+
+
+    foreach ($subcategories as $title) {
         Sheet::create_new_page($title, $GoogleSheets_tablename);
         echo "добавлен лист $title<br>";
     }

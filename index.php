@@ -3,11 +3,14 @@ require __DIR__ . "/vendor/autoload.php";
 
 use functions\Parser;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
+use functions\GoogleSheets\ParseCharacteristics\Plitka;
 
 
-$providers = ['alpinefloor', 'ampir', 'artkera', 'centerkrasok', 'domix', 'dplintus', 'evroplast', 'finefloor', 
-            'laparet', 'masterdom', 'mosplitka', 'ntceramic', 'olimp', 'surgaz', 'tdgalion', 'fargo'];
-            
+$providers = [
+    'alpinefloor', 'ampir', 'artkera', 'centerkrasok', 'domix', 'dplintus', 'evroplast', 'finefloor',
+    'laparet', 'masterdom', 'mosplitka', 'ntceramic', 'olimp', 'surgaz', 'tdgalion', 'fargo'
+];
+
 foreach ($providers as $provider) {
     echo '<a href="http://penzevrv.beget.tech/cron_products_scripts/products_' . $provider . '.php">products_' . $provider . '</a>';
     echo "<br>";
@@ -19,13 +22,13 @@ echo '<a href="http://penzevrv.beget.tech/cron_dop_scripts/check_invalide_links.
 echo "<br><br>";
 echo '<a href="http://penzevrv.beget.tech/cron_dop_scripts/masterdomDopData.php">masterdomDopData</a>';
 echo "<br><br>";
-echo '<a href="http://penzevrv.beget.tech/alter_mysql_table/parse_characteristics/index.php">Спарсить характеристики в mysql</a>';
-echo "<br><br>";
 
 $categories = Parser::getCategoriesList();
 $napolnye_subcategories = Napolnye::getSubcategories();
+$plitka_subcategories = Plitka::getSubcategories();
 
 ?>
+
 
 <H2>Вставить данные в Гугл таблицы</H2>
 <form action="google_sheets/data/insert.php" , method="POST">
@@ -40,7 +43,9 @@ $napolnye_subcategories = Napolnye::getSubcategories();
     <p><input type="submit" value="Отправить"></p>
 </form>
 
-<H2>Вставить данные с объединенными характеристиками в другую таблицу (первый шаг - ДО создания сравнительной таблицы (со значениями "ок", "удалить"))</H2>
+
+
+<H2>Вставить данные с объединенными характеристиками в другую таблицу</H2>
 <form action="google_sheets/data/merge_similar_chars.php" , method="POST">
     <input type="hidden" name="category" value="<?= $categories[1] ?>">
     <select name="subcategory">
@@ -53,9 +58,24 @@ $napolnye_subcategories = Napolnye::getSubcategories();
     <p><input type="submit" value="Отправить"></p>
 </form>
 
+
+
 <br><br>
-<a href="http://penzevrv.beget.tech/google_sheets/data/create_subcategory_pages.php">Вставить в таблицу пустые листы для каждой подкатегории</a>
+<H2>Вставить листы в Гугл таблицы</H2>
+<form action="google_sheets/data/create_subcategory_pages.php" , method="POST">
+    <select name="category">
+        <?php
+        foreach ($categories as $category) {
+            echo '<option value="' . $category . '">' . $category . '</option>';
+        }
+        ?>
+    </select>
+    <p><input type="submit" value="Отправить"></p>
+</form>
+<a href="http://penzevrv.beget.tech/">Вставить в таблицу пустые листы для каждой подкатегории</a>
 <br><br>
+
+
 
 <H2>Спарсить характеристики товаров в таблицу characteristics</H2>
 <form action="/alter_mysql_table/parse_characteristics/index.php" , method="POST">
@@ -69,3 +89,15 @@ $napolnye_subcategories = Napolnye::getSubcategories();
     <p><input type="submit" value="Отправить"></p>
 </form>
 
+
+<H2>Спарсить характеристики товаров в таблицу characteristics</H2>
+<form action="/alter_mysql_table/parse_characteristics/index.php" , method="POST">
+    <select name="category">
+        <?php
+        foreach ($categories as $category) {
+            echo '<option value="' . $category . '">' . $category . '</option>';
+        }
+        ?>
+    </select></p>
+    <p><input type="submit" value="Отправить"></p>
+</form>
