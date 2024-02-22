@@ -99,7 +99,7 @@ try {
 
     foreach ($goods as $i => $good) {
         if (count($insert_data) > 4999) {
-            echo ("Ограничение по 5000 товаров за раз");
+            echo ("<br><b>Ограничение по 5000 товаров за раз</b>");
             break;
         }
 
