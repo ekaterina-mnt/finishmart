@@ -119,7 +119,7 @@ try {
         $specific_values = array();
 
         foreach ($specific_attributes as $merged_attr => $attrs) {
-            if ($good['id'] > 107750) break;
+            if ($good['id'] > 100000) break;
 
             foreach ($attrs as $attr) {
                 foreach ($characteristics as $char => $value) {
