@@ -101,6 +101,11 @@ try {
     foreach ($goods as $i => $good) {
 
         echo $good['id'] . "<br>";
+        if ($good['id'] > 107799) {
+            TechInfo::preArray($good);
+            var_dump($good);
+        }
+
         // Определяем значения для $common_attributes
         $common_values = array();
         foreach ($common_attributes as $key => $attr) {
