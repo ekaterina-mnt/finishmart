@@ -99,7 +99,8 @@ try {
     $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
-        if (count($insert_data) > 4000) break;
+        if (count($insert_data) > 1) break;
+        TechInfo::preArray($good);
 //         if ($good['id'] > 107750) {
 //             TechInfo::preArray($good);
 //             var_dump($good);
