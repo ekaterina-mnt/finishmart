@@ -98,7 +98,7 @@ try {
     /////// ВСТАВЛЯЕМ ЗНАЧЕНИЯ ДЛЯ СТОЛБЦОВ ///////
 
     // Получаем все товары нужной категории и подкатегории
-    $goods = GetGoods::getGoods($filled_ids_str, $needed_subcategory, $needed_category);
+    $goods = GetGoods::getGoods($filled_ids_str, $needed_category, $needed_subcategory);
     var_dump($goods->num_rows);
     $insert_data = array();
     $notCountedChars = array();
