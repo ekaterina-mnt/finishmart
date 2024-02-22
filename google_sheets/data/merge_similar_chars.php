@@ -86,9 +86,9 @@ try {
 
     $filled_ids_data = GetFilledIds::get($list_name, $current_cell, $GoogleSheets_tablename);
     $filled_ids = $filled_ids_data['filled_ids'];
-    var_dump(count(explode(",", $filled_ids)));
+    echo "<br>filled_ids = " . count(explode(",", $filled_ids)) . "<br>";
     $current_cell = $filled_ids_data['current_cell'];
-    var_dump($current_cell);
+    echo "<br>current_cell - $current_cell<br>";
 
 
 
