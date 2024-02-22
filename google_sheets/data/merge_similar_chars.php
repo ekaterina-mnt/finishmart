@@ -98,11 +98,10 @@ try {
     $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
-        //         if ($good['id'] > 107750) {
-        //             TechInfo::preArray($good);
-        //             var_dump($good);
-        //         }
-        // echo Mysql::get_mysql_datetime() . "<br>";
+        if (count($insert_data) > 5000) {
+            echo ("Ограничение по 5000 товаров за раз");
+            break;
+        }
 
         // Определяем значения для $common_attributes
         $common_values = array();
