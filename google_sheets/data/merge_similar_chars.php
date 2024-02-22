@@ -95,7 +95,6 @@ try {
 
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids, $needed_category, $needed_subcategory);
-    var_dump($filled_ids);
     $insert_data = array();
     $notCountedChars = array();
 
@@ -142,8 +141,6 @@ try {
         $values = array_merge($common_values, $specific_values);
         $values = array_map(fn ($value) => $value ?? "-", $values);
         $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
-        TechInfo::preArray($insert_data);
-        break;
     }
 
     echo "<br>Всего строк добавлено:" . count($insert_data);
