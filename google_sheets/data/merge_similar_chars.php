@@ -85,11 +85,11 @@ try {
     // Получаем id уже вставленных товаров и определяем последнюю заполненную строку
 
     $filled_ids_data = GetFilledIds::get($list_name, $current_cell, $GoogleSheets_tablename);
-    $filled_ids =$filled_ids_data['filled_ids'];
+    $filled_ids = $filled_ids_data['filled_ids'];
     $current_cell = $filled_ids_data['current_cell'];
 
 
-
+    var_dump($filled_ids);
 
 
 
@@ -99,6 +99,7 @@ try {
 
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids_str, $needed_subcategory, $needed_category);
+    var_dump($goods->num_rows);
     $insert_data = array();
     $notCountedChars = array();
 
