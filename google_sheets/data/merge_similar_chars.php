@@ -41,6 +41,7 @@ try {
     $needed_subcategories = $subcategories[$needed_category];
 
     TechInfo::preArray($needed_subcategories);
+    var_dump($needed_subcategories);
 
     if (!in_array($needed_category, $needed_subcategories)) exit("Неподходящий параметр");
 
