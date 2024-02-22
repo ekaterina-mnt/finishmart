@@ -18,10 +18,11 @@ class GetGoods
             $add_str = "subcategory like '{$needed_subcategory}' AND";
         }
 
+        // AND (status like 'ok' OR status IS NULL)
         if ($filled_ids) {
-            $query = "SELECT * FROM all_products WHERE {$add_str} category like '{$needed_category}' AND id NOT IN ($filled_ids) AND (status like 'ok' OR status IS NULL) AND char_views > 0";
+            $query = "SELECT * FROM all_products WHERE {$add_str} category like '{$needed_category}' AND id NOT IN ($filled_ids) AND char_views > 0";
         } else {
-            $query = "SELECT * FROM all_products WHERE {$add_str} category like '{$needed_category}' AND (status like 'ok' OR status IS NULL) AND char_views > 0";
+            $query = "SELECT * FROM all_products WHERE {$add_str} category like '{$needed_category}' AND char_views > 0";
         }
 
         $goods = MySQL::sql($query);
