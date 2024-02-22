@@ -121,7 +121,11 @@ try {
             foreach ($attrs as $attr) {
                 foreach ($characteristics as $char => $value) {
                     if ($char === $attr) {
-                        $specific_values[$merged_attr] = $good[$attr];
+                        $specific_values[$merged_attr] = $value;
+                        if (preg_match('#($good[\'(.+)\'])#', $attr, $matches)) {
+                            var_dump($matches);
+                            echo "<br>";
+                        }
                     }
                     if (!in_array($char, $all_spec_attrs)) $notCountedChars[] = $char;
                 }
