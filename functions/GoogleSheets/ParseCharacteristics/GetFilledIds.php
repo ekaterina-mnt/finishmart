@@ -14,7 +14,7 @@ class GetFilledIds
     static function get($list_name, $current_cell, $GoogleSheets_tablename)
     {
         $cells = Sheet::get_data("$list_name!C" . "$current_cell:C100000", $GoogleSheets_tablename);
-
+TechInfo::preArray($cells);
         if ($cells['values']) {
             $filled_ids = array_column($cells['values'], 0);
             $last_cell = array_key_last($filled_ids) + $current_cell;
