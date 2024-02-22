@@ -33,18 +33,13 @@ try {
   
     $subcategories = ConnectedSubcategories::getList();
     $needed_category = $_POST['category'];
-    TechInfo::preArray(array_keys($subcategories));
-    var_dump($needed_category);
-    var_dump(in_array($needed_category, array_keys($subcategories)));
     
     if (!in_array($needed_category, array_keys($subcategories))) exit("Неподходящий параметр");
     
-    $needed_subcategories = $subcategories[$needed_category];
 
-    TechInfo::preArray($needed_subcategories);
-    var_dump($needed_subcategories);
+    $needed_subcategory = $_POST['subcategory'];
 
-    if (!in_array($needed_category, $needed_subcategories)) exit("Неподходящий параметр");
+    if (!in_array($needed_subcategory, $subcategories[$needed_category])) exit("Неподходящий параметр");
 
     // $list_name = "Товары";
     $list_name = $needed_subcategory;
