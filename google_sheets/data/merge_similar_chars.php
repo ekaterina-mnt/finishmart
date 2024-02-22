@@ -96,7 +96,7 @@ try {
 
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids, $needed_category, $needed_subcategory);
-    var_dump($goods->num_rows);
+    echo "<br>всего товаров подкатегории: {$goods->num_rows}<br>";
     $insert_data = array();
     $notCountedChars = array();
 
