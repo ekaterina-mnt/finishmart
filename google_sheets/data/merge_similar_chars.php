@@ -124,7 +124,7 @@ try {
             foreach ($attrs as $attr) {
                 var_dump($attr);
                 echo "<br>";
-                if (preg_match('#($good[\'(.+)\'])#', $attr, $matches)) {
+                if (preg_match("#good\[\'(.+)\'\]#", $str, $matches)) {
                     var_dump($matches);
                     echo "<br>";
                 }
