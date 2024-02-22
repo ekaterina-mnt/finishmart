@@ -122,15 +122,15 @@ try {
         foreach ($specific_attributes as $merged_attr => $attrs) {
 
             foreach ($attrs as $attr) {
+                var_dump($attr);
+                echo "<br>";
+                if (preg_match('#($good[\'(.+)\'])#', $attr, $matches)) {
+                    var_dump($matches);
+                    echo "<br>";
+                }
                 foreach ($characteristics as $char => $value) {
                     if ($char === $attr) {
                         $specific_values[$merged_attr] = $value;
-                        var_dump($attr);
-                        echo "<br>";
-                        if (preg_match('#($good[\'(.+)\'])#', $attr, $matches)) {
-                            var_dump($matches);
-                            echo "<br>";
-                        }
                     }
                     if (!in_array($char, $all_spec_attrs)) $notCountedChars[] = $char;
                 }
