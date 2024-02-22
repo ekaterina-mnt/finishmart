@@ -86,6 +86,7 @@ try {
 
     $filled_ids_data = GetFilledIds::get($list_name, $current_cell, $GoogleSheets_tablename);
     $filled_ids = $filled_ids_data['filled_ids'];
+    var_dump(count(explode(",", $filled_ids)));
     $current_cell = $filled_ids_data['current_cell'];
     var_dump($current_cell);
 
