@@ -86,9 +86,7 @@ try {
 
     $filled_ids_data = GetFilledIds::get($list_name, $current_cell, $GoogleSheets_tablename);
     $filled_ids = $filled_ids_data['filled_ids'];
-    echo "<br>filled_ids = " . count(explode(",", $filled_ids)) . "<br>";
     $current_cell = $filled_ids_data['current_cell'];
-    echo "<br>current_cell - $current_cell<br>";
 
 
 
@@ -96,7 +94,6 @@ try {
 
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids, $needed_category, $needed_subcategory);
-    echo "<br>всего товаров подкатегории: {$goods->num_rows}<br>";
     $insert_data = array();
     $notCountedChars = array();
 
