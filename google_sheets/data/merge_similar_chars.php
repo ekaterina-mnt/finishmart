@@ -70,6 +70,7 @@ try {
     $attributes_cell = "$list_name!" . $start_column . $current_cell - 1;
 
     $specific_attributes = MergedChars::getMergedCharsArray($GoogleSheets_tablename);
+    TechInfo::preArray($specific_attributes);
     $all_spec_attrs = MergedChars::getAllAttrs($GoogleSheets_tablename); // это в будущем для проверки все ли характеристики учтены в нашем списке
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
     // unset($insert_specific_attributes[array_search($cross, $insert_specific_attributes)]); // удаляем пересекающуюся характеристику, чтобы не дублировалась
@@ -87,10 +88,6 @@ try {
     $filled_ids_data = GetFilledIds::get($list_name, $current_cell, $GoogleSheets_tablename);
     $filled_ids = $filled_ids_data['filled_ids'];
     $current_cell = $filled_ids_data['current_cell'];
-
-
-    var_dump($filled_ids);
-
 
 
 
@@ -114,6 +111,7 @@ try {
         $common_values = array_merge([MySQL::get_mysql_datetime()], $common_values);
 
         $characteristics = json_decode($good['characteristics'], 1);
+        TechInfo::preArray($characteristics);
 
         // Определяем значения для $specific_attributes
         $specific_values = array();
@@ -142,6 +140,8 @@ try {
         $values = array_merge($common_values, $specific_values);
         $values = array_map(fn ($value) => $value ?? "-", $values);
         $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
+        TechInfo::preArray($insert_data);
+        break;
     }
 
     echo "<br>Всего строк добавлено:" . count($insert_data);
