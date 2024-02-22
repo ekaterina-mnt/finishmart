@@ -120,18 +120,23 @@ try {
         foreach ($specific_attributes as $merged_attr => $attrs) {
 
             foreach ($attrs as $attr) {
-                if (str_contains($attr, "good")) {
-                    echo $attr;
-                    echo "<br>";;
-                }
-                if (preg_match("#good\[\'(.+)\'\]#", $attr, $matches)) {
-                    var_dump($matches);
-                    echo "<br>";
-                }
+                // if (str_contains($attr, "good")) {
+                //     echo $attr;
+                //     echo "<br>";;
+                // }
+                // if (preg_match("#good\[\'(.+)\'\]#", $attr, $matches)) {
+                //     var_dump($matches);
+                //     echo "<br>";
+                //     $attr_from_mysql_column[] = 
+                // }
                 foreach ($characteristics as $char => $value) {
                     if ($char === $attr) {
                         $specific_values[$merged_attr] = $value;
                     }
+                    if (preg_match("#good\[\'(.+)\'\]#", $attr, $matches)) {
+                        $specific_values[$merged_attr] = $good[$matches[1]];
+                    }
+                 
                     if (!in_array($char, $all_spec_attrs)) $notCountedChars[] = $char;
                 }
             }
