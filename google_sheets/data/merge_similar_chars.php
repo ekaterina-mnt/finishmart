@@ -125,6 +125,8 @@ try {
                 foreach ($characteristics as $char => $value) {
                     if ($char === $attr) {
                         $specific_values[$merged_attr] = $value;
+                        var_dump($attr);
+                        echo "<br>";
                         if (preg_match('#($good[\'(.+)\'])#', $attr, $matches)) {
                             var_dump($matches);
                             echo "<br>";
