@@ -99,11 +99,11 @@ try {
     $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
-        if ($good['id'] > 107750) {
-            TechInfo::preArray($good);
-            var_dump($good);
-        }
-echo Mysql::get_mysql_datetime() . "<br>";
+//         if ($good['id'] > 107750) {
+//             TechInfo::preArray($good);
+//             var_dump($good);
+//         }
+// echo Mysql::get_mysql_datetime() . "<br>";
 
         // Определяем значения для $common_attributes
         $common_values = array();
@@ -112,6 +112,7 @@ echo Mysql::get_mysql_datetime() . "<br>";
             if ($key == 'Цена') $common_values['Цена для клиента'] = round($good[$attr] * 1.1);
         }
         $common_values = array_merge([MySQL::get_mysql_datetime()], $common_values);
+        if ($good['id'] > 107750) TechInfo::preArray($common_values);
 
         $characteristics = json_decode($good['characteristics'], 1);
 
@@ -145,8 +146,6 @@ echo Mysql::get_mysql_datetime() . "<br>";
         // Объединям
         $values = array_merge($common_values, $specific_values);
         $values = array_map(fn ($value) => $value ?? "-", $values);
-        echo "<br>here<br>";
-        TechInfo::preArray($values);
         $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
         
     }
