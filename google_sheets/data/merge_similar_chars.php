@@ -141,6 +141,7 @@ try {
         // Объединям
         $values = array_merge($common_values, $specific_values);
         $values = array_map(fn ($value) => $value ?? "-", $values);
+        TechInfo::preArray($values);
         $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
     }
 
