@@ -27,15 +27,15 @@ try {
     /////// ОПРЕДЕЛЯЕМ НУЖНЫЕ ПЕРЕМЕННЫЕ ///////
 
     echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
-  
+
 
     if (!isset($_POST['category']) or !isset($_POST['subcategory'])) exit("Нужны параметры 'категория' и 'подкатегория'");
-  
+
     $subcategories = ConnectedSubcategories::getList();
     $needed_category = $_POST['category'];
-    
+
     if (!in_array($needed_category, array_keys($subcategories))) exit("Неподходящий параметр");
-    
+
 
     $needed_subcategory = $_POST['subcategory'];
 
@@ -78,7 +78,7 @@ try {
 
 
 
-    
+
     Sheet::update_data($attributes_cell, $insert_attributes, $GoogleSheets_tablename);
 
 
@@ -100,11 +100,11 @@ try {
     $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
-//         if ($good['id'] > 107750) {
-//             TechInfo::preArray($good);
-//             var_dump($good);
-//         }
-// echo Mysql::get_mysql_datetime() . "<br>";
+        //         if ($good['id'] > 107750) {
+        //             TechInfo::preArray($good);
+        //             var_dump($good);
+        //         }
+        // echo Mysql::get_mysql_datetime() . "<br>";
 
         // Определяем значения для $common_attributes
         $common_values = array();
@@ -122,8 +122,10 @@ try {
         foreach ($specific_attributes as $merged_attr => $attrs) {
 
             foreach ($attrs as $attr) {
-                var_dump($attr);
-                echo "<br>";
+                if (str_contains($attr, "good")) {
+                    echo $attr;
+                    echo "<br>";;
+                }
                 if (preg_match("#good\[\'(.+)\'\]#", $str, $matches)) {
                     var_dump($matches);
                     echo "<br>";
@@ -149,7 +151,6 @@ try {
         $values = array_merge($common_values, $specific_values);
         $values = array_map(fn ($value) => $value ?? "-", $values);
         $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
-        
     }
 
     echo "<br>Всего строк добавлено:" . count($insert_data);
