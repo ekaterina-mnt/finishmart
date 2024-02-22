@@ -119,7 +119,7 @@ try {
         $specific_values = array();
 
         foreach ($specific_attributes as $merged_attr => $attrs) {
-            if ($good['id'] > 107750) TechInfo::preArray($specific_values);
+            if ($good['id'] > 107750) break;
 
             foreach ($attrs as $attr) {
                 foreach ($characteristics as $char => $value) {
@@ -144,7 +144,6 @@ try {
         // unset($specific_values[$cross]);
 
         // Объединям
-        if ($good['id'] > 107750) TechInfo::preArray($values);
         $values = array_merge($common_values, $specific_values);
         $values = array_map(fn ($value) => $value ?? "-", $values);
         $insert_data[] = FormInsertData::get_i($list_name, $values, "B", $current_cell++);
