@@ -70,7 +70,6 @@ try {
     $attributes_cell = "$list_name!" . $start_column . $current_cell - 1;
 
     $specific_attributes = MergedChars::getMergedCharsArray($GoogleSheets_tablename);
-    TechInfo::preArray($specific_attributes);
     $all_spec_attrs = MergedChars::getAllAttrs($GoogleSheets_tablename); // это в будущем для проверки все ли характеристики учтены в нашем списке
     $insert_specific_attributes = array(...array_unique(array_keys($specific_attributes)));
     // unset($insert_specific_attributes[array_search($cross, $insert_specific_attributes)]); // удаляем пересекающуюся характеристику, чтобы не дублировалась
@@ -96,7 +95,7 @@ try {
 
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids_str, $needed_category, $needed_subcategory);
-    var_dump($goods->num_rows);
+    var_dump($filled_ids);
     $insert_data = array();
     $notCountedChars = array();
 
@@ -111,7 +110,6 @@ try {
         $common_values = array_merge([MySQL::get_mysql_datetime()], $common_values);
 
         $characteristics = json_decode($good['characteristics'], 1);
-        TechInfo::preArray($characteristics);
 
         // Определяем значения для $specific_attributes
         $specific_values = array();
