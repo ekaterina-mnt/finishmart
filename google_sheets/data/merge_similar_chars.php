@@ -95,11 +95,11 @@ try {
 
     // Получаем все товары нужной категории и подкатегории
     $goods = GetGoods::getGoods($filled_ids, $needed_category, $needed_subcategory);
+    var_dump($goods->num_rows);
     $insert_data = array();
     $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
-        if (count($insert_data) > 1999) break;
 //         if ($good['id'] > 107750) {
 //             TechInfo::preArray($good);
 //             var_dump($good);
