@@ -15,7 +15,7 @@ try {
     $needed_category = $_POST['category'] ?? $_GET['category'];
     $categories = Parser::getCategoriesList();
     if (!$needed_category) {
-        $needed_category = $categories[0];
+        $needed_category = $categories[5];
         echo "Категория не была передана в качестве параметра, определяется категория по умолчанию<br>";
     }
 
