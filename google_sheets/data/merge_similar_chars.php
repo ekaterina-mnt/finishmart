@@ -99,12 +99,11 @@ try {
     $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
-
-        echo $good['id'] . "<br>";
-        if ($good['id'] > 107799) {
+        if ($good['id'] > 107750) {
             TechInfo::preArray($good);
             var_dump($good);
         }
+echo Mysql::get_mysql_datetime() . "<br>";
 
         // Определяем значения для $common_attributes
         $common_values = array();
