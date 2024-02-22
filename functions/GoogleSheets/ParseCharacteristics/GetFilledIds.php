@@ -13,7 +13,7 @@ class GetFilledIds
 {
     static function get($list_name, $current_cell, $GoogleSheets_tablename)
     {
-        $cells = Sheet::get_data("$list_name!C" . "$current_cell:C10000", $GoogleSheets_tablename);
+        $cells = Sheet::get_data("$list_name!C" . "$current_cell:C100000", $GoogleSheets_tablename);
 
         if ($cells['values']) {
             $filled_ids = array_column($cells['values'], 0);
