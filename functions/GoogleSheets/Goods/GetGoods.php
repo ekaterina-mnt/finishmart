@@ -11,18 +11,17 @@ use functions\MySQL;
 
 class GetGoods
 {
-    static function getGoods($filled_ids_str, $needed_subcategory, $needed_category)
+    static function getGoods($filled_ids_str, $needed_category, $needed_subcategory = null)
     {
-        // if ($filled_ids_str) {
-        //     $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}' AND category like '{$needed_category}' AND id NOT IN ($filled_ids_str) AND (status like 'ok' OR status IS NULL) AND char_views > 0";
-        // } else {
-        //     $query = "SELECT * FROM all_products WHERE subcategory like '{$needed_subcategory}' AND category like '{$needed_category}' AND (status like 'ok' OR status IS NULL) AND char_views > 0";
-        // }
+        $add_str = "";
+        if ($needed_subcategory) {
+            $add_str = "subcategory like '{$needed_subcategory}' AND";
+        }
 
-                if ($filled_ids_str) {
-            $query = "SELECT * FROM all_products WHERE category like '{$needed_category}' AND id NOT IN ($filled_ids_str) AND (status like 'ok' OR status IS NULL) AND char_views > 0";
+        if ($filled_ids_str) {
+            $query = "SELECT * FROM all_products WHERE {$add_str} category like '{$needed_category}' AND id NOT IN ($filled_ids_str) AND (status like 'ok' OR status IS NULL) AND char_views > 0";
         } else {
-            $query = "SELECT * FROM all_products WHERE category like '{$needed_category}' AND (status like 'ok' OR status IS NULL) AND char_views > 0";
+            $query = "SELECT * FROM all_products WHERE {$add_str} category like '{$needed_category}' AND (status like 'ok' OR status IS NULL) AND char_views > 0";
         }
 
         $goods = MySQL::sql($query);
