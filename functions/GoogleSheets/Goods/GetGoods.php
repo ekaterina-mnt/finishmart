@@ -24,7 +24,11 @@ class GetGoods
             $query = "SELECT * FROM all_products WHERE {$add_str} category like '{$needed_category}' AND (status like 'ok' OR status IS NULL) AND char_views > 0";
         }
 
+        var_dump($query);
+
         $goods = MySQL::sql($query);
+
+        var_dump(mysqli_fetch_assoc($goods));
 
         return $goods;
     }
