@@ -1,0 +1,14 @@
+{
+    "type": "service_account",
+    "project_id": "oboifinishmart",
+    "private_key_id": "9561f69c66b3307dbf183fafc97f4ffef4bed496",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDH81u9ys/iW88L\nik1vtl6v1AfZF1md3btnRBibGuQ5LWkWb9BghOW5jVxjipwlbUK2J6/j0Ng78/Mg\nqPlftpv1QQt47jyA/2gsDXesIwpZZIvGum8Ee1KWbHQ3Km0Xkv74BMa38PG6oT2q\nBLGZVAjElyeLX8uIC5Fho0gUoSn267OWwsiB5sK+MMfMPLKYye+mOm/Zirc24sh2\nL+WgXLDe2wQbLMxRvgf76qb1jlrViny4kXWJ8W2C2Z9NAYY3avY+hY4jPxlvIh7a\nYjBPoEaVrPs2yU/X3UXad1+KBo3YENK2/0ZWqDklUgAy3+MLaR8h+6eul3Us291E\no2WGm/F/AgMBAAECggEABb5RS83YE9X0SA4UdFmGNcG+6fb4PYche3FizY3DsXrC\n8oCKuUMIAED1vuw72P1e9bGFJWOZ2nsC6FTCOQQbTbutEy+wsDnl6aIHZnvpL7Eq\nLK6tQrEyKZz655zB3nP7++7TMHRs1SINjeUtnsxhphf7bE73nzRJ3Eae6uzIMk38\n4fkOfbDU57WAWlM6lnQHI3oWj8XZSz5Y6EbLm/DzDYGxTjK3zvqA3ZCy5UNVs8QE\n8FIobL78V9AK09OxxjvbmdDPZbjDI+MNi/9p2wpXSMkOJZU4jiLnv6FsvOjfnJBC\nlf2GjFXdDPOwi5+vNpd6AsEKQZ0ODlALIq1Q0NTx8QKBgQD27buN7BLgGrIC5ZF/\n7errVwlTui400k7xNkXG5vNmIGLyVS8D6yYordLzKSu+rPYOCQaFPCrcUpv8RHH2\nQhb8zCsVP50jXjunnbBrtK7LB+eukQcqNzXkgx3BvWpwnDTpd0Ro69ZR4fnGG5rZ\nVJQg6YBi1zIpk3yoUt25OQIwUQKBgQDPS9DWiAyDCFgSXt9LMFQ6KRV/r4W0fg5q\nK1pCQNlHsLNi5+rhH8Sztgw3cPgRKejanXFoQm7GHaA1yKSPFYoe419oKH1Usb/a\nkgh7LWCKsw25FIorJ4+Hngp9DF+p/cwdtPAIEZ93gUFQJYRuYHPzYMujIQ9CTUW3\nQp/edpDgzwKBgQDEOr5ulWmWoIBQXwFWqcqjhUJLQEyR+4Nymw+udkB9K0WWkO1Q\n7uEfOKvIQzKZT7gmBTQiU2M4PYnqWrY53eGIufOO6kPFJJDBrkXSAf9aJ4kNKAGK\nod95Hl1aZl2c6fX+hqJdwvVJkww8TBmtllI1KXq2kY8yjRtmZJwBIvXDUQKBgQDP\nIoTlOUC3VgkbIi2hZgNjslXHJs5Fkog40mT4OvBiUFCPjgoHNcVJhakjZQCbtfL1\nL8l4Upl54XSLCZhVWUKQpsZYv8ysaoi4kJ9k5ezH6y7VN47wnDExZFw6o7iblfz1\n2izXAzUDJubqfPKdkEeMc7ZHpOsoZyo4epxgoL0XxQKBgQDJAsIosJQ7DIi3K1KJ\nF6zrV1j6TfaomQmZOVxd0ZOtmmBDh7kUNyuy39OqGxt30SjqzYNIqkolWRRjZ530\nVPMf2eRAzCktd3cRBJS2GDZ9IG08nAAzBuGNJRUWQgdpFBgqkCuH3x8M/31ZDB6S\nO3Qmcch6KhGjnZqeYL8EkSi6uQ==\n-----END PRIVATE KEY-----\n",
+    "client_email": "oboiservice@oboifinishmart.iam.gserviceaccount.com",
+    "client_id": "100326425993828524759",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/oboiservice%40oboifinishmart.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  }
+  

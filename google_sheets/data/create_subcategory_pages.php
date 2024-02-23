@@ -25,7 +25,7 @@ try {
     $needed_category = $_POST['category'];
     $needed_subcategories = $subcategories[$_POST['category']];
 
-    $GoogleSheets_tablename = 'plitka_raw';
+    $GoogleSheets_tablename = 'oboi_raw';
     echo "Будут вставлены в таблицу '$GoogleSheets_tablename'";
 
     foreach ($needed_subcategories as $title) {
