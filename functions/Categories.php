@@ -88,7 +88,7 @@ class Categories
                 ($provider == 'mosplitka' and preg_match("#(Керамическая плитка)#", $title)),
                 ($provider == 'tdgalion' and preg_match("#(Керамическая плитка)#", $providerCategory)),
                 ($provider == 'artkera' and preg_match("#(Напольная)#", $providerSubcategory)),
-                ($provider == 'domix' and preg_match("#(Плитка)#", $title)),
+                ($provider == 'domix' and preg_match("#(Плитка)#", $title) and !preg_match("#(Плитка настенная)#", $title)),
             ],
             12 => [ //'Натуральный камень',
             ],

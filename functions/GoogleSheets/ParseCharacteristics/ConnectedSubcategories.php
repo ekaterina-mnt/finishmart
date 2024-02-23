@@ -18,6 +18,7 @@ class ConnectedSubcategories
         $subcategories = [
             'Напольные покрытия' => Napolnye::getSubcategories(),
             'Плитка и керамогранит' => Plitka::getSubcategories(),
+            'Обои и настенные покрытия' => Oboi::getSubcategories(),
         ];
 
         return $subcategories;
