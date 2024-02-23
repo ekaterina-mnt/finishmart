@@ -20,8 +20,6 @@ class Oboi
             $subcategoriesList[18], //'Обои под покраску',
             $subcategoriesList[17], //'Фотообои и фрески',
             $subcategoriesList[26], //'Другое',
-
-
         ];
         return $subcategories;
     }

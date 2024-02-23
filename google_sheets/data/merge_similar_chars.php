@@ -51,7 +51,11 @@ try {
     $additional_columns = ['id в новой таблице', 'Дата изменения'];
 
     // В какую таблицу будет инзерт 
-    $GoogleSheets_tablename = "plitka_raw"; // еще есть napolnye_raw
+    $GoogleSheets_tablename = [
+        'Плитка и керамогранит' => "plitka_raw",
+        'Обои и настенные покрытия' => "oboi_raw",
+        'Напольные покрытия' => "napolney_raw"
+    ]; // еще есть napolnye_raw
 
 
 
@@ -135,7 +139,7 @@ try {
                     if (preg_match("#good\[\'(.+)\'\]#", $attr, $matches)) {
                         $specific_values[$merged_attr] = $good[$matches[1]];
                     }
-                 
+
                     if (!in_array($char, $all_spec_attrs)) $notCountedChars[] = $char;
                 }
             }
