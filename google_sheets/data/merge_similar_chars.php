@@ -55,7 +55,7 @@ try {
         'Плитка и керамогранит' => "plitka_raw",
         'Обои и настенные покрытия' => "oboi_raw",
         'Напольные покрытия' => "napolney_raw"
-    ]; // еще есть napolnye_raw
+    ][$needed_category]; // еще есть napolnye_raw
 
 
 
