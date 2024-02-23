@@ -21,6 +21,10 @@ use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
+    if (!$_POST['category']) $_POST['category'] = 'Обои и настенные покрытия';
+    if (!$_GET['category']) $_GET['category'] = 'Обои и настенные покрытия';
+    if (!$_POST['subcategory']) $_POST['subcategory'] = 'Декоративные обои';
+    if (!$_GET['subcategory']) $_GET['subcategory'] = 'Декоративные обои';
 
 
 
@@ -54,7 +58,7 @@ try {
     $GoogleSheets_tablename = [
         'Плитка и керамогранит' => "plitka_raw",
         'Обои и настенные покрытия' => "oboi_raw",
-        'Напольные покрытия' => "napolney_raw"
+        'Напольные покрытия' => "napolnye_raw"
     ][$needed_category]; // еще есть napolnye_raw
 
 
