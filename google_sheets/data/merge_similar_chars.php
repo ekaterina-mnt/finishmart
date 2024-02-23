@@ -106,8 +106,8 @@ try {
     $notCountedChars = array();
 
     foreach ($goods as $i => $good) {
-        if (count($insert_data) > 3999) {
-            echo ("<br><b>Ограничение по 4000 товаров за раз</b>");
+        if (count($insert_data) > 2999) {
+            echo ("<br><b>Ограничение по 3000 товаров за раз</b>");
             break;
         }
 
