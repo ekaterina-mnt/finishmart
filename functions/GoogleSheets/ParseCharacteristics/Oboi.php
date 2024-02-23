@@ -15,7 +15,6 @@ class Oboi
         $subcategoriesList = Parser::getSubcategoriesList();
 
         $subcategories = [
-            $subcategoriesList[10], //'Керамогранит',
             $subcategoriesList[9], //'Декоративные обои',
             $subcategoriesList[52], //'Настенная плитка',
             $subcategoriesList[18], //'Обои под покраску',
