@@ -34,7 +34,7 @@ try {
         }
 
         $res = mysqli_fetch_assoc($query);
-var_dump($res);
+
         //Получаем ссылку
         $url_parser = $res['link'];
         $provider = $res['provider'];
@@ -51,6 +51,7 @@ var_dump($res);
 
         //Получаем html у себя
         $document = Connect::guzzleConnect($url_parser);
+        echo $document;
         echo "here5";
         var_dump($document);
 
