@@ -90,6 +90,7 @@ try {
 
             include __DIR__ . "/../insert_ending.php";
         }
+        exit;
     } //конец итерации 1 товара
 
 } catch (\Throwable $e) { //конец глобального try
