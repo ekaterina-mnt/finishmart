@@ -8,5 +8,6 @@ use functions\Categories;
 use functions\Parser;
 use functions\Connect;
 
-            $document = Connect::guzzleConnect("https://moscow.petrovich.ru/product/1025831/");
+            $document = Connect::guzzleConnect("https://api.ip.sb/ip");
+            // ['proxy' => 'http://username:password@<proxy_address>:<port>']);
             echo $document;
