@@ -19,7 +19,7 @@ class Categories
         $all_subcategories = Parser::getSubcategoriesList();
         $chars = json_decode($chars, 1);
 
-        if (in_array($providerSubcategory, $all_subcategories) and !($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)) and !($provider == 'ampir' and (preg_match("#(Другое)#", $providerCategory)) or $chars['product_usages'] == 'Клей для лепнины')) return $providerSubcategory;
+        if (in_array($providerSubcategory, $all_subcategories) and !($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)) and !($provider == 'ampir' and (preg_match("#(Другое)#", $providerSubcategory)) or $chars['product_usages'] == 'Клей для лепнины')) return $providerSubcategory;
 
         $keys = [
             0 => [ //'Раковины'
