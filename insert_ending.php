@@ -10,8 +10,8 @@ $all_product_data['provider_category'] = [$all_product_data['category'][0] ?? nu
 TechInfo::preArray($all_product_data['characteristics'][0]);
 var_dump($all_product_data['characteristics'][0]);
 
-$all_product_data['subcategory'] = [Categories::finalSubcategory($provider, $all_product_data['provider_category'][0] ?? null, $all_product_data['provider_subcategory'][0] ?? null, $all_product_data['title'][0] ?? null, $all_product_data['link'][0] ?? null), 's', $all_product_data['characteristics'][0] ?? null];
-$all_product_data['category'] = [Categories::finalCategory($provider, $all_product_data['provider_category'][0] ?? null, $all_product_data['provider_subcategory'][0] ?? null, $all_product_data['title'][0] ?? null, $all_product_data['link'][0] ?? null), 's', $all_product_data['characteristics'][0] ?? null];
+$all_product_data['subcategory'] = [Categories::finalSubcategory($provider, $all_product_data['provider_category'][0] ?? null, $all_product_data['provider_subcategory'][0] ?? null, $all_product_data['title'][0] ?? null, $all_product_data['link'][0] ?? null, $all_product_data['characteristics'][0] ?? null), 's'];
+$all_product_data['category'] = [Categories::finalCategory($provider, $all_product_data['provider_category'][0] ?? null, $all_product_data['provider_subcategory'][0] ?? null, $all_product_data['title'][0] ?? null, $all_product_data['link'][0] ?? null, $all_product_data['characteristics'][0] ?? null), 's'];
 
 if (!preg_match("#(Подъем и выгрузка)#", $all_product_data['title'][0])) { //иначе пропускаем итерацию, не добавляем товар
     $print_result = [];
