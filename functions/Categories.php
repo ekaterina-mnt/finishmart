@@ -19,7 +19,7 @@ class Categories
         $all_subcategories = Parser::getSubcategoriesList();
         $chars = json_decode($chars, 1);
 
-        if (in_array($providerSubcategory, $all_subcategories) and !($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)) and !($provider == 'ampir' and preg_match("#(Другое)#", $providerCategory))) return $providerSubcategory;
+        if (in_array($providerSubcategory, $all_subcategories) and !($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)) and !($provider == 'ampir' and (preg_match("#(Другое)#", $providerCategory)) or $chars['product_usages'] == 'Клей для лепнины')) return $providerSubcategory;
 
         $keys = [
             0 => [ //'Раковины'
@@ -248,6 +248,7 @@ class Categories
                 ($provider == 'finefloor' and preg_match("#(Клеевые)#", $providerSubcategory)),
                 ($provider == 'alpinefloor' and preg_match("#(Клей)#", $providerSubcategory)),
                 ($provider == 'olimp' and preg_match("#(Клей)#", $providerSubcategory)),
+                ($provider == 'ampir' and preg_match("#(Клей для лепнины)#", $chars['product_usages'])),
             ],
             50 => [ //'Камины',
                 ($provider == 'evroplast' and preg_match("#(камин)#", $providerCategory)),
