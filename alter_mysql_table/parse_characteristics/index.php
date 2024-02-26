@@ -9,14 +9,11 @@ use functions\Parser;
 use functions\GoogleSheets\FormInsertData;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 
-
-var_dump($argv);
-exit();
-
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
     $needed_category = $_POST['category'] ?? $_GET['category'];
+    $needed_category = $needed_category ?? $argv[1];
     $categories = Parser::getCategoriesList();
     if (!$needed_category) {
         $needed_category = $categories[4];
