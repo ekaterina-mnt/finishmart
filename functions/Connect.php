@@ -43,7 +43,8 @@ class Connect
                         'Sec-Fetch-User' => '?1',
                         'Upgrade-Insecure-Requests' => '1',
                     ],
-                    'proxy' => 'http://RHex48:EEHsHg@185.147.130.119:9274', // https://proxy6.net/user/proxy
+                    // 'proxy' => 'http://RHex48:EEHsHg@185.147.130.119:9274', // https://proxy6.net/user/proxy
+                    'proxy' => 'http://UQTk2ea5:Q4TraHz1@194.226.126.3:64143'
                 ],
             );
         } catch (\Throwable $e) {
