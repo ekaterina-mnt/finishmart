@@ -222,6 +222,7 @@ try {
 
     //цена
     $price_res = $document->find(implode(', ', $attributes_classes['price']));
+    var_dump($price_res);
 
     if ($price_res) {
         //форматирование цены
@@ -232,8 +233,6 @@ try {
         } elseif ($provider == 'lkrn') {
             $all_product_data['price'] = [(int) str_replace([",", "₽"], '', $price_res[0]->text()), 'i'];
         } elseif (is_array($price_res[0])) {
-            echo 1;
-            var_dump($price_res[0]->text());
             foreach ($price_res[0] as $price) {
                 if (is_numeric($price)) {
                     $all_product_data['price'] = [(int) str_replace(' ', '', $price), 'i'];
@@ -247,6 +246,7 @@ try {
             }
         } else {
             $all_product_data['price'] = [(int) str_replace(' ', '', $price_res[0]->text()), 'i'];
+            echo "<br><br>";
             echo 2;
             var_dump($price_res[0]->text());
         }
