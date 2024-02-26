@@ -25,10 +25,10 @@ var_dump("here");
 echo "<br><br>";
 var_dump($client);
 echo "<br><br>";
+try {
         $client->request('GET', $link);
 
         var_dump($client);
-        try {
         $response = $client->request(
             'GET',
             $link,
