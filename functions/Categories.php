@@ -18,7 +18,7 @@ class Categories
         $title = $title ?? 'null';
         $all_subcategories = Parser::getSubcategoriesList();
 
-        if (in_array($providerSubcategory, $all_subcategories) and !($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory))) return $providerSubcategory;
+        if (in_array($providerSubcategory, $all_subcategories) and !($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)) and !($provider == 'ampir' and preg_match("#(Другое)#", $providerCategory))) return $providerSubcategory;
 
         $keys = [
             0 => [ //'Раковины'
@@ -121,12 +121,14 @@ class Categories
                 ($provider == 'evroplast' and preg_match("#(карниз)#", $providerCategory)),
                 ($provider == 'domix' and preg_match("#(Карниз)#", $providerSubcategory)),
                 ($provider == 'olimp' and preg_match("#(Карниз)#", $providerSubcategory)),
+                ($provider == 'ampir' and preg_match("#(Карниз|карниз)#", $title))
             ],
             22 => [ //'Молдинги',
                 ($provider == 'evroplast' and preg_match("#(молдинг)#", $providerCategory)),
                 ($provider == 'domix' and preg_match("#(Молдинг)#", $providerSubcategory)),
                 ($provider == 'alpinefloor' and preg_match("#(Молдинг)#", $providerSubcategory)),
                 ($provider == 'olimp' and preg_match("#(Молдинг)#", $providerSubcategory)),
+                ($provider == 'ampir' and preg_match("#(Молдинг|молдинг)#", $title))
             ],
             23 => [ //'null',
 
@@ -170,6 +172,7 @@ class Categories
                 ($provider == 'evroplast' and preg_match("#(плинтус)#", $providerCategory)),
                 ($provider == 'olimp' and preg_match("#(Плинтус напольный)#", $providerSubcategory)),
                 ($provider == 'fargo' and preg_match("#(Плинтус)#", $providerSubcategory)),
+                ($provider == 'ampir' and preg_match("#(Плинтус|принтус)#", $title))
             ],
             34 => [ //'Массивная доска',
                 ($provider == 'olimp' and preg_match("#(Массивная доска)#", $providerSubcategory)),
@@ -258,6 +261,7 @@ class Categories
             54 => [ //'Колонны',
                 ($provider == 'evroplast' and preg_match("#(колонн)#", $providerCategory)),
                 ($provider == 'olimp' and preg_match("#(Колонны|Пилястры)#", $providerSubcategory)),
+                ($provider == 'ampir' and preg_match("#(Колонн|колонн)#", $title))
             ],
             55 => [ //'Шпатлевки',
                 ($provider == 'centerkrasok' and preg_match("#(Шпатлевки|шпатлевки)#", $providerCategory)),
