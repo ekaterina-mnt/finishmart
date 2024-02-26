@@ -233,6 +233,13 @@ try {
             $all_product_data['price'] = [(int) str_replace(' ', '', $price), 'i'];
         } elseif ($provider == 'lkrn') {
             $all_product_data['price'] = [(int) str_replace([",", "₽"], '', $price_res[0]->text()), 'i'];
+        } elseif ($provider == 'mosplitka') {
+            foreach ($price_res as $price_res_i) {
+                if ($price_res_i->text()) {
+                    var_dump($price_res_i->text());
+                    break;
+                }
+            }
         } elseif (is_array($price_res[0])) {
             foreach ($price_res[0] as $price) {
                 if (is_numeric($price)) {
