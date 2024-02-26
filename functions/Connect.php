@@ -24,6 +24,7 @@ class Connect
 
         $client->request('GET', $link);
 
+        var_dump($client);
         // try {
         $response = $client->request(
             'GET',
