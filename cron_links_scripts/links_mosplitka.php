@@ -51,9 +51,6 @@ try {
 
         //Получаем html у себя
         $document = Connect::guzzleConnect($url_parser);
-        echo $document;
-        echo "here5";
-        var_dump($document);
 
         //Получаем все данные со страницы
         $search_classes = Parser::get_links_search_classes();
