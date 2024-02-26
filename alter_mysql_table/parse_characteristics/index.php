@@ -10,7 +10,7 @@ use functions\GoogleSheets\FormInsertData;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 
 
-var_dump($args);
+var_dump($argv);
 exit();
 
 try {
