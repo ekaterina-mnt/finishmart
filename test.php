@@ -10,4 +10,5 @@ use functions\Connect;
 
             $document = Connect::guzzleConnect("https://api.ip.sb/ip");
             // 5.101.156.98
+            // 185.147.130.119
             echo $document;

@@ -23,6 +23,7 @@ class Connect
 
         $client->request('GET', $link);
 
+        try {
         $response = $client->request(
             'GET',
             $link,
@@ -48,6 +49,9 @@ class Connect
         );
 
         $document = self::getHTML($response, $encoding ?? null);
+    } catch (\Throwable $e) {
+        var_dump($e);
+    }
 
         return $document;
     }
