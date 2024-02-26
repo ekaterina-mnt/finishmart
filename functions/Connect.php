@@ -21,7 +21,8 @@ class Connect
             'http://RHex48:EEHsHg@185.147.130.119:9274',
         ];
         $client = new GuzzleClient(['verify' => false]);
-
+var_dump("here");
+echo "<br><br>";
         $client->request('GET', $link);
 
         var_dump($client);
