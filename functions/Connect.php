@@ -49,6 +49,10 @@ class Connect
             ],
         );
 
+        var_dump($client);
+        echo "<br><br>";
+        var_dump($response);
+
         $document = self::getHTML($response, $encoding ?? null);
     } catch (\Throwable $e) {
         var_dump($e);
