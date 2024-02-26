@@ -257,6 +257,7 @@ class Categories
             51 => [ //'Декоративные элементы',
                 ($provider == 'evroplast' and preg_match("#(декоративные элементы)#", $providerCategory)),
                 ($provider == 'ampir' and in_array(['Декоративные элементы', 'Фасадный декор'], $chars['product_usages'])),
+                ($provider == 'ampir' and in_array(["Потолочный декор"], $chars['product_usages'])),
             ],
             52 => [ //'Настенная плитка',
                 ($provider == 'artkera' and preg_match("#(Настенная|Декор|Панно|Бордюр)#", $providerSubcategory)),
@@ -286,9 +287,8 @@ class Categories
             58 => [ // 'Багет'
                 ($provider == 'ampir' and $chars['product_usages'] == 'Багет')
             ],
-            59 => [ // 'Потолочный декор'
-                ($provider == 'ampir' and in_array(["Потолочный декор"], $chars['product_usages'])),
-            ],
+            // 59 => [ // 'Потолочный декор'
+            // ],
             60 => [ // 'Пилястры"                
                 ($provider == 'olimp' and preg_match("#(Пилястры)#", $providerSubcategory)),
                 ($provider == 'ampir' and in_array(['Пилястры'], $chars['product_usages'])),
