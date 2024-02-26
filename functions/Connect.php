@@ -23,6 +23,8 @@ class Connect
         $client = new GuzzleClient(['verify' => false]);
 var_dump("here");
 echo "<br><br>";
+var_dump($client);
+echo "<br><br>";
         $client->request('GET', $link);
 
         var_dump($client);
