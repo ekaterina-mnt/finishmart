@@ -256,12 +256,7 @@ try {
                 }
             }
         } else {
-            $all_product_data['price'] = [(int) str_replace(' ', '', $price_res[0]->text()), 'i'];
-            echo "<br><br>";
-            echo 2;
-            var_dump($price_res[0]);
-            echo "<br><br>";
-            var_dump($price_res[0]->text());
+            $all_product_data['price'] = [(int) str_replace([",", "₽", ' '], '', $price_res[0]->text()), 'i'];
         }
     }
 
