@@ -237,6 +237,7 @@ try {
             foreach ($price_res as $price_res_i) {
                 if ($price_res_i->text()) {
                     var_dump($price_res_i->text());
+                    $all_product_data['price'] = [(int) str_replace(' ', '', $price_res[0]->text()), 'i'];
                     break;
                 }
             }
