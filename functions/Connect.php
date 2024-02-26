@@ -45,7 +45,7 @@ class Connect
                     'Sec-Fetch-User' => '?1',
                     'Upgrade-Insecure-Requests' => '1',
                 ],
-                'proxy' => 'http://RHex48:EEHsHg@185.147.130.119:9274',
+                'proxy' => 'http://RHex48:EEHsHg@185.147.130.119:9274', // https://proxy6.net/user/proxy
             ],
         );
 

@@ -34,7 +34,7 @@ try {
         }
 
         $res = mysqli_fetch_assoc($query);
-
+var_dump($res);
         //Получаем ссылку
         $url_parser = $res['link'];
         $provider = $res['provider'];

@@ -14,6 +14,7 @@ use GuzzleHttp\Client as GuzzleClient;
 
 
 //МЕНЯТЬ ТОЛЬКО ЗДЕСЬ
+$script_iteration_provider = ($_POST['provider'] ?? $_GET['provider']) ?? $argv[1];
 $script_iteration_provider = 'fargo';
 //
 
