@@ -21,14 +21,7 @@ class Connect
             'http://RHex48:EEHsHg@185.147.130.119:9274',
         ];
         $client = new GuzzleClient(['verify' => false]);
-var_dump("here");
-echo "<br><br>";
-var_dump($client);
-echo "<br><br>";
-try {
-        // $client->request('GET', $link);
 
-        var_dump($client);
         $response = $client->request(
             'GET',
             $link,
@@ -53,14 +46,7 @@ try {
             ],
         );
 
-        var_dump($client);
-        echo "<br><br>";
-        var_dump($response);
-
         $document = self::getHTML($response, $encoding ?? null);
-    } catch (\Throwable $e) {
-        var_dump($e);
-    }
 
         return $document;
     }
