@@ -222,8 +222,6 @@ try {
 
     //цена
     $price_res = $document->find(implode(', ', $attributes_classes['price']));
-    var_dump($price_res);
-    TechInfo::preArray($price_res);
 
     if ($price_res) {
         //форматирование цены
@@ -236,7 +234,6 @@ try {
         } elseif ($provider == 'mosplitka') {
             foreach ($price_res as $price_res_i) {
                 if ($price_res_i->text()) {
-                    var_dump($price_res_i->text());
                     $price = $price_res_i->text();
                     $price = str_replace([",", "₽", ' '], '', $price);
                     $all_product_data['price'] = [(int) $price, 'i'];
