@@ -237,7 +237,9 @@ try {
             foreach ($price_res as $price_res_i) {
                 if ($price_res_i->text()) {
                     var_dump($price_res_i->text());
-                    $all_product_data['price'] = [(int) str_replace([",", "₽"], '', $price_res_i->text()), 'i'];
+                    $price = $price_res_i->text();
+                    $price = str_replace([",", "₽", ' '], '', $price);
+                    $all_product_data['price'] = [(int) $price, 'i'];
                     break;
                 }
             }
