@@ -18,6 +18,7 @@ class Categories
         $title = $title ?? 'null';
         $all_subcategories = Parser::getSubcategoriesList();
         $chars = json_decode($chars, 1);
+        TechInfo::preArray($chars);
 
         if (in_array($providerSubcategory, $all_subcategories) and !($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)) and !($provider == 'ampir' and (preg_match("#(Другое)#", $providerSubcategory)) or $chars['product_usages'] == 'Клей для лепнины')) return $providerSubcategory;
 
