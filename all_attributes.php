@@ -246,6 +246,7 @@ try {
             }
         } else {
             $all_product_data['price'] = [(int) str_replace(' ', '', $price_res[0]->text()), 'i'];
+            var_dump(str_replace(' ', '', $price_res[0]->text()));
         }
     }
 
