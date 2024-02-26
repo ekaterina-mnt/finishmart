@@ -233,6 +233,7 @@ try {
         } elseif ($provider == 'lkrn') {
             $all_product_data['price'] = [(int) str_replace([",", "₽"], '', $price_res[0]->text()), 'i'];
         } elseif (is_array($price_res[0])) {
+            var_dump($price_res[0]->text());
             foreach ($price_res[0] as $price) {
                 if (is_numeric($price)) {
                     $all_product_data['price'] = [(int) str_replace(' ', '', $price), 'i'];
@@ -246,7 +247,7 @@ try {
             }
         } else {
             $all_product_data['price'] = [(int) str_replace(' ', '', $price_res[0]->text()), 'i'];
-            var_dump(str_replace(' ', '', $price_res[0]->text()));
+            var_dump($price_res[0]->text());
         }
     }
 
