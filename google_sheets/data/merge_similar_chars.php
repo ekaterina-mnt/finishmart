@@ -58,7 +58,9 @@ try {
     $GoogleSheets_tablename = [
         'Плитка и керамогранит' => "plitka_raw",
         'Обои и настенные покрытия' => "oboi_raw",
-        'Напольные покрытия' => "napolnye_raw"
+        'Напольные покрытия' => "napolnye_raw",
+        'Лепнина' => "Lepnina_raw",
+        'Сантехника' => "santechnika_raw",
     ][$needed_category]; // еще есть napolnye_raw
 
 

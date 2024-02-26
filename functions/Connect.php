@@ -18,7 +18,6 @@ class Connect
         $proxies = [
             'http://74vy0Q:RJ8SWP@192.168.16.1:10', //https://shopproxy.net/lk/
             'http://5LIZu3:C8V5mJmxxY@46.8.16.94', //https://ru.dashboard.proxy.market/proxy
-            'http://RHex48:EEHsHg@185.147.130.119:9274',
         ];
         $client = new GuzzleClient(['verify' => false]);
 

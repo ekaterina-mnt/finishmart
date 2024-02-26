@@ -135,18 +135,6 @@ class Categories
             ],
             25 => [ //'Потолочный декор',
             ],
-            26 => [ //'Другое',
-                ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
-                ($provider == 'evroplast' and preg_match("#(арочн|архитрав|балясин|гибкие аналоги|)#", $providerCategory)),
-                ($provider == 'evroplast' and preg_match("#(дополнительные элементы|камни|кессон|крышки столба|монтажный комплект|накладные элементы|наличники)#", $providerCategory)),
-                ($provider == 'centerkrasok' and preg_match("#(Монтажные пены|Промышленные покрытия|Растворители|Стеклохолст|Эпоксидные)#", $providerCategory)),
-                ($provider == 'alpinefloor' and str_contains($product_link, 'https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/')),
-                ($provider == 'domix' and preg_match("#(Сопуствующие)#", $providerCategory) and !preg_match("#(Клей|Грутновк)#", $title)),
-                ($provider == 'finefloor' and preg_match("#(Сопутствующие)#", $providerCategory) and !preg_match("#(Клеевые|Плинтус|Подложк)#", $providerSubcategory)),
-                ($provider == 'mosplitka' and (preg_match("#(Водонагреватель|Финская сауна)#", $title))),
-                ($provider == 'olimp' and preg_match("#(Фанера пиленная|Средство по уходу|Смесь для ремонта|Дверной наличник|Распродажа)#", $providerSubcategory)),
-
-            ],
             27 => [ //'Ламинат',
                 ($provider == 'domix' and preg_match("#(Ламинат)#", $providerCategory)),
                 ($provider == 'alpinefloor' and preg_match("#(Ламинат)#", $providerCategory)),
@@ -282,6 +270,19 @@ class Categories
             57 => [ //'Люстры, лампы, уличное освещение',
                 ($provider == 'mosplitka' and (preg_match("#(подсветк|Люстры|лампы|Светильник|светового|Торшеры|освещение|Спот)#", $providerCategory) or preg_match("#(светильник)#", $title))),
                 ($provider == 'olimp' and (preg_match("(#Скрытое освещение#)", $providerSubcategory))),
+            ],
+            26 => [ //'Другое',
+                ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
+                ($provider == 'evroplast' and preg_match("#(арочн|архитрав|балясин|гибкие аналоги|)#", $providerCategory) 
+                    and preg_match("#(дополнительные элементы|камни|кессон|крышки столба|монтажный комплект|накладные элементы|наличники)#", $providerCategory))
+                    and !preg_match("#(плинтус)", $providerCategory),
+                ($provider == 'centerkrasok' and preg_match("#(Монтажные пены|Промышленные покрытия|Растворители|Стеклохолст|Эпоксидные)#", $providerCategory)),
+                ($provider == 'alpinefloor' and str_contains($product_link, 'https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/')),
+                ($provider == 'domix' and preg_match("#(Сопуствующие)#", $providerCategory) and !preg_match("#(Клей|Грутновк)#", $title)),
+                ($provider == 'finefloor' and preg_match("#(Сопутствующие)#", $providerCategory) and !preg_match("#(Клеевые|Плинтус|Подложк)#", $providerSubcategory)),
+                ($provider == 'mosplitka' and (preg_match("#(Водонагреватель|Финская сауна)#", $title))),
+                ($provider == 'olimp' and preg_match("#(Фанера пиленная|Средство по уходу|Смесь для ремонта|Дверной наличник|Распродажа)#", $providerSubcategory)),
+
             ],
         ];
 

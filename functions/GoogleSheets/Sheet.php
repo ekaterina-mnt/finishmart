@@ -26,7 +26,7 @@ class Sheet
             $service_json_title = "service_key_napolnye_edition.json";
         } elseif ($service_account == 'plitka_raw') {
             $service_json_title = 'plitka_raw.json';
-        } elseif ($service_account == 'oboi_raw') {
+        } elseif ($service_account == 'oboi_raw' or $service_account == 'lepnina_raw') {
             $service_json_title = 'oboi_raw.json';
         } else {
             die("Не найден json файл service account");
@@ -66,6 +66,8 @@ class Sheet
             $spreadsheetId = '1AOoMtVpA2SP6gR5UEjZWOqk-BuzP0YXxos2UoPj1qBw';
         } elseif ($service_account == 'oboi_raw') {
             $spreadsheetId = '1zY-Obyh3HXz8rNZ5FhKmEDmvy-2SX01BZpliDwBTiHs';
+        } elseif ($service_account == 'lepnina_raw') {
+            $spreadsheetId = '1XjZjM82CpVp9_5TakR5Rf1mZOxMglmKtVaelaBlUbqo';
         }
 
         return $spreadsheetId;
