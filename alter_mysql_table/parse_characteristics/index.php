@@ -74,6 +74,7 @@ try {
 
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
+    file_put_contents('argv.txt', 123);
 } catch (Throwable $e) {
     var_dump($e);
 }
