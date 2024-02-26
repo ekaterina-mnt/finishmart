@@ -9,6 +9,10 @@ use functions\Parser;
 use functions\GoogleSheets\FormInsertData;
 use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 
+
+var_dump($args);
+exit();
+
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
