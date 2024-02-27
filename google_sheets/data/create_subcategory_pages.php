@@ -30,7 +30,7 @@ try {
             'Напольные покрытия' => 'napolnye_raw',
             'Плитка и керамогранит' => 'plitka_raw',
             'Обои и настенные покрытия' => 'oboi_raw',
-            'Лепнина' => 'lenpina_raw',
+            'Лепнина' => 'lepnina_raw',
             'Сантехника' => 'santechnika_raw',
             'Краски' => 'kraski_raw',
         ][$needed_category];
