@@ -300,7 +300,7 @@ class Categories
                 ],
                 26 => [ //'Другое',
                     ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
-                    ($provider == 'evroplast' and preg_match("#(арочн|архитрав|балясин|гибкие аналоги|)#", $providerCategory)
+                    ($provider == 'evroplast' and preg_match("#(арочн|архитрав|балясин|гибкие аналоги|арочные обрамления|архитравы|балясины|основание|фриз|руст|полустолб|полупоручень|полуоснование|подоконный элемент|торцевой элемент|откос|орнамент|обрамление арок|квадрат)#", $providerCategory)
                         and preg_match("#(дополнительные элементы|камни|кессон|крышки столба|монтажный комплект|накладные элементы|наличники)#", $providerCategory))
                         and !preg_match("#(плинтус)", $providerCategory),
                     ($provider == 'centerkrasok' and preg_match("#(Монтажные пены|Промышленные покрытия|Растворители|Стеклохолст|Эпоксидные)#", $providerCategory)),
