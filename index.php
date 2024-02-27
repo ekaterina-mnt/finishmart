@@ -2,8 +2,8 @@
 require __DIR__ . "/vendor/autoload.php";
 
 use functions\Parser;
-use functions\GoogleSheets\ParseCharacteristics\Napolnye;
-use functions\GoogleSheets\ParseCharacteristics\Plitka;
+use functions\GoogleSheets\ParseCharacteristics\Categories\Napolnye;
+use functions\GoogleSheets\ParseCharacteristics\Categories\Plitka;
 use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
 
 try {

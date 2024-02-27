@@ -1,14 +1,14 @@
 <?php
 
-namespace functions\GoogleSheets\ParseCharacteristics;
+namespace functions\GoogleSheets\ParseCharacteristics\Categories;
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 use functions\Parser;
 use functions\GoogleSheets\Sheet;
 use functions\TechInfo;
 
-class Napolnye
+class Lepnina
 {
     static function getSubcategories()
     {
