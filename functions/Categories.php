@@ -124,7 +124,7 @@ class Categories
                     ($provider == 'evroplast' and preg_match("#(карниз)#", $providerCategory)),
                     ($provider == 'domix' and preg_match("#(Карниз)#", $providerSubcategory)),
                     ($provider == 'olimp' and preg_match("#(Карниз)#", $providerSubcategory)),
-                    ($provider == 'ampir' and in_array(["Сандрики", "Карнизы"], $chars['Назначение']))
+                    ($provider == 'ampir' and ($chars['Назначение'] == "Сандрики" or $chars['Назначение'] == "Карнизы"))
                 ],
                 22 => [ //'Молдинги',
                     ($provider == 'evroplast' and preg_match("#(молдинг)#", $providerCategory)),
@@ -257,8 +257,8 @@ class Categories
                 ],
                 51 => [ //'Декоративные элементы',
                     ($provider == 'evroplast' and preg_match("#(декоративные элементы)#", $providerCategory)),
-                    ($provider == 'ampir' and in_array(['Декоративные элементы', 'Фасадный декор'], $chars['Назначение'])),
-                    ($provider == 'ampir' and in_array(["Потолочный декор"], $chars['Назначение'])),
+                    ($provider == 'ampir' and ($chars['Назначение'] == "Декоративные элементы" or $chars['Назначение'] == "Фасадный декор")),
+                    ($provider == 'ampir' and $chars['Назначение'] == "Потолочный декор"),
                 ],
                 52 => [ //'Настенная плитка',
                     ($provider == 'artkera' and preg_match("#(Настенная|Декор|Панно|Бордюр)#", $providerSubcategory)),
@@ -266,12 +266,12 @@ class Categories
                 ],
                 53 => [ //'Кронштейны, ниши',
                     ($provider == 'evroplast' and preg_match("#(кронштейн)#", $providerCategory)),
-                    ($provider == 'ampir' and in_array(['Ниши', 'Кронштейны', 'Полки и кронштейны'], $chars['Назначение'])),
+                    ($provider == 'ampir' and ($chars['Назначение'] == "Ниши" or $chars['Назначение'] == "Полки и кронштейны" or $chars['Назначение'] == "Кронштейны")),
                 ],
                 54 => [ //'Колонны',
                     ($provider == 'evroplast' and preg_match("#(колонн)#", $providerCategory)),
                     ($provider == 'olimp' and preg_match("#(Колонны)#", $providerSubcategory)),
-                    ($provider == 'ampir' and in_array(['Колонны и полуколонны'], $chars['Назначение'])),
+                    ($provider == 'ampir' and $chars['Назначение'] == 'Колонны и полуколонны'),
                 ],
                 55 => [ //'Шпатлевки',
                     ($provider == 'centerkrasok' and preg_match("#(Шпатлевки|шпатлевки)#", $providerCategory)),
@@ -292,7 +292,7 @@ class Categories
                 // ],
                 60 => [ // 'Пилястры"                
                     ($provider == 'olimp' and preg_match("#(Пилястры)#", $providerSubcategory)),
-                    ($provider == 'ampir' and in_array(['Пилястры'], $chars['Назначение'])),
+                    ($provider == 'ampir' and $chars['Назначение'] == "Пилястры"),
                 ],
                 26 => [ //'Другое',
                     ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
@@ -305,7 +305,7 @@ class Categories
                     ($provider == 'finefloor' and preg_match("#(Сопутствующие)#", $providerCategory) and !preg_match("#(Клеевые|Плинтус|Подложк)#", $providerSubcategory)),
                     ($provider == 'mosplitka' and (preg_match("#(Водонагреватель|Финская сауна)#", $title))),
                     ($provider == 'olimp' and preg_match("#(Фанера пиленная|Средство по уходу|Смесь для ремонта|Дверной наличник|Распродажа)#", $providerSubcategory)),
-                    ($provider == 'ampir' and in_array(["Багет", 'Библиотечные системы'], $chars['Назначение']))
+                    ($provider == 'ampir' and ($chars['Назначение'] == 'Багет' or $chars['Назначение'] == 'Библиотечные системы'))
 
                 ],
             ];
