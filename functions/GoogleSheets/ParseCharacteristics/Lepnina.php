@@ -15,16 +15,20 @@ class Napolnye
         $subcategoriesList = Parser::getSubcategoriesList();
 
         $subcategories = [
-            $subcategoriesList[28], //'Инженерная доска',
-            26 => 'Другое',
-            20 => 'Розетки',
-            21 => 'Карнизы',
-            22 => 'Молдинги',
-            54 => 'Колонны',
-            7 => 'Комплектующие',
-            40 => 'Порожки',
-            41 => 'Профили',
-            44 => 'Панели',
+            $subcategoriesList[58], // 'Багет',
+            $subcategoriesList[24], // 'Дверное обрамление',
+            $subcategoriesList[51], // 'Декоративные элементы',
+            $subcategoriesList[26], // 'Другое',
+            $subcategoriesList[50], // 'Камины',
+            $subcategoriesList[21], // 'Карнизы',
+            $subcategoriesList[54], // 'Колонны',
+            $subcategoriesList[53], // 'Кронштейны, ниши',
+            $subcategoriesList[22], // 'Молдинги',
+            $subcategoriesList[44], // 'Панели',
+            $subcategoriesList[60], // 'Пилястры',
+            $subcategoriesList[40], // 'Порожки',
+            $subcategoriesList[41], // 'Профили',
+            $subcategoriesList[20], // 'Розетки',
         ];
         return $subcategories;
     }
