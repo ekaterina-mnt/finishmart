@@ -37,7 +37,6 @@ try {
 
         $url_parser = $res['link'];
         $provider = $res['provider'];
-        $url_parser = 'https://www.ampir.ru/catalog/lepnina/77242/';
 
         // $links = MySQL::sql("SELECT link, provider from all_products WHERE provider='" . $script_iteraion_provider . "' and subcategory IS NULL or subcategory='null' ORDER BY date_edit LIMIT 10");
         // foreach ($links as $link) {
@@ -96,7 +95,6 @@ try {
             include __DIR__ . "/../all_attributes.php";
 
             include __DIR__ . "/../insert_ending.php";
-            exit;
         }
     } //конец итерации 1 товара
 
