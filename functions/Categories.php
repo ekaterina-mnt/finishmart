@@ -270,7 +270,7 @@ class Categories
                     ($provider == 'ampir' and ($chars['Назначение'] == "Ниши" or $chars['Назначение'] == "Полки и кронштейны" or $chars['Назначение'] == "Кронштейны")),
                 ],
                 54 => [ //'Колонны',
-                    ($provider == 'evroplast' and preg_match("#(колонн|база)#", $providerCategory)),
+                    ($provider == 'evroplast' and preg_match("#(колонн|база|верхний фрагмент ствола|капитель)#", $providerCategory)),
                     ($provider == 'olimp' and preg_match("#(Колонны)#", $providerSubcategory)),
                     ($provider == 'ampir' and $chars['Назначение'] == 'Колонны и полуколонны'),
                 ],
