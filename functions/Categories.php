@@ -179,7 +179,7 @@ class Categories
                     ($provider == 'evroplast' and preg_match("#(плинтус)#", $providerCategory)),
                     ($provider == 'olimp' and preg_match("#(Плинтус напольный)#", $providerSubcategory)),
                     ($provider == 'fargo' and preg_match("#(Плинтус)#", $providerSubcategory)),
-                    ($provider == 'ampir' and $chars['Назначение'] == 'Плинтусы')
+                    ($provider == 'ampir' and ($chars['Назначение'] == 'Плинтусы' or preg_match("#(плинтус|Плинтус)#", $title)))
                 ],
                 34 => [ //'Массивная доска',
                     ($provider == 'olimp' and preg_match("#(Массивная доска)#", $providerSubcategory)),
