@@ -117,7 +117,7 @@ class Categories
                 ],
                 20 => [ //'Розетки',
                     ($provider == 'olimp' and preg_match("#(Розетки)#", $providerSubcategory)),
-                    ($provider == 'ampir' and preg_match("#(розетк)#", $title)), 
+                    ($provider == 'ampir' and preg_match("#(розетк)#", $title)),
                     ($provider == 'evroplast' and preg_match("#(розетка)#", $title)),
                 ],
                 21 => [ //'Карнизы',
@@ -272,8 +272,7 @@ class Categories
                     ($provider == 'ampir' and ($chars['Назначение'] == "Ниши" or $chars['Назначение'] == "Полки и кронштейны" or $chars['Назначение'] == "Кронштейны")),
                 ],
                 54 => [ //'Колонны',
-                    ($provider == 'evroplast' and preg_match("#(колонн|база|верхний фрагмент ствола|капитель|кольцо)#", $providerCategory)
-                        or preg_match("#(колонн|база|верхний фрагмент ствола|капитель|кольцо)#", $title)),
+                    ($provider == 'evroplast' and preg_match("#(колонн|база|верхний фрагмент ствола|капитель|кольцо)#", $providerCategory)),
                     ($provider == 'olimp' and preg_match("#(Колонны)#", $providerSubcategory)),
                     ($provider == 'ampir' and $chars['Назначение'] == 'Колонны и полуколонны'),
                 ],
@@ -283,7 +282,9 @@ class Categories
                 56 => [ //'Декоративное покрытие',
                     ($provider == 'centerkrasok' and preg_match("#(Декоративные дизайнерские покрытия)#", $providerCategory)),
                     ($provider == 'tdgalion' and preg_match("#(Декоративный камень)#", $providerCategory)),
-                    ($provider == 'domix' and preg_match("#(Декор|Бордюр)#", $title) and !preg_match("#(Декор настенный)#", $title)),
+                    ($provider == 'domix'
+                        and preg_match("#(Декор|Бордюр)#", $title)
+                        and !preg_match("#(Декор настенный)#", $title)),
                 ],
                 57 => [ //'Люстры, лампы, уличное освещение',
                     ($provider == 'mosplitka' and (preg_match("#(подсветк|Люстры|лампы|Светильник|светового|Торшеры|освещение|Спот)#", $providerCategory) or preg_match("#(светильник)#", $title))),
@@ -302,10 +303,8 @@ class Categories
                 ],
                 26 => [ //'Другое',
                     ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
-                    ($provider == 'evroplast' 
-                        and (preg_match("#(арочн|архитрав|балясин|гибкие аналоги)#", $providerCategory)
-                        or preg_match("#(дополнительные элементы|камни|кессон|крышки столба|монтажный комплект|накладные элементы|наличники|фризы|русты|подоконные элементы|основания|поручни|обрамление арок|орнаменты|откосы|столбы)#", $providerCategory))
-                        // or preg_match("#(арочные обрамления|архитравы|балясины|основание|фриз|руст|полустолб|полупоручень|полуоснование|подоконный элемент|торцевой элемент|откос|орнамент|обрамление арок|квадрат", $title))
+                    ($provider == 'evroplast'
+                        and preg_match("#(арочн|архитрав|балясин|гибкие аналоги|дополнительные элементы|камни|кессон|крышки столба|монтажный комплект|накладные элементы|наличники|фризы|русты|подоконные элементы|основания|поручни|обрамление арок|орнаменты|откосы|столбы)#", $providerCategory)
                         and !preg_match("#(плинтус)", $providerCategory)),
                     ($provider == 'centerkrasok' and preg_match("#(Монтажные пены|Промышленные покрытия|Растворители|Стеклохолст|Эпоксидные)#", $providerCategory)),
                     ($provider == 'alpinefloor' and str_contains($product_link, 'https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/')),
@@ -340,7 +339,13 @@ class Categories
         $title = $title ?? 'null';
         $all_categories = Parser::getCategoriesList();
 
-        if (in_array($providerCategory, $all_categories) and !($provider == 'domix' and preg_match("#(Плитка и керамогранит)#", $providerCategory))) return $providerCategory;
+        if (
+            in_array($providerCategory, $all_categories)
+            and !($provider == 'domix' and preg_match("#(Плитка и керамогранит)#", $providerCategory))
+            and !($provider == 'ampir' and $chars['Назначение'] == 'Плинтусы')
+        ) {
+            return $providerCategory;
+        }
 
         $keys = [
             0 => [ //'Обои и настенные покрытия'
@@ -359,6 +364,8 @@ class Categories
                 ($provider == 'olimp' and preg_match("#(Ламинат|ламинат|Инженерная доска|Массивная доска|паркет|Паркет|Плинтус|Подложка|Пробковый пол|Фанера пиленная)#", $providerSubcategory) and !preg_match("#(для паркета)#", $providerSubcategory)),
                 ($provider == 'fargo' and preg_match("#(Плинтус|Подложка|Кварцевый ламинат)#", $providerCategory)),
                 ($provider == 'mosplitka' and preg_match("#SPC-плитка", $title)),
+                ($provider == 'evroplast' and preg_match("#(плинтус)#", $providerCategory)),
+                ($provider == 'ampir' and $chars['Назначение'] == 'Плинтусы'),
             ],
             2 => [ //'Плитка и керамогранит',
                 ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
@@ -387,7 +394,7 @@ class Categories
             5 => [ //'Лепнина',
                 ($provider == 'domix' and preg_match("#(Панели и декор)#", $providerCategory)),
                 ($provider == 'dplintus' and preg_match("#(Карнизы|профили|Панели для|Профили для|Порожки|Углы и профили)#", $providerCategory)),
-                ($provider == 'evroplast' and !preg_match("#клей#", $providerCategory)),
+                ($provider == 'evroplast' and !preg_match("#(клей|плинтус)#", $providerCategory)),
                 ($provider == 'alpinefloor' and preg_match("#(Молдинг)#", $providerSubcategory)),
                 ($provider == 'olimp' and preg_match("#(Молдинг|Карниз|Колонн|Розетк|Пилястр|Дверной наличник)#", $providerSubcategory)),
             ],
