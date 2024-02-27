@@ -339,11 +339,12 @@ class Categories
         $title = $title ?? 'null';
         $all_categories = Parser::getCategoriesList();
         $chars = json_decode($chars, 1);
+        var_dump($provider == 'ampir' and ($chars['Назначение'] == 'Плинтусы' or preg_match("#(плинтус|Плинтус)#)", $title)));
 
         if (
             in_array($providerCategory, $all_categories)
             and !($provider == 'domix' and preg_match("#(Плитка и керамогранит)#", $providerCategory))
-            and !($provider == 'ampir' and $chars['Назначение'] == 'Плинтусы')
+            and !($provider == 'ampir' and ($chars['Назначение'] == 'Плинтусы' or preg_match("#(плинтус|Плинтус)#)", $title)))
         ) {
             return $providerCategory;
         }
@@ -366,7 +367,7 @@ class Categories
                 ($provider == 'fargo' and preg_match("#(Плинтус|Подложка|Кварцевый ламинат)#", $providerCategory)),
                 ($provider == 'mosplitka' and preg_match("#SPC-плитка", $title)),
                 ($provider == 'evroplast' and preg_match("#(плинтус)#", $providerCategory)),
-                ($provider == 'ampir' and $chars['Назначение'] == 'Плинтусы'),
+                ($provider == 'ampir' and ($chars['Назначение'] == 'Плинтусы' or preg_match("#(плинтус|Плинтус)#)", $title))),
             ],
             2 => [ //'Плитка и керамогранит',
                 ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
