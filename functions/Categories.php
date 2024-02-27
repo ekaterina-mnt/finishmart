@@ -338,6 +338,7 @@ class Categories
         $providerSubcategory = $providerSubcategory ?? 'null';
         $title = $title ?? 'null';
         $all_categories = Parser::getCategoriesList();
+        $chars = json_decode($chars, 1);
 
         if (
             in_array($providerCategory, $all_categories)
