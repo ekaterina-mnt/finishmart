@@ -137,7 +137,8 @@ class Categories
 
                 ],
                 24 => [ //'Дверное обрамление',
-                    ($provider == 'ampir' and $chars['Назначение'] == 'Дверное обрамление')
+                    ($provider == 'ampir' and $chars['Назначение'] == 'Дверное обрамление'),
+                    ($provider == 'evroplast' and preg_match("#(обрамление дверей)#", $providerCategory)),
                 ],
                 25 => [ //'Потолочный декор',
                 ],
@@ -269,7 +270,7 @@ class Categories
                     ($provider == 'ampir' and ($chars['Назначение'] == "Ниши" or $chars['Назначение'] == "Полки и кронштейны" or $chars['Назначение'] == "Кронштейны")),
                 ],
                 54 => [ //'Колонны',
-                    ($provider == 'evroplast' and preg_match("#(колонн)#", $providerCategory)),
+                    ($provider == 'evroplast' and preg_match("#(колонн|база)#", $providerCategory)),
                     ($provider == 'olimp' and preg_match("#(Колонны)#", $providerSubcategory)),
                     ($provider == 'ampir' and $chars['Назначение'] == 'Колонны и полуколонны'),
                 ],
