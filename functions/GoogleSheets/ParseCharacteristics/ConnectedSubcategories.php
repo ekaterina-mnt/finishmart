@@ -36,4 +36,6 @@ class ConnectedSubcategories
         $subcategories = self::getList();
         return $subcategories[$needed_category];
     }
+
+    
 }

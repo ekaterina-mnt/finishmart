@@ -14,18 +14,27 @@ use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
     echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
-  
+
 
     if (!isset($_POST['category'])) exit("Нужны параметры 'категория'");
-  
+
     $subcategories = ConnectedSubcategories::getList();
-    
+
     if (!in_array($_POST['category'], array_keys($subcategories))) exit("Неподходящий параметр");
 
     $needed_category = $_POST['category'];
     $needed_subcategories = $subcategories[$_POST['category']];
 
-    $GoogleSheets_tablename = 'oboi_raw';
+    $GoogleSheets_tablename =
+        [
+            'Напольные покрытия' => 'napolnye_raw',
+            'Плитка и керамогранит' => 'plitka_raw',
+            'Обои и настенные покрытия' => 'oboi_raw',
+            'Лепнина' => 'lenpina_raw',
+            'Сантехника' => 'santechnika_raw',
+            'Краски' => 'kraski_raw',
+        ][$needed_category];
+
     echo "Будут вставлены в таблицу '$GoogleSheets_tablename'";
 
     foreach ($needed_subcategories as $title) {
