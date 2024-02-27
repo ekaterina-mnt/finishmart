@@ -55,7 +55,7 @@ try {
     $additional_columns = ['id в новой таблице', 'Дата изменения'];
 
     // В какую таблицу будет инзерт 
-    $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($category);
+    $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($needed_category);
 
 
 
