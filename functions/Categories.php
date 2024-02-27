@@ -122,13 +122,13 @@ class Categories
                 ],
                 21 => [ //'Карнизы',
                     ($provider == 'dplintus' and preg_match("#(Карниз)#", $providerCategory)),
-                    ($provider == 'evroplast' and preg_match("#(карниз)#", $providerCategory)),
+                    ($provider == 'evroplast' and preg_match("#(карниз|сандрики)#", $providerCategory)),
                     ($provider == 'domix' and preg_match("#(Карниз)#", $providerSubcategory)),
                     ($provider == 'olimp' and preg_match("#(Карниз)#", $providerSubcategory)),
                     ($provider == 'ampir' and ($chars['Назначение'] == "Сандрики" or $chars['Назначение'] == "Карнизы"))
                 ],
                 22 => [ //'Молдинги',
-                    ($provider == 'evroplast' and preg_match("#(молдинг|угловой элемент)#", $providerCategory)),
+                    ($provider == 'evroplast' and preg_match("#(молдинг|угловые элементы)#", $providerCategory)),
                     ($provider == 'domix' and preg_match("#(Молдинг)#", $providerSubcategory)),
                     ($provider == 'alpinefloor' and preg_match("#(Молдинг)#", $providerSubcategory)),
                     ($provider == 'olimp' and preg_match("#(Молдинг)#", $providerSubcategory)),
@@ -304,7 +304,7 @@ class Categories
                     ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
                     ($provider == 'evroplast' 
                         and (preg_match("#(арочн|архитрав|балясин|гибкие аналоги)#", $providerCategory)
-                        or preg_match("#(дополнительные элементы|камни|кессон|крышки столба|монтажный комплект|накладные элементы|наличники)#", $providerCategory)
+                        or preg_match("#(дополнительные элементы|камни|кессон|крышки столба|монтажный комплект|накладные элементы|наличники|фризы|русты|подоконные элементы|основания|поручни|обрамление арок)#", $providerCategory)
                         or preg_match("#(арочные обрамления|архитравы|балясины|основание|фриз|руст|полустолб|полупоручень|полуоснование|подоконный элемент|торцевой элемент|откос|орнамент|обрамление арок|квадрат", $title))
                         and !preg_match("#(плинтус)", $providerCategory)),
                     ($provider == 'centerkrasok' and preg_match("#(Монтажные пены|Промышленные покрытия|Растворители|Стеклохолст|Эпоксидные)#", $providerCategory)),
