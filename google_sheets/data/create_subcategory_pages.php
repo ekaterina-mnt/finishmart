@@ -25,15 +25,7 @@ try {
     $needed_category = $_POST['category'];
     $needed_subcategories = $subcategories[$_POST['category']];
 
-    $GoogleSheets_tablename =
-        [
-            'Напольные покрытия' => 'napolnye_raw',
-            'Плитка и керамогранит' => 'plitka_raw',
-            'Обои и настенные покрытия' => 'oboi_raw',
-            'Лепнина' => 'lepnina_raw',
-            'Сантехника' => 'santechnika_raw',
-            'Краски' => 'kraski_raw',
-        ][$needed_category];
+    $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($category);
 
     echo "Будут вставлены в таблицу '$GoogleSheets_tablename'";
 

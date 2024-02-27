@@ -27,8 +27,6 @@ try {
 
     $categories = Parser::getCategoriesList();
     $subcategories = ConnectedSubcategories::getList();
-    $napolnye_subcategories = Napolnye::getSubcategories();
-    $plitka_subcategories = Plitka::getSubcategories();
 
 ?>
 

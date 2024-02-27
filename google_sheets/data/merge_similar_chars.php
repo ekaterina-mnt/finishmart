@@ -55,13 +55,7 @@ try {
     $additional_columns = ['id в новой таблице', 'Дата изменения'];
 
     // В какую таблицу будет инзерт 
-    $GoogleSheets_tablename = [
-        'Плитка и керамогранит' => "plitka_raw",
-        'Обои и настенные покрытия' => "oboi_raw",
-        'Напольные покрытия' => "napolnye_raw",
-        'Лепнина' => "Lepnina_raw",
-        'Сантехника' => "santechnika_raw",
-    ][$needed_category]; // еще есть napolnye_raw
+    $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($category);
 
 
 

@@ -37,5 +37,18 @@ class ConnectedSubcategories
         return $subcategories[$needed_category];
     }
 
+    static function getGoogleSheetsTableName($category) {
+        $list = [
+            'Напольные покрытия' => 'napolnye_raw',
+            'Плитка и керамогранит' => 'plitka_raw',
+            'Обои и настенные покрытия' => 'oboi_raw',
+            'Лепнина' => 'lepnina_raw',
+            'Сантехника' => 'santechnika_raw',
+            'Краски' => 'kraski_raw',
+        ];
+        
+        return $list[$category];
+    }
+
     
 }

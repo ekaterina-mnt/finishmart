@@ -18,31 +18,11 @@ class Sheet
 {
     private static $service;
 
-    // static function get_service_json_title($service_account)
-    // {
-
-    //     if ($service_account == 'napolnye_raw') {
-    //         $service_json_title = "service_key_napolnye_raw.json";
-    //     } elseif ($service_account == 'napolnye_edition') {
-    //         $service_json_title = "service_key_napolnye_edition.json";
-    //     } elseif ($service_account == 'plitka_raw') {
-    //         $service_json_title = 'plitka_raw.json';
-    //     } elseif ($service_account == 'oboi_raw' or $service_account == 'lepnina_raw') {
-    //         $service_json_title = 'oboi_raw.json';
-    //     } else {
-    //         die("Не найден json файл service account");
-    //     }
-
-    //     return $service_json_title;
-    // }
-
     static function get_connect($service_account)
     {
         if (!self::$service) {
-            // $service_json_title = self::get_service_json_title($service_account);
-            $service_json_title = 'service_account_key.json';
+            $service_json_title = 'service_account_key.json'; // бывший oboi_raw
             // Наш ключ доступа к сервисному аккаунту
-            // $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/service_keys/' . $service_json_title;
             $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/' . $service_json_title;
             putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
             // Создаем новый клиент
