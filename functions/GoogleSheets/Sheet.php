@@ -18,29 +18,32 @@ class Sheet
 {
     private static $service;
 
-    static function get_service_json_title($service_account)
-    {
-        if ($service_account == 'napolnye_raw') {
-            $service_json_title = "service_key_napolnye_raw.json";
-        } elseif ($service_account == 'napolnye_edition') {
-            $service_json_title = "service_key_napolnye_edition.json";
-        } elseif ($service_account == 'plitka_raw') {
-            $service_json_title = 'plitka_raw.json';
-        } elseif ($service_account == 'oboi_raw' or $service_account == 'lepnina_raw') {
-            $service_json_title = 'oboi_raw.json';
-        } else {
-            die("Не найден json файл service account");
-        }
+    // static function get_service_json_title($service_account)
+    // {
 
-        return $service_json_title;
-    }
+    //     if ($service_account == 'napolnye_raw') {
+    //         $service_json_title = "service_key_napolnye_raw.json";
+    //     } elseif ($service_account == 'napolnye_edition') {
+    //         $service_json_title = "service_key_napolnye_edition.json";
+    //     } elseif ($service_account == 'plitka_raw') {
+    //         $service_json_title = 'plitka_raw.json';
+    //     } elseif ($service_account == 'oboi_raw' or $service_account == 'lepnina_raw') {
+    //         $service_json_title = 'oboi_raw.json';
+    //     } else {
+    //         die("Не найден json файл service account");
+    //     }
+
+    //     return $service_json_title;
+    // }
 
     static function get_connect($service_account)
     {
         if (!self::$service) {
-            $service_json_title = self::get_service_json_title($service_account);
+            // $service_json_title = self::get_service_json_title($service_account);
+            $service_json_title = 'service_account_key.json';
             // Наш ключ доступа к сервисному аккаунту
-            $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/service_keys/' . $service_json_title;
+            // $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/service_keys/' . $service_json_title;
+            $googleAccountKeyFilePath = __DIR__ . '/../../google_sheets/' . $service_json_title;
             putenv('GOOGLE_APPLICATION_CREDENTIALS=' . $googleAccountKeyFilePath);
             // Создаем новый клиент
             $client = new Google_Client();
@@ -58,10 +61,8 @@ class Sheet
     static function get_sheetID($service_account)
     {
         // ID таблицы
-        if ($service_account == 'napolnye_raw') { // для Напольные Итог
+        if ($service_account == 'napolnye_raw') {
             $spreadsheetId = '15BAlc52xS_7RxYYCrM5Jw4g9TEiS7EoeUwcLPYqPdyc';
-        } elseif ($service_account == 'napolnye_edition') { // для Редакция Напольные
-            $spreadsheetId = '105JPpIgq0gJGWcDVpYTlZ-r-g_uJ1b1TAEwtkamN0p8';
         } elseif ($service_account == 'plitka_raw') {
             $spreadsheetId = '1AOoMtVpA2SP6gR5UEjZWOqk-BuzP0YXxos2UoPj1qBw';
         } elseif ($service_account == 'oboi_raw') {
