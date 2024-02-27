@@ -140,6 +140,7 @@ class Categories
                 24 => [ //'Дверное обрамление',
                     ($provider == 'ampir' and $chars['Назначение'] == 'Дверное обрамление'),
                     ($provider == 'evroplast' and preg_match("#(обрамление дверей)#", $providerCategory)),
+                    ($provider == 'olimp' and preg_match("#(Дверной наличник)#", $providerSubcategory)),
                 ],
                 25 => [ //'Потолочный декор',
                 ],
@@ -300,9 +301,11 @@ class Categories
                 ],
                 26 => [ //'Другое',
                     ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
-                    ($provider == 'evroplast' and preg_match("#(арочн|архитрав|балясин|гибкие аналоги|арочные обрамления|архитравы|балясины|основание|фриз|руст|полустолб|полупоручень|полуоснование|подоконный элемент|торцевой элемент|откос|орнамент|обрамление арок|квадрат)#", $providerCategory)
-                        and preg_match("#(дополнительные элементы|камни|кессон|крышки столба|монтажный комплект|накладные элементы|наличники)#", $providerCategory))
-                        and !preg_match("#(плинтус)", $providerCategory),
+                    ($provider == 'evroplast' 
+                        and (preg_match("#(арочн|архитрав|балясин|гибкие аналоги)#", $providerCategory)
+                        or preg_match("#(дополнительные элементы|камни|кессон|крышки столба|монтажный комплект|накладные элементы|наличники)#", $providerCategory)
+                        or preg_match("#(арочные обрамления|архитравы|балясины|основание|фриз|руст|полустолб|полупоручень|полуоснование|подоконный элемент|торцевой элемент|откос|орнамент|обрамление арок|квадрат", $title))
+                        and !preg_match("#(плинтус)", $providerCategory)),
                     ($provider == 'centerkrasok' and preg_match("#(Монтажные пены|Промышленные покрытия|Растворители|Стеклохолст|Эпоксидные)#", $providerCategory)),
                     ($provider == 'alpinefloor' and str_contains($product_link, 'https://alpinefloor.su/catalog/quartz-tiles-vinyl-for-walls/')),
                     ($provider == 'domix' and preg_match("#(Сопуствующие)#", $providerCategory) and !preg_match("#(Клей|Грутновк)#", $title)),
