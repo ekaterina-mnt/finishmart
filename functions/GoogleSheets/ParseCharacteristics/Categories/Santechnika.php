@@ -16,17 +16,17 @@ class Santechnika
 
         $subcategories = [
             // $subcategoriesList[58], // 'Багет',
-            6 => 'Аксессуары для ванной комнаты',
-            2 => 'Ванны',
-            26 => 'Другое',
-            3 => 'Душевые',
-            7 => 'Комплектующие',
-            14 => 'Кухонные мойки',
-            5 => 'Мебель для ванной',
-            0 => 'Раковины',
-            1 => 'Унитазы, писсуары и биде',
-            4 => 'Смесители',
-            8 => 'Полотенцесушители',
+            $subcategoriesList[6], //'Аксессуары для ванной комнаты',
+            $subcategoriesList[2], //'Ванны',
+            $subcategoriesList[26], //'Другое',
+            $subcategoriesList[3], //'Душевые',
+            $subcategoriesList[7], //'Комплектующие',
+            $subcategoriesList[14], //'Кухонные мойки',
+            $subcategoriesList[5], //'Мебель для ванной',
+            $subcategoriesList[0], //'Раковины',
+            $subcategoriesList[1], //'Унитазы, писсуары и биде',
+            $subcategoriesList[4], //'Смесители',
+            $subcategoriesList[8], //'Полотенцесушители',
         ];
         return $subcategories;
     }
