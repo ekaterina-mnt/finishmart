@@ -49,6 +49,8 @@ class Sheet
             $spreadsheetId = '1zY-Obyh3HXz8rNZ5FhKmEDmvy-2SX01BZpliDwBTiHs';
         } elseif ($service_account == 'lepnina_raw') {
             $spreadsheetId = '1XjZjM82CpVp9_5TakR5Rf1mZOxMglmKtVaelaBlUbqo';
+        } elseif ($service_account == 'kraski_raw') {
+            $spreadsheetId = '1u3FYfC6hfARUpeerj92GZwK6HPHmL3-SfGsFtc2YnBM';
         }
 
         return $spreadsheetId;

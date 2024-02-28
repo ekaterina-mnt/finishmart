@@ -15,7 +15,16 @@ class Kraski
         $subcategoriesList = Parser::getSubcategoriesList();
 
         $subcategories = [
-            // $subcategoriesList[58], // 'Багет',
+            $subcategoriesList[48], // 'Антисептики и пропитки',
+            $subcategoriesList[46], // 'Грунтовки',
+            $subcategoriesList[56], // 'Декоративное покрытие',
+            $subcategoriesList[26], // 'Другое',
+            $subcategoriesList[49], // 'Затирки и клей',
+            $subcategoriesList[45], // 'Краски, эмали',
+            $subcategoriesList[47], // 'Лаки и масла',
+            $subcategoriesList[39], // 'Сопутствующие',
+            $subcategoriesList[55], // 'Шпатлевки',
+            $subcategoriesList[19], // 'Штукатурка',
         ];
         return $subcategories;
     }
