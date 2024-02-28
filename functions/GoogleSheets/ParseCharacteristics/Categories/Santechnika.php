@@ -15,7 +15,6 @@ class Santechnika
         $subcategoriesList = Parser::getSubcategoriesList();
 
         $subcategories = [
-            // $subcategoriesList[58], // 'Багет',
             $subcategoriesList[6], //'Аксессуары для ванной комнаты',
             $subcategoriesList[2], //'Ванны',
             $subcategoriesList[26], //'Другое',
