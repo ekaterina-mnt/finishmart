@@ -316,7 +316,7 @@ class Categories
                     ($provider == 'finefloor' and preg_match("#(Сопутствующие)#", $providerCategory) and !preg_match("#(Клеевые|Плинтус|Подложк)#", $providerSubcategory)),
                     ($provider == 'mosplitka' and (preg_match("#(Водонагреватель|Финская сауна)#", $title))),
                     ($provider == 'olimp' and preg_match("#(Фанера пиленная|Средство по уходу|Смесь для ремонта|Дверной наличник|Распродажа)#", $providerSubcategory)),
-                    ($provider == 'ampir' and ($chars['Назначение'] == 'Багет' or $chars['Назначение'] == 'Библиотечные системы'))
+                    ($provider == 'ampir' and ($chars['Назначение'] == 'Багет' or $chars['Назначение'] == 'Библиотечные системы')),
                     (($provider == 'domix' or $provider == 'centerkrasok') and preg_match("#(гель|герметик|Герметик|Гель)#", $title)),
 
                 ],
