@@ -231,11 +231,13 @@ class Categories
                     ($provider == 'centerkrasok' and preg_match("#(Краски)#", $providerCategory)),
                 ],
                 46 => [ //'Грунтовки',
+                    (preg_match("#(грунктовк|Грунтовк)#", $providerSubcategory)),
                     ($provider == 'centerkrasok' and preg_match("#(Грунтовки)#", $providerCategory)),
                     ($provider == 'domix' and preg_match("#(Грунтовк)#", $providerCategory)),
                     ($provider == 'olimp' and preg_match("#(Грунтовк)#", $providerSubcategory)),
                 ],
                 47 => [ //'Лаки и масла', 
+                    (preg_match("#(Лак|Масло|лак|масло)#", $providerSubcategory)),
                     ($provider == 'centerkrasok' and preg_match("#(Лаки и масла)#", $providerCategory)),
                     ($provider == 'domix' and preg_match("#(Лак)#", $providerSubcategory)),
                     ($provider == 'olimp' and preg_match("#(Лак для|Масло для)#", $providerSubcategory)),
@@ -245,6 +247,7 @@ class Categories
                     ($provider == 'centerkrasok' and preg_match("#(Антисептики)#", $providerCategory)),
                 ],
                 49 => [ //'Затирки и клей',
+                    (preg_match("#(клей|Клей)#", $providerSubcategory)),
                     ($provider == 'laparet' and preg_match("#(Клеевые|Клей|Затирк)#", $providerCategory)),
                     ($provider == 'domix' and ((preg_match("#(Сопуствующие)#", $providerCategory) and (preg_match("#(Клей)#", $title)) or preg_match("#Клей#", $providerSubcategory)))),
                     ($provider == 'evroplast' and preg_match("#клей#", $providerCategory)),
@@ -277,6 +280,7 @@ class Categories
                     ($provider == 'ampir' and $chars['Назначение'] == 'Колонны и полуколонны'),
                 ],
                 55 => [ //'Шпатлевки',
+                    (preg_match("#(Шпатлевка|шпатлевка)#", $providerSubcategory)),
                     ($provider == 'centerkrasok' and preg_match("#(Шпатлевки|шпатлевки)#", $providerCategory)),
                 ],
                 56 => [ //'Декоративное покрытие',
@@ -313,6 +317,7 @@ class Categories
                     ($provider == 'mosplitka' and (preg_match("#(Водонагреватель|Финская сауна)#", $title))),
                     ($provider == 'olimp' and preg_match("#(Фанера пиленная|Средство по уходу|Смесь для ремонта|Дверной наличник|Распродажа)#", $providerSubcategory)),
                     ($provider == 'ampir' and ($chars['Назначение'] == 'Багет' or $chars['Назначение'] == 'Библиотечные системы'))
+                    (($provider == 'domix' or $provider == 'centerkrasok') and preg_match("#(гель|герметик|Герметик|Гель)#", $title)),
 
                 ],
             ];
