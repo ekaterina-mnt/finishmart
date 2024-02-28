@@ -56,7 +56,6 @@ try {
 
     // В какую таблицу будет инзерт 
     $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($needed_category);
-var_dump($GoogleSheets_tablename);
 
 
     /////// ВСТАВЛЯЕМ СТРОКУ С ЗАГОЛОВКАМИ ХАРАКТЕРИСТИК ///////

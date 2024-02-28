@@ -25,7 +25,7 @@ try {
     $needed_category = $_POST['category'];
     $needed_subcategories = $subcategories[$_POST['category']];
 
-    $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($category);
+    $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($needed_category);
 
     echo "Будут вставлены в таблицу '$GoogleSheets_tablename'";
 
