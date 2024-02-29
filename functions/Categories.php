@@ -20,38 +20,9 @@ class Categories
             $all_subcategories = Parser::getSubcategoriesList();
             $chars = json_decode($chars, 1);
 
-            if (in_array($providerSubcategory, $all_subcategories) and !($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)) and !($provider == 'ampir' and (preg_match("#(Другое)#", $providerSubcategory)) or $chars['Назначение'] == 'Клей для лепнины')) return $providerSubcategory;
+            // if (in_array($providerSubcategory, $all_subcategories) and !($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)) and !($provider == 'ampir' and (preg_match("#(Другое)#", $providerSubcategory)) or $chars['Назначение'] == 'Клей для лепнины')) return $providerSubcategory;
 
             $keys = [
-                0 => [ //'Раковины'
-                    ($provider == 'laparet' and preg_match("#(Раковин)#", $title)),
-                    ($provider == 'ntceramic' and (preg_match("#(Раковин)#", $providerSubcategory) or preg_match("#(Раковин)#", $title))),
-                    ($provider == 'mosplitka' and preg_match("#(Раковина|Рукомойник)#", $title)),
-                    ($provider == 'domix' and preg_match("#(Раковина)#", $title)),
-                ],
-                1 => [ //'Унитазы, писсуары и биде',
-                    ($provider == 'laparet' and preg_match("#(Унитаз|Писсуар|Сиденье|Бачок)#", $title)),
-                    ($provider == 'mosplitka' and preg_match("#(Унитаз|Биде|Писсуар)#", $title)),
-                    ($provider == 'domix' and preg_match("#(Унитаз)#", $title)),
-                ],
-                2 => [ //'Ванны',
-                    ($provider == 'ntceramic' and (preg_match("#(Ванны)#", $providerSubcategory) or preg_match("#(Ванн)#", $title))),
-                    ($provider == 'mosplitka' and preg_match("#(ванна|Ванны)#", $title)),
-                    ($provider == 'domix' and preg_match("#(Ванна)#", $title)),
-                ],
-                3 => [ //'Душевые',
-                    ($provider == 'laparet' and preg_match("#(Душ|душ)#", $title)),
-                    ($provider == 'domix' and preg_match("#(Душ|душ)#", $title) and $providerCategory != 'Кварц-винил'),
-                    ($provider == 'mosplitka' and preg_match("#(Душ|Боковая стенка|Поддоны)#", $title) and $providerCategory == "Сантехника"),
-                    ($provider == 'mosplitka' and preg_match("#(Душевые)#", $providerSubcategory)),
-                ],
-                4 => [ //'Смесители',
-                    ($provider == 'mosplitka' and preg_match("#(Смесител)#", $title)),
-                    ($provider == 'laparet' and preg_match("#(Смесител)#", $title)),
-                    ($provider == 'ntceramic' and (preg_match("#(Смесител)#", $providerSubcategory) or preg_match("#(Смеситель)#", $title))),
-                    ($provider == 'domix' and preg_match("#(Смесител|смеситель|Набор смесител|Гигиенический набор|Гигиеническая лейка|Комплект смесител)#", $title)),
-                    ($provider == 'domix' and preg_match("#(Смесител)#", $providerSubcategory)),
-                ],
                 5 => [ //'Мебель для ванной',
                     ($provider == 'dplintus' and preg_match("#(Полки для ванной и душа)#", $providerCategory)),
                     ($provider == 'domix' and preg_match("#(Мебель для ванной)#", $providerCategory)),
@@ -59,17 +30,49 @@ class Categories
                     ($provider == 'ntceramic' and preg_match("#(Мебель для ванной)#", $providerSubcategory)),
                     ($provider == 'mosplitka' and (preg_match("#(Зеркал|Панель с полками|Полка|Шкаф|Пенал|Тумба|Мебель для ванной)#", $title))),
                 ],
+                4 => [ //'Смесители',
+                    (preg_match("#(Смесител)#", $title)),
+                    (preg_match("#(Смесител)#", $providerSubcategory)),
+                    ($provider == 'mosplitka' and preg_match("#(Смесител)#", $title)),
+                    ($provider == 'laparet' and preg_match("#(Смесител)#", $title)),
+                    ($provider == 'ntceramic' and (preg_match("#(Смесител)#", $providerSubcategory) or preg_match("#(Смеситель)#", $title))),
+                    ($provider == 'domix' and preg_match("#(Смесител|смеситель|Набор смесител|Гигиенический набор|Гигиеническая лейка|Комплект смесител)#", $title)),
+                    ($provider == 'domix' and preg_match("#(Смесител)#", $providerSubcategory)),
+                ],
+                0 => [ //'Раковины'
+                    (preg_match("#(Раковин|Рукомойник|раковин)#", $title) and !preg_match("#(для раковин|для слива|под раковину)#", $title)),
+                    // ($provider == 'laparet' and preg_match("#(Раковин)#", $title)),
+                    // ($provider == 'ntceramic' and (preg_match("#(Раковин)#", $providerSubcategory) or preg_match("#(Раковин)#", $title))),
+                    // ($provider == 'mosplitka' and preg_match("#(Раковина|Рукомойник)#", $title)),
+                    // ($provider == 'domix' and preg_match("#(Раковина)#", $title)),
+                ],
+                1 => [ //'Унитазы, писсуары и биде',
+                    ($provider == 'laparet' and preg_match("#(Унитаз|Писсуар|Сиденье|Бачок)#", $title)),
+                    ($provider == 'mosplitka' and preg_match("#(Унитаз|Биде|Писсуар)#", $title)),
+                    ($provider == 'domix' and preg_match("#(Унитаз)#", $title)),
+                ],
+                2 => [ //'Ванны',
+                    (preg_match("#(Ванны|ванна|Ванна)#", $title)
+                        or preg_match("#(Ванны|ванна|Ванна)#", $providerSubcategory)
+                        and !preg_match("#(для ванны)#", $title)),
+                    // ($provider == 'ntceramic' and (preg_match("#(Ванны)#", $providerSubcategory) or preg_match("#(Ванн)#", $title))),
+                    // ($provider == 'mosplitka' and preg_match("#(ванна|Ванны)#", $title)),
+                    // ($provider == 'domix' and preg_match("#(Ванна)#", $title)),
+                ],
+                3 => [ //'Душевые',
+                    ($provider == 'laparet' and preg_match("#(Душ|душ)#", $title)),
+                    ($provider == 'domix' and preg_match("#(Душ|душ)#", $title) and $providerCategory != 'Кварц-винил'),
+                    ($provider == 'mosplitka' and preg_match("#(Душ|Боковая стенка|Поддоны)#", $title) and $providerCategory == "Сантехника"),
+                    ($provider == 'mosplitka' and preg_match("#(Душевые)#", $providerSubcategory)),
+                ],
                 6 => [ //'Аксессуары для ванной комнаты',
                     ($provider == 'mosplitka' and (preg_match("#(Стакан|Держатель|аксессуар|Аксессуар|Шторка|Мыльница|Корзина|для писсуаров|Крючок|Ершик|Дозатор)#", $title))),
                     ($provider == 'domix' and (preg_match("#(Хранение)#", $providerSubcategory or preg_match("#(Стакан|Держатель|аксессуар|Аксессуар|Шторка|Мыльница|Корзина|для писсуаров|Крючок|Ерши)#", $title)) and preg_match("(Сантехника)", $providerCategory))),
                 ],
-                7 => [ //'Комплектующие',
-                    ($provider == 'mosplitka' and (preg_match("#(Клапан|клапан|Слив|Cифон|Инсталляци|труба|Насадка|Гофра|Гибкое соединение|Муфта|Отвод|инсталляци|Поручень для ванны|Вентиль|вентиль|Термостат|Кнопка смыва|Копки смыва|Излив|заглушка|Подголовник для ванны|Комплектующ|Шланг для)#", $title))),
-                    ($provider == 'mosplitka' and (preg_match("#(Поддоны)#", $providerSubcategory))),
-                    ($provider == 'domix' and preg_match("#(Инсталляц|инсталляц|Каркас|Экран для ванн|Термостат|Базовый модуль|Смывное устройство|Крышка-сидушка|Скрытая часть для|Излив|Уголок для|Слив|Крышка-сиденье|Комплект подключения|Клавиша)#", $title)),
-                    ($provider == 'domix' and preg_match("#(Сиденья для унитаза)#", $providerSubcategory)),
-                ],
-                8 => [ //'Полотенцесушители',
+                8 => [ //'Полотенцесушители',                    
+                    (preg_match("#(Полотенцесушител|Полотенцедержател)#", $providerSubcategory)),
+                    (preg_match("#(Полотенцесушител|Полотенцедержател)#", $title) and !preg_match("#(под раковину)#", $title)),
+                    (preg_match("#(Полотенцесушител|Полотенцедержател)#", $providerCategory)),
                     ($provider == 'mosplitka' and preg_match("#(Полотенцесушител)#", $providerSubcategory)),
                     ($provider == 'domix' and preg_match("#(Полотенцесушител)#", $title)),
                 ],
@@ -305,6 +308,14 @@ class Categories
                     ($provider == 'domix' and preg_match("#(Пьедестал|Полупьедестал)#", $title)),
                     ($provider == 'evroplast' and preg_match("#(ствол|пьедестал|пилястр)#", $title)),
                 ],
+                7 => [ //'Комплектующие',
+                    (preg_match("#(для раковин)#", $title)),
+                    (preg_match("#(для ванны)#", $title)),
+                    ($provider == 'mosplitka' and (preg_match("#(Клапан|клапан|Слив|Cифон|Инсталляци|труба|Насадка|Гофра|Гибкое соединение|Муфта|Отвод|инсталляци|Поручень для ванны|Вентиль|вентиль|Термостат|Кнопка смыва|Копки смыва|Излив|заглушка|Подголовник для ванны|Комплектующ|Шланг для|под слив)#", $title))),
+                    ($provider == 'mosplitka' and (preg_match("#(Поддоны)#", $providerSubcategory))),
+                    ($provider == 'domix' and preg_match("#(Инсталляц|инсталляц|Каркас|Экран для ванн|Термостат|Базовый модуль|Смывное устройство|Крышка-сидушка|Скрытая часть для|Излив|Уголок для|Слив|Крышка-сиденье|Комплект подключения|Клавиша)#", $title)),
+                    ($provider == 'domix' and preg_match("#(Сиденья для унитаза)#", $providerSubcategory)),
+                ],
                 26 => [ //'Другое',
                     ($provider == 'dplintus' and preg_match("#(Аксессуары)#", $providerCategory)),
                     ($provider == 'evroplast'
@@ -346,13 +357,13 @@ class Categories
         $chars = json_decode($chars, 1);
         var_dump($provider == 'ampir' and ($chars['Назначение'] == 'Плинтусы' or preg_match("#(плинтус|Плинтус)#)", $title)));
 
-        if (
-            in_array($providerCategory, $all_categories)
-            and !($provider == 'domix' and preg_match("#(Плитка и керамогранит)#", $providerCategory))
-            and !($provider == 'ampir' and ($chars['Назначение'] == 'Плинтусы' or preg_match("#(плинтус|Плинтус)#", $title)))
-        ) {
-            return $providerCategory;
-        }
+        // if (
+        //     in_array($providerCategory, $all_categories)
+        //     and !($provider == 'domix' and preg_match("#(Плитка и керамогранит)#", $providerCategory))
+        //     and !($provider == 'ampir' and ($chars['Назначение'] == 'Плинтусы' or preg_match("#(плинтус|Плинтус)#", $title)))
+        // ) {
+        //     return $providerCategory;
+        // }
 
         $keys = [
             0 => [ //'Обои и настенные покрытия'
