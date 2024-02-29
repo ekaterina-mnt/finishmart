@@ -76,6 +76,11 @@ class Categories
                     ($provider == 'mosplitka' and preg_match("#(Полотенцесушител)#", $providerSubcategory)),
                     ($provider == 'domix' and preg_match("#(Полотенцесушител)#", $title)),
                 ],
+                17 => [ //'Фотообои и фрески',
+                    (preg_match("#(фотообои|Фотообои)#", $providerCategory)),
+                    (preg_match("#(Фотообои|фотообои)#", $providerSubcategory)),
+                    // ($provider == 'domix' and preg_match("#(фотообои)#", $providerCategory)),
+                ],
                 9 => [ //'Декоративные обои',
                     ($provider == 'domix' and preg_match("#(Обои)#", $providerCategory)),
                     ($provider == 'mosplitka' and preg_match("#(Декоративные обои)#", $title))
@@ -113,9 +118,6 @@ class Categories
                 15 => [ //'Ступени и клинкер',
                 ],
                 16 => [ //'SPC-плитка', это кварцвиниловые полы
-                ],
-                17 => [ //'Фотообои и фрески',
-                    ($provider == 'domix' and preg_match("#(фотообои)#", $providerCategory)),
                 ],
                 18 => [ //'Обои под покраску',
                 ],
