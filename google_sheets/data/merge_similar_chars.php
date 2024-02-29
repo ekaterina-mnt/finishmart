@@ -110,7 +110,8 @@ try {
         $common_values = array();
         foreach ($common_attributes as $key => $attr) {
             $common_values[$key] = $good[$attr];
-            if ($key == 'Цена') $common_values['Цена для клиента'] = round($good[$attr] * 1.1);
+            if ($key == 'Цена' and $good['price'] != null) $common_values['Цена для клиента'] = round($good[$attr] * 1.1);
+            // if ($column[$key] == 'Цена для клиента' and $value  == '-') $value = null;
         }
         $common_values = array_merge([MySQL::get_mysql_datetime()], $common_values);
 
