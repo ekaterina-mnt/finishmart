@@ -27,23 +27,18 @@ try {
     // if (!$_GET['subcategory']) $_GET['subcategory'] = 'Декоративные обои';
 var_dump($argv);
     $needed_category = ($_POST['category'] ?? $_GET['category']) ?? $argv[1];
-    $needed_category = ($_POST['subcategory'] ?? $_GET['subcategory']) ?? $argv[2];
+    $needed_subcategory = ($_POST['subcategory'] ?? $_GET['subcategory']) ?? $argv[2];
 
     /////// ОПРЕДЕЛЯЕМ НУЖНЫЕ ПЕРЕМЕННЫЕ ///////
 
     echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
 
 
-    if (!isset($_POST['category']) or !isset($_POST['subcategory'])) exit("Нужны параметры 'категория' и 'подкатегория'");
+    if (!isset($needed_category) or !isset($needed_subcategory)) exit("Нужны параметры 'категория' и 'подкатегория'");
 
     $subcategories = ConnectedSubcategories::getList();
-    $needed_category = $_POST['category'];
 
     if (!in_array($needed_category, array_keys($subcategories))) exit("Неподходящий параметр");
-
-
-    $needed_subcategory = $_POST['subcategory'];
-
     if (!in_array($needed_subcategory, $subcategories[$needed_category])) exit("Неподходящий параметр");
 
     // $list_name = "Товары";
