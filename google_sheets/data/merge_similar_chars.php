@@ -25,7 +25,7 @@ try {
     // if (!$_GET['category']) $_GET['category'] = 'Обои и настенные покрытия';
     // if (!$_POST['subcategory']) $_POST['subcategory'] = 'Декоративные обои';
     // if (!$_GET['subcategory']) $_GET['subcategory'] = 'Декоративные обои';
-
+var_dump($argv);
     $needed_category = ($_POST['category'] ?? $_GET['category']) ?? $argv[1];
     $needed_category = ($_POST['subcategory'] ?? $_GET['subcategory']) ?? $argv[1];
 
