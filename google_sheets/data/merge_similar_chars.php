@@ -27,7 +27,7 @@ try {
     // if (!$_GET['subcategory']) $_GET['subcategory'] = 'Декоративные обои';
 var_dump($argv);
     $needed_category = ($_POST['category'] ?? $_GET['category']) ?? $argv[1];
-    $needed_category = ($_POST['subcategory'] ?? $_GET['subcategory']) ?? $argv[1];
+    $needed_category = ($_POST['subcategory'] ?? $_GET['subcategory']) ?? $argv[2];
 
     /////// ОПРЕДЕЛЯЕМ НУЖНЫЕ ПЕРЕМЕННЫЕ ///////
 
