@@ -52,14 +52,7 @@ try {
     $additional_columns = ['id в новой таблице', 'Дата изменения'];
 
     // В какую таблицу будет инзерт   
-    $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($needed_category);
-    if (is_array($GoogleSheets_tablename)) {
-        if (in_array(array_search($needed_subcategory, Santechnika::getSubcategories()), [0, 1, 2, 3, 4, 5])) {
-            $GoogleSheets_tablename = $GoogleSheets_tablename[0];
-        } elseif (in_array(array_search($needed_subcategory, Santechnika::getSubcategories()), [6, 7, 8, 9, 10])) {
-            $GoogleSheets_tablename = $GoogleSheets_tablename[1];
-        }
-    }
+    $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($needed_category, $needed_subcategory);
 
 
     /////// ВСТАВЛЯЕМ СТРОКУ С ЗАГОЛОВКАМИ ХАРАКТЕРИСТИК ///////

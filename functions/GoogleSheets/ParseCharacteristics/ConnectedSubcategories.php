@@ -37,7 +37,8 @@ class ConnectedSubcategories
         return $subcategories[$needed_category];
     }
 
-    static function getGoogleSheetsTableName($category) {
+    static function getGoogleSheetsTableName($category, $subcategory = null)
+    {
         $list = [
             'Напольные покрытия' => 'napolnye_raw',
             'Плитка и керамогранит' => 'plitka_raw',
@@ -49,9 +50,20 @@ class ConnectedSubcategories
             ],
             'Краски' => 'kraski_raw',
         ];
-        
-        return $list[$category];
-    }
 
-    
+        $result = $list[$category];
+
+
+        if (is_array($result)) {
+            if (in_array(array_search($category, Santechnika::getSubcategories()), [0, 1, 2, 3, 4, 5])) {
+                $result = $result[0];
+            } elseif (in_array(array_search($subcategory, Santechnika::getSubcategories()), [6, 7, 8, 9, 10])) {
+                $result = $result[1];
+            } else {
+                $result = $result[0];
+            }
+        }
+
+        return $result;
+    }
 }
