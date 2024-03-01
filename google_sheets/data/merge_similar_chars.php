@@ -10,6 +10,7 @@ use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 use functions\GoogleSheets\ParseCharacteristics\SpecificChars;
 use functions\GoogleSheets\ParseCharacteristics\CommonChars;
 use functions\GoogleSheets\Goods\GetGoods;
+use functions\GoogleSheets\ParseCharacteristics\Categories\Santechnika;
 use Google\Service\AuthorizedBuyersMarketplace\Contact;
 use functions\GoogleSheets\ParseCharacteristics\DefineNeededColumns;
 use functions\GoogleSheets\ParseCharacteristics\GetFilledIds;
@@ -25,21 +26,21 @@ try {
     // if (!$_GET['category']) $_GET['category'] = 'Обои и настенные покрытия';
     // if (!$_POST['subcategory']) $_POST['subcategory'] = 'Декоративные обои';
     // if (!$_GET['subcategory']) $_GET['subcategory'] = 'Декоративные обои';
-var_dump($argv);
+
     $needed_category = ($_POST['category'] ?? $_GET['category']) ?? $argv[1];
     $needed_subcategory = ($_POST['subcategory'] ?? $_GET['subcategory']) ?? $argv[2];
 
     /////// ОПРЕДЕЛЯЕМ НУЖНЫЕ ПЕРЕМЕННЫЕ ///////
 
     echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
-
-
     if (!isset($needed_category) or !isset($needed_subcategory)) exit("Нужны параметры 'категория' и 'подкатегория'");
+    if (!in_array($needed_category, array_keys($subcategories))) exit("Неподходящий параметр");
+    if (!in_array($needed_subcategory, $subcategories[$needed_category])) exit("Неподходящий параметр");
 
     $subcategories = ConnectedSubcategories::getList();
 
-    if (!in_array($needed_category, array_keys($subcategories))) exit("Неподходящий параметр");
-    if (!in_array($needed_subcategory, $subcategories[$needed_category])) exit("Неподходящий параметр");
+
+
 
     // $list_name = "Товары";
     $list_name = $needed_subcategory;
@@ -50,8 +51,15 @@ var_dump($argv);
     $start_column = "A";
     $additional_columns = ['id в новой таблице', 'Дата изменения'];
 
-    // В какую таблицу будет инзерт 
+    // В какую таблицу будет инзерт   
     $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($needed_category);
+    if (is_array($GoogleSheets_tablename)) {
+        if (in_array(array_search($needed_subcategory, Santechnika::getSubcategories()), [0, 1, 2, 3, 4, 5])) {
+            $GoogleSheets_tablename = $GoogleSheets_tablename[0];
+        } elseif (in_array(array_search($needed_subcategory, Santechnika::getSubcategories()), [6, 7, 8, 9, 10])) {
+            $GoogleSheets_tablename = $GoogleSheets_tablename[1];
+        }
+    }
 
 
     /////// ВСТАВЛЯЕМ СТРОКУ С ЗАГОЛОВКАМИ ХАРАКТЕРИСТИК ///////

@@ -15,17 +15,17 @@ class Santechnika
         $subcategoriesList = Parser::getSubcategoriesList();
 
         $subcategories = [
-            $subcategoriesList[6], //'Аксессуары для ванной комнаты',
-            $subcategoriesList[2], //'Ванны',
-            $subcategoriesList[26], //'Другое',
-            $subcategoriesList[3], //'Душевые',
-            $subcategoriesList[7], //'Комплектующие',
-            $subcategoriesList[14], //'Кухонные мойки',
-            $subcategoriesList[5], //'Мебель для ванной',
-            $subcategoriesList[0], //'Раковины',
-            $subcategoriesList[1], //'Унитазы, писсуары и биде',
-            $subcategoriesList[4], //'Смесители',
-            $subcategoriesList[8], //'Полотенцесушители',
+            0 => $subcategoriesList[6], //'Аксессуары для ванной комнаты',
+            1 => $subcategoriesList[2], //'Ванны',
+            2 => $subcategoriesList[26], //'Другое',
+            3 => $subcategoriesList[3], //'Душевые',
+            4 => $subcategoriesList[7], //'Комплектующие',
+            5 => $subcategoriesList[14], //'Кухонные мойки',
+            6 => $subcategoriesList[5], //'Мебель для ванной',
+            7 => $subcategoriesList[0], //'Раковины',
+            8 => $subcategoriesList[1], //'Унитазы, писсуары и биде',
+            9 => $subcategoriesList[4], //'Смесители',
+            10 => $subcategoriesList[8], //'Полотенцесушители',
         ];
         return $subcategories;
     }

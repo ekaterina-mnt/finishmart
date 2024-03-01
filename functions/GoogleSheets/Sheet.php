@@ -51,10 +51,12 @@ class Sheet
             $spreadsheetId = '1XjZjM82CpVp9_5TakR5Rf1mZOxMglmKtVaelaBlUbqo';
         } elseif ($service_account == 'kraski_raw') {
             $spreadsheetId = '1u3FYfC6hfARUpeerj92GZwK6HPHmL3-SfGsFtc2YnBM';
-        } elseif ($service_account == 'santechnika_raw') {
+        } elseif ($service_account == 'santechnika_raw_1') {
+            $spreadsheetId = '1Lqh8l_rXF3olLl1T91-dSQqiZQ9peOHmYp0ZELd0w78';
+        } elseif ($service_account == 'santechnika_raw_2') {
             $spreadsheetId = '1Lqh8l_rXF3olLl1T91-dSQqiZQ9peOHmYp0ZELd0w78';
         } else {
-            die("<br>Не определен $spreadsheetId<br>");
+            die("<br>Не определен \$spreadsheetId<br>");
         }
 
 

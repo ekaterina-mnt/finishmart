@@ -43,7 +43,10 @@ class ConnectedSubcategories
             'Плитка и керамогранит' => 'plitka_raw',
             'Обои и настенные покрытия' => 'oboi_raw',
             'Лепнина' => 'lepnina_raw',
-            'Сантехника' => 'santechnika_raw',
+            'Сантехника' => [
+                'santechnika_raw_1',
+                'santechnika_raw_2',
+            ],
             'Краски' => 'kraski_raw',
         ];
         
