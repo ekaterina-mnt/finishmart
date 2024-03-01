@@ -54,7 +54,7 @@ class Sheet
         } elseif ($service_account == 'santechnika_raw_1') {
             $spreadsheetId = '1Lqh8l_rXF3olLl1T91-dSQqiZQ9peOHmYp0ZELd0w78';
         } elseif ($service_account == 'santechnika_raw_2') {
-            $spreadsheetId = '1Lqh8l_rXF3olLl1T91-dSQqiZQ9peOHmYp0ZELd0w78';
+            $spreadsheetId = '1HurtogIQayu82BI9kW352D1vWyJVAItVlezF4Akee0M';
         } else {
             die("<br>Не определен \$spreadsheetId<br>");
         }
