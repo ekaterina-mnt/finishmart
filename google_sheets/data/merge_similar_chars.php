@@ -21,12 +21,13 @@ use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
-    if (!$_POST['category']) $_POST['category'] = 'Обои и настенные покрытия';
-    if (!$_GET['category']) $_GET['category'] = 'Обои и настенные покрытия';
-    if (!$_POST['subcategory']) $_POST['subcategory'] = 'Декоративные обои';
-    if (!$_GET['subcategory']) $_GET['subcategory'] = 'Декоративные обои';
+    // if (!$_POST['category']) $_POST['category'] = 'Обои и настенные покрытия';
+    // if (!$_GET['category']) $_GET['category'] = 'Обои и настенные покрытия';
+    // if (!$_POST['subcategory']) $_POST['subcategory'] = 'Декоративные обои';
+    // if (!$_GET['subcategory']) $_GET['subcategory'] = 'Декоративные обои';
 
-
+    $needed_category = ($_POST['category'] ?? $_GET['category']) ?? $argv[1];
+    $needed_category = ($_POST['subcategory'] ?? $_GET['subcategory']) ?? $argv[1];
 
     /////// ОПРЕДЕЛЯЕМ НУЖНЫЕ ПЕРЕМЕННЫЕ ///////
 
