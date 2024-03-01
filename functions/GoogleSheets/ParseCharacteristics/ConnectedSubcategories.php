@@ -56,7 +56,7 @@ class ConnectedSubcategories
 
         if (is_array($result)) {
             $search_key = array_search($subcategory, Santechnika::getSubcategories());
-            if ($search_key < 6 and !is_null($search_key)) {
+            if (($search_key < 6 or $search_key == 7 or $search_key == 9) and !is_null($search_key)) {
                 $result = $result[0];
             } elseif ($search_key > 5) {
                 $result = $result[1];
