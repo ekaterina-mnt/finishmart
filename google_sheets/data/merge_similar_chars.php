@@ -33,11 +33,11 @@ try {
     /////// ОПРЕДЕЛЯЕМ НУЖНЫЕ ПЕРЕМЕННЫЕ ///////
 
     echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
+    $subcategories = ConnectedSubcategories::getList();
     if (!isset($needed_category) or !isset($needed_subcategory)) exit("Нужны параметры 'категория' и 'подкатегория'");
     if (!in_array($needed_category, array_keys($subcategories))) exit("Неподходящий параметр");
     if (!in_array($needed_subcategory, $subcategories[$needed_category])) exit("Неподходящий параметр");
 
-    $subcategories = ConnectedSubcategories::getList();
 
 
 
