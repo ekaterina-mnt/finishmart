@@ -55,7 +55,7 @@ class ConnectedSubcategories
 
 
         if (is_array($result)) {
-            var_dump(array_search($category, Santechnika::getSubcategories()));
+            var_dump(array_search($subcategory, Santechnika::getSubcategories()));
             exit;
             if (in_array(array_search($subcategory, Santechnika::getSubcategories()), [0, 1, 2, 3, 4, 5])) {
                 $result = $result[0];
