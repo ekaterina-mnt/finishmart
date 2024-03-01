@@ -60,6 +60,7 @@ class Categories
                     // ($provider == 'domix' and preg_match("#(Ванна)#", $title)),
                 ],
                 3 => [ //'Душевые',
+                    (preg_match("#(гигиенический душ|Гигиенический душ)#", $title)),
                     ($provider == 'laparet' and preg_match("#(Душ|душ)#", $title)),
                     ($provider == 'domix' and preg_match("#(Душ|душ)#", $title) and $providerCategory != 'Кварц-винил'),
                     ($provider == 'mosplitka' and preg_match("#(Душ|Боковая стенка|Поддоны)#", $title) and $providerCategory == "Сантехника"),
