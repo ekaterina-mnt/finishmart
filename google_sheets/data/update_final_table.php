@@ -10,6 +10,7 @@ use functions\GoogleSheets\ParseCharacteristics\Napolnye;
 use functions\GoogleSheets\ParseCharacteristics\SpecificChars;
 use functions\GoogleSheets\ParseCharacteristics\CommonChars;
 use functions\GoogleSheets\Goods\GetGoods;
+use functions\GoogleSheets\MySQLColumns\MySQLColumns;
 use Google\Service\AuthorizedBuyersMarketplace\Contact;
 use functions\GoogleSheets\ParseCharacteristics\DefineNeededColumns;
 use functions\GoogleSheets\ParseCharacteristics\GetFilledIds;
@@ -48,11 +49,14 @@ try {
     $list_name = $needed_subcategory;
     $integer_type = ["all_links_id", "Цена", "Цена для клиента"];
 
-    require "add_final_table_columns.php";
+
+    $columns_excel_range = "$list_name!C3:CA3";
+
+
+    MySQLColumns::add_columns($columns_excel_range, $GoogleSheets_tablename, $mysql_tablename);
 
     exit;
 
-    $columns_excel_range = "$list_name!C3:CA3";
     $columns = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
     $columns = $columns['values'][0];
     $values = Sheet::get_data("$list_name!C4:CA100000", $GoogleSheets_tablename);
