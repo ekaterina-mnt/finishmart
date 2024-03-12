@@ -77,8 +77,6 @@ try {
         }
         $insert_array['all_links_id'] = $insert_array['id'];
         unset($insert_array['id']);
-        TechInfo::preArray($insert_array);
-        exit;
 
         $query = MySQL::bind_insert_data($types, $insert_array, $mysql_tablename);
     }
