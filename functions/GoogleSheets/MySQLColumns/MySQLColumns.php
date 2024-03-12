@@ -23,6 +23,8 @@ class MySQLColumns
         $res = MySQL::sql($query);
         $columns_mysql = array_column(mysqli_fetch_all($res, MYSQLI_ASSOC), "columns");
 
+        TechInfo::preArray($columns_mysql);
+
 
         $insert_columns = array();
 
