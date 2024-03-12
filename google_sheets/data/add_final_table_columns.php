@@ -18,41 +18,6 @@ use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
 
 
 try {
-    echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
-
-    $needed_category = ($_POST['category'] ?? $_GET['category']) ?? $argv[1];
-    $needed_subcategory = ($_POST['subcategory'] ?? $_GET['subcategory']) ?? $argv[2];
-
-    /////// ОПРЕДЕЛЯЕМ НУЖНЫЕ ПЕРЕМЕННЫЕ ///////
-
-    echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
-    $subcategories = ConnectedSubcategories::getList();
-    if (!isset($needed_category) or !isset($needed_subcategory)) exit("Нужны параметры 'категория' и 'подкатегория'");
-    if (!in_array($needed_category, array_keys($subcategories))) exit("Неподходящий параметр");
-    if (!in_array($needed_subcategory, $subcategories[$needed_category])) exit("Неподходящий параметр");
-
-    // $list_name = "Товары";
-    $list_name = $needed_subcategory;
-
-
-    // Первая ячейка, с которой начинается инзерт в Гугл Таблицу
-    $current_cell = 4;
-    $start_column = "A";
-    $additional_columns = ['id в новой таблице', 'Дата изменения'];
-
-    // В какую таблицу будет инзерт   
-    $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($needed_category, $needed_subcategory);
-    $tablename = "final_products";
-
-    $integer_type = ["all_links_id", "Цена", "Цена для клиента"];
-
-    require "update_final_table.php";
-
-    exit;
-
-
-    $columns_excel_range = "Товары!C3:AU3";
-
     $columns_excel = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
     $columns_excel = $columns_excel['values'][0];
 
@@ -80,11 +45,8 @@ try {
         echo "Добавится колонка $column<br>";
     }
     $query = substr($query, 0, -2);
-    MySQL::sql($query);
+    // MySQL::sql($query);
     echo "Все добавлено<br>";
-
-
-    echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
 } catch (Throwable $e) {
     var_dump($e);
 }
