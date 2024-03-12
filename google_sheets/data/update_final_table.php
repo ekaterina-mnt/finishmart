@@ -59,6 +59,8 @@ try {
 
     $columns = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
     $columns = $columns['values'][0];
+    TechInfo::preArray($columns);
+    exit;
     $values = Sheet::get_data("$list_name!C4:ZA100000", $GoogleSheets_tablename);
     $values = $values['values'];
 
