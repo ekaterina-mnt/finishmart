@@ -34,13 +34,15 @@ class MySQLColumns
             echo "Уже есть колонка $column<br>";
         }
 
-        $query = "ALTER TABLE $mysql_tablename";
-        foreach ($insert_columns as $column) {
-            $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL, ";
-            echo "Добавится колонка $column<br>";
+        if ($insert_columns) {
+            $query = "ALTER TABLE $mysql_tablename";
+            foreach ($insert_columns as $column) {
+                $query .= " ADD COLUMN `$column` TEXT(1500) DEFAULT NULL, ";
+                echo "Добавится колонка $column<br>";
+            }
+            $query = substr($query, 0, -2);
+            MySQL::sql($query);
+            echo "Все добавлено<br>";
         }
-        $query = substr($query, 0, -2);
-        MySQL::sql($query);
-        echo "Все добавлено<br>";
     }
 }
