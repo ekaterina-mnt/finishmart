@@ -62,6 +62,8 @@ try {
     $values = Sheet::get_data("$list_name!C4:ZA100000", $GoogleSheets_tablename);
     $values = $values['values'];
 
+    echo "<br>Будет добавлено " . count($values) . " товаров<br>";
+
     foreach ($values as $values_i) {
         $insert_array = array();
         $types = "";
