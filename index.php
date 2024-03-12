@@ -84,7 +84,7 @@ try {
     foreach ($subcategories as $category => $subcategoriesList) {
     ?>
         <H2>Перенести данные в final_products из Гугл Таблиц - <?= $category ?></H2>
-        <form action="google_sheets/data/add_final_table_columns.php" , method="POST">
+        <form action="google_sheets/data/update_final_table.php" , method="POST">
             <input type="hidden" name="category" value="<?= $category ?>">
             <select name="subcategory">
                 <?php
