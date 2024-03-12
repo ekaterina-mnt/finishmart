@@ -59,11 +59,11 @@ try {
 
     $columns = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
     $columns = $columns['values'][0];
+    TechInfo::preArray($values_i);
     $values = Sheet::get_data("$list_name!C4:ZA100000", $GoogleSheets_tablename);
     $values = $values['values'];
 
     foreach ($values as $values_i) {
-        TechInfo::preArray($values_i);
         $insert_array = array();
         $types = "";
         foreach ($values_i as $key => $value) {
