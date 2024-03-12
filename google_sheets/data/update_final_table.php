@@ -75,9 +75,9 @@ try {
                 $types .= "s";
             }
         }
-        // TechInfo::preArray($insert_array);
+        TechInfo::preArray($insert_array);
 
-        // $query = MySQL::bind_insert_data($types, $insert_array, $mysql_tablename);
+        $query = MySQL::bind_insert_data($types, $insert_array, $mysql_tablename);
     }
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
