@@ -44,7 +44,7 @@ try {
 
     // В какую таблицу будет инзерт   
     $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($needed_category, $needed_subcategory);
-    $tablename = "final_products";
+    $mysql_tablename = "final_products";
 
     $list_name = $needed_subcategory;
     $integer_type = ["all_links_id", "Цена", "Цена для клиента"];
