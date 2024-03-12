@@ -14,24 +14,44 @@ use Google\Service\AuthorizedBuyersMarketplace\Contact;
 use functions\GoogleSheets\ParseCharacteristics\DefineNeededColumns;
 use functions\GoogleSheets\ParseCharacteristics\GetFilledIds;
 use functions\GoogleSheets\Sql\SqlQuery;
+use functions\GoogleSheets\ParseCharacteristics\ConnectedSubcategories;
 
 
 
 try {
     echo "Скрипт начал - " . date('Y-m-d H:i:s', time()) . "<br><br>";
 
-    $GoogleSheets_tablename = "napolnye_raw";
-    $tablename = "final_products";
-    $columns_excel_range = "Товары!C3:AU3";
-    $integer_type = ["all_links_id", "Цена", "Цена для клиента"];
+    // $needed_category = ($_POST['category'] ?? $_GET['category']) ?? $argv[1];
+    // $needed_subcategory = ($_POST['subcategory'] ?? $_GET['subcategory']) ?? $argv[2];
 
-    // $letter = "C"; // для формулы sql запроса
-    // include("add_final_table_columns.php"); // чтобы добавить колонки в mysql 
-    // SqlQuery::getInsertQuery($columns_excel_range, $letter, $GoogleSheets_tablename); // создать тест insert-запроса
+    // /////// ОПРЕДЕЛЯЕМ НУЖНЫЕ ПЕРЕМЕННЫЕ ///////
 
-    $columns = Sheet::get_data("Товары!C3:AU3", $GoogleSheets_tablename);
+    // echo "Категория: {$_POST['category']}, подкатегория: {$_POST['subcategory']}<br><br>";
+    // $subcategories = ConnectedSubcategories::getList();
+    // if (!isset($needed_category) or !isset($needed_subcategory)) exit("Нужны параметры 'категория' и 'подкатегория'");
+    // if (!in_array($needed_category, array_keys($subcategories))) exit("Неподходящий параметр");
+    // if (!in_array($needed_subcategory, $subcategories[$needed_category])) exit("Неподходящий параметр");
+
+    // // $list_name = "Товары";
+    // $list_name = $needed_subcategory;
+
+
+    // // Первая ячейка, с которой начинается инзерт в Гугл Таблицу
+    // $current_cell = 4;
+    // $start_column = "A";
+    // $additional_columns = ['id в новой таблице', 'Дата изменения'];
+
+    // // В какую таблицу будет инзерт   
+    // $GoogleSheets_tablename = ConnectedSubcategories::getGoogleSheetsTableName($needed_category, $needed_subcategory);
+    // $tablename = "final_products";
+
+    // $list_name = $needed_subcategory;
+    // $integer_type = ["all_links_id", "Цена", "Цена для клиента"];
+
+    $columns_excel_range = "$list_name!C3:CA3";
+    $columns = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
     $columns = $columns['values'][0];
-    $values = Sheet::get_data("Товары!C4:AU13000", $GoogleSheets_tablename);
+    $values = Sheet::get_data("$list_name!C4:CA100000", $GoogleSheets_tablename);
     $values = $values['values'];
 
     foreach ($values as $values_i) {
@@ -47,7 +67,9 @@ try {
                 $types .= "s";
             }
         }
-        $query = MySQL::bind_insert_data($types, $insert_array, $tablename);
+        TechInfo::preArray($insert_array);
+        
+        // $query = MySQL::bind_insert_data($types, $insert_array, $mysql_tablename);
     }
 
     echo "<br>Скрипт закончил - " . date('Y-m-d H:i:s', time());
