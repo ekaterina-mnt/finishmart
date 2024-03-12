@@ -42,7 +42,7 @@ class MySQLColumns
             echo "Добавится колонка $column<br>";
         }
         $query = substr($query, 0, -2);
-        // MySQL::sql($query);
+        MySQL::sql($query);
         echo "Все добавлено<br>";
     }
 }

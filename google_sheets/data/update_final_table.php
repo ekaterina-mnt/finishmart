@@ -50,16 +50,16 @@ try {
     $integer_type = ["all_links_id", "Цена", "Цена для клиента"];
 
 
-    $columns_excel_range = "$list_name!C3:CA3";
+    $columns_excel_range = "$list_name!C3:ZA3";
 
 
     MySQLColumns::add_columns($columns_excel_range, $GoogleSheets_tablename, $mysql_tablename);
 
-    exit;
+
 
     $columns = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
     $columns = $columns['values'][0];
-    $values = Sheet::get_data("$list_name!C4:CA100000", $GoogleSheets_tablename);
+    $values = Sheet::get_data("$list_name!C4:ZA100000", $GoogleSheets_tablename);
     $values = $values['values'];
 
     foreach ($values as $values_i) {
