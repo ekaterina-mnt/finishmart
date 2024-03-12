@@ -79,6 +79,27 @@ try {
         <p><input type="submit" value="Отправить"></p>
     </form>
 
+
+    <?php
+    foreach ($subcategories as $category => $subcategoriesList) {
+    ?>
+        <H2>Перенести данные в final_products из Гугл Таблиц - <?= $category ?></H2>
+        <form action="google_sheets/data/add_final_table_columns.php" , method="POST">
+            <input type="hidden" name="category" value="<?= $category ?>">
+            <select name="subcategory">
+                <?php
+                foreach ($subcategoriesList as $subcategory) {
+                    echo '<option value="' . $subcategory . '">' . $subcategory . '</option>';
+                }
+                ?>
+            </select></p>
+            <p><input type="submit" value="Отправить"></p>
+        </form>
+    <?php
+    }
+    ?>
+
+
 <?php
 
 } catch (Throwable $e) {
