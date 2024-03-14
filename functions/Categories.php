@@ -372,7 +372,6 @@ class Categories
             0 => [ //'Обои и настенные покрытия'
                 ($provider == 'domix' and preg_match("#(Обои|фотообои)#", $providerCategory)),
                 ($provider == 'domix' and (preg_match("#(Плитка настенная|Декор настенный|Панно)#", $title) or (preg_match("#(Бордюр для обоев)#", $providerSubcategory)))),
-                ($provider == 'artkera' and preg_match("#(Настенная|Декор|Панно|Бордюр)#", $providerSubcategory)),
                 ($provider == 'alpinefloor' and preg_match("#(Кварц-виниловые самоклеящиеся стеновые панели)#", $providerCategory)),
                 ($provider == 'olimp' and preg_match("#(Стеновые панели)#", $providerSubcategory)),
 
@@ -394,6 +393,7 @@ class Categories
                 ($provider == 'tdgalion' and preg_match("#(Керамическая плитка|Керамогранит|Мозаика|Декоративный камень)#", $providerCategory)),
                 ($provider == 'laparet' and preg_match("#(Керамопаркет|Мозаика)#", $providerCategory)),
                 ($provider == 'artkera' and preg_match("#(Керамогранит|Напольная|Мозаика)#", $providerSubcategory)),
+                ($provider == 'artkera' and preg_match("#(Настенная|Декор|Панно|Бордюр)#", $providerSubcategory)),
                 ($provider == 'domix' and preg_match("#(Декор)#", $title) and !preg_match("#(Декор настенный)#", $title)),
                 ($provider == 'domix' and preg_match("#(Плитка и керамогранит)#", $providerCategory)),
                 ($provider == 'domix' and preg_match("#(Бордюр)#", $title)),
