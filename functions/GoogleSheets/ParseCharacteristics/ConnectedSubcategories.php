@@ -45,8 +45,13 @@ class ConnectedSubcategories
             'Обои и настенные покрытия' => 'oboi_raw',
             'Лепнина' => 'lepnina_raw',
             'Сантехника' => [
-                'santechnika_raw_1',
-                'santechnika_raw_2',
+                1 => 'santechnika_raw_1',
+                2 => 'santechnika_raw_2',
+                3 => 'santechnika_raw_3',
+                4 => 'santechnika_raw_4',
+                5 => 'santechnika_raw_5',
+                6 => 'santechnika_raw_6',
+
             ],
             'Краски' => 'kraski_raw',
         ];
@@ -55,13 +60,30 @@ class ConnectedSubcategories
 
 
         if (is_array($result)) {
-            $search_key = array_search($subcategory, Santechnika::getSubcategories());
-            if (($search_key < 6 or $search_key == 7 or $search_key == 9) and !is_null($search_key)) {
-                $result = $result[0];
-            } elseif ($search_key > 5) {
-                $result = $result[1];
-            } else {
-                $result = $result[0];
+            switch (array_search($subcategory, Santechnika::getSubcategories())) {
+                case 9: // Смесители
+                    $result = $result[1];
+                    break;
+                case 8: // Унитазы, писсуары и биде
+                case 10: // Полотенцесушители
+                    $result = $result[2];
+                    break;
+                case 0: // Аксессуары для ванной комнаты
+                case 1: // Ванны
+                case 2: // Другое
+                    $result = $result[3];
+                    break;
+                case 3: // Душевые
+                    $result = $result[4];
+                    break;
+                case 4: // Комплектующие
+                case 5: // Кухонные мойки
+                case 7: // Раковины
+                    $result = $result[5];
+                    break;
+                case 6: // Мебель для ванной
+                    $result = $result[6];
+                    break;
             }
         }
 

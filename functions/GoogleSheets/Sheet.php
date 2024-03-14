@@ -55,6 +55,14 @@ class Sheet
             $spreadsheetId = '1Lqh8l_rXF3olLl1T91-dSQqiZQ9peOHmYp0ZELd0w78';
         } elseif ($service_account == 'santechnika_raw_2') {
             $spreadsheetId = '1HurtogIQayu82BI9kW352D1vWyJVAItVlezF4Akee0M';
+        } elseif ($service_account == 'santechnika_raw_3') {
+            $spreadsheetId = '1M_5WvPEW0xusf8JAKRyNP_jnZ7G27tU0yS9F8PmgM3U';
+        } elseif ($service_account == 'santechnika_raw_4') {
+            $spreadsheetId = '1MyehKx2o631yt3B870arzQgTIz5bB9770pgbVlq6MlU';
+        } elseif ($service_account == 'santechnika_raw_5') {
+            $spreadsheetId = '1qLNYscW3QaUYy69bp5dNcBuDJbmBXCz_3dCChc-X7-0';
+        } elseif ($service_account == 'santechnika_raw_6') {
+            $spreadsheetId = '1tjYCjPQp1SDdnnIrw3YLEIgPBbeFY2Uh4VTDDi9wPrU';
         } else {
             die("<br>Не определен \$spreadsheetId<br>");
         }
