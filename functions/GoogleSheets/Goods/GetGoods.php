@@ -11,7 +11,7 @@ use functions\MySQL;
 
 class GetGoods
 {
-    static function getGoods($filled_ids, $needed_category, $needed_subcategory = null, $add_condition = null)
+    static function getGoods($tablename, $filled_ids, $needed_category, $needed_subcategory = null, $add_condition = null)
     {
         $add_str = "";
         if ($needed_subcategory) {
@@ -24,9 +24,9 @@ class GetGoods
 
         // AND (status like 'ok' OR status IS NULL)
         if ($filled_ids) {
-            $query = "SELECT * FROM all_products WHERE {$add_str} category like '{$needed_category}' AND id NOT IN ($filled_ids) {$add_condition}";
+            $query = "SELECT * FROM $tablename WHERE {$add_str} category like '{$needed_category}' AND id NOT IN ($filled_ids) {$add_condition}";
         } else {
-            $query = "SELECT * FROM all_products WHERE {$add_str} category like '{$needed_category}' {$add_condition}";
+            $query = "SELECT * FROM $tablename WHERE {$add_str} category like '{$needed_category}' {$add_condition}";
         }
 
         $goods = MySQL::sql($query);
