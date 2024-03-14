@@ -59,7 +59,7 @@ try {
 
     $columns = Sheet::get_data($columns_excel_range, $GoogleSheets_tablename);
     $columns = $columns['values'][0];
-    $values = Sheet::get_data("$list_name!C14999:ZA20000", $GoogleSheets_tablename);
+    $values = Sheet::get_data("$list_name!C19999:ZA25000", $GoogleSheets_tablename);
     $values = $values['values'];
 
     echo "<br>Будет добавлено " . count($values) . " товаров<br>";
