@@ -33,6 +33,7 @@ try {
             ".product", //domix
             ".product-page.product_details .price span", //olimpparket
             ".productCard__priceValue", //laparet
+            ".productCard__quantity", //laparet
             ".good-price__value", //ntceramic
             ".catalog__product__info__price .price", //finefloor
             ".sproduct-price__value", //tdgalion
@@ -240,6 +241,13 @@ try {
                     break;
                 }
             }
+        } elseif ($provider == 'laparet') {
+            $price = $price_res->attr("data-price-square-value");
+            var_dump($price);
+
+            // $price = str_replace([",", "₽", ' '], '', $price);
+            // $all_product_data['price'] = [(int) $price, 'i'];
+            exit;
         } elseif (is_array($price_res[0])) {
             foreach ($price_res[0] as $price) {
                 if (is_numeric($price)) {
