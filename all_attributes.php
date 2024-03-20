@@ -223,6 +223,7 @@ try {
 
     //цена
     $price_res = $document->find(implode(', ', $attributes_classes['price']));
+    TechInfo::preArray($price_res);
 
     if ($price_res) {
         //форматирование цены
