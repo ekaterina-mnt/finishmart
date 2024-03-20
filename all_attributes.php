@@ -32,7 +32,7 @@ try {
             ".single-price", //domix (нужен ли вообще)
             ".product", //domix
             ".product-page.product_details .price span", //olimpparket
-            ".productCard__priceValue", //laparet
+            // ".productCard__priceValue", //laparet
             ".productCard__quantity", //laparet
             ".good-price__value", //ntceramic
             ".catalog__product__info__price .price", //finefloor
