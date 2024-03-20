@@ -245,6 +245,7 @@ try {
             }
         } elseif ($provider == 'laparet') {
             var_dump("here");
+            $price_res = $price_res[0];
             $price = $price_res->attr("data-price-square-value");
             var_dump($price);
 
