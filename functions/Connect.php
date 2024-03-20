@@ -33,7 +33,7 @@ class Connect
                         'Referer' => 'https://yandex.ru/',
                     ],
                     // 'proxy' => 'http://RHex48:EEHsHg@185.147.130.119:9274', // https://proxy6.net/user/proxy
-                    'proxy' => 'http://UQTk2ea5:Q4TraHz1@194.226.126.3:64142', // https://panel.proxyline.net/all/?orders=3729008
+                    // 'proxy' => 'http://UQTk2ea5:Q4TraHz1@194.226.126.3:64142', // https://panel.proxyline.net/all/?orders=3729008
                 ],
             );
         } catch (\Throwable $e) {
