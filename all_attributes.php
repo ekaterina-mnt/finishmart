@@ -226,6 +226,7 @@ try {
     TechInfo::preArray($price_res);
 
     if ($price_res) {
+        var_dump($provider);
         //форматирование цены
         if ($price_res[0]->attr('data-calc')) {
             $price_arr = json_decode($price_res[0]->attr('data-calc'), 1, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
@@ -243,6 +244,7 @@ try {
                 }
             }
         } elseif ($provider == 'laparet') {
+            var_dump("here");
             $price = $price_res->attr("data-price-square-value");
             var_dump($price);
 
