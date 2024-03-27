@@ -243,15 +243,6 @@ try {
                     break;
                 }
             }
-        } elseif ($provider == 'laparet') {
-            var_dump("here");
-            $price_res = $price_res[0];
-            $price = $price_res->attr("data-price-square-value");
-            var_dump($price);
-
-            // $price = str_replace([",", "₽", ' '], '', $price);
-            // $all_product_data['price'] = [(int) $price, 'i'];
-            exit;
         } elseif (is_array($price_res[0])) {
             foreach ($price_res[0] as $price) {
                 if (is_numeric($price)) {
